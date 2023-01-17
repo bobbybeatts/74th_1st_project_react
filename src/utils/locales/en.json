@@ -142,5 +142,32 @@
     "title": "Multi Language",
     "home": "Home",
     "change": "Change Language",
-    "message": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiatnulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollitanim id est laborum."
+    "message": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiatnulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollitanim id est laborum.",
+   
+    "회계 업무": "회계업무",
+    "전표/장부관리":"전표/장부관리",
+        "일반전표":"일반전표",
+        "전표승인 및 취소":"전표승인 및 취소",
+        "분개장":"분개장",
+        "일(월)계표":"일(월)계표",
+        "총계정원장":"총계정원장",
+        "현금출납장":"현금출납장",
+        "계정별원장":"계정별원장",
+    "기초 정보관리":"기초 정보관리",
+        "계정과목관리":"계정과목관리",
+        "거래처 관리":"거래처 관리",
+    "고정자산관리":"고정자산관리",
+        "고정자산등록":"고정자산등록",
+    "결산/재무제표관리":"결산/재무제표관리",
+        "합계잔액시산표":"합계잔액시산표",
+        "재무상태표":"재무상태표",
+        "손익계산서":"손익계산서",
+        "월별손익계산서":"월별손익계산서",
+        "전기분재무상태표":"전기분재무상태표",
+
+    "인사 업무":"인사 업무",
+
+    "물류 업무":"물류 업무"
+
+
 }

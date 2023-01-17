@@ -1,15 +1,15 @@
 import React from "react";
 
 
-import { default as DetailTrialBalance } from "../page/DetailTrialBalance/DetailTrialBalance"; // 일(월)계표 *********** 2020-08-24 김진호 추가 ***********
-import { default as CashJournal } from "../page/CashJournal/CashJournal"; // 현금출납장  *********** 2020-08-24 정대현 추가 ***********
-import { default as AccountLedger } from "../page/AccountLedger/AccountLedger"; // 계정별 원장  ======  2020-08-25 조편백  추가 =======
-import { default as FinancialStatements } from "../page/FinancialStatements/FinancialStatements"; // 재무상태표
-import { default as TotalTrialBalance } from "../page/TotalTrialBalance/TotalTrialBalance"; // 합계잔액시산표
-import { default as IncomeStatement } from "../page/IncomeStatement/IncomeStatement"; //손익계산서 ======  2020-08-24 조편백  추가 =======
-import { default as MonthIncomeStatement } from "../page/MonthIncomeStatement/MonthIncomeStatement";
-import { default as PreviousFinalcialStatement } from "../page/PreviousFinalcialStatement/PreviousFinalcialStatement"; //전기분재무상태표 ======  2020-11-25 최지은&노원찬 추가 =======
-import { default as CashFlowStatement } from "../page/CashFlowStatement/CashFlowStatement";
+import { default as DetailTrialBalance } from "../page/detailtrialbalance/DetailTrialBalance"; // 일(월)계표 *********** 2020-08-24 김진호 추가 ***********
+import { default as CashJournal } from "../page/cashjournal/CashJournal"; // 현금출납장  *********** 2020-08-24 정대현 추가 ***********
+import { default as AccountLedger } from "../page/accountledger/AccountLedger"; // 계정별 원장  ======  2020-08-25 조편백  추가 =======
+import { default as FinancialStatements } from "../page/financialstatements/FinancialStatements"; // 재무상태표
+import { default as TotalTrialBalance } from "../page/totaltrialbalance/TotalTrialBalance"; // 합계잔액시산표
+import { default as IncomeStatement } from "../page/incomestatement/IncomeStatement"; //손익계산서 ======  2020-08-24 조편백  추가 =======
+import { default as MonthIncomeStatement } from "../page/monthincomestatement/MonthIncomeStatement";
+import { default as PreviousFinalcialStatement } from "../page/previousfinalcialstatement/PreviousFinalcialStatement"; //전기분재무상태표 ======  2020-11-25 최지은&노원찬 추가 =======
+import { default as CashFlowStatement } from "../page/cashflowstatement/CashFlowStatement";
 import AuthGuard from "../../../../utils/route-guard/AuthGuard";
 import MainLayout from "../../../../template/layout/MainLayout"; //원가명세서 ======  2020-11-11 추가 =======
 
