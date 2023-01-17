@@ -22,8 +22,8 @@ const searchmonthsal = (state = initialState, action) => {
     //   };
     case SEARCH_MONTH_SALARY_LIST_SUCCESS:
       return {
-        ...state,
-        monthSalary: action.payload.FullTimeSalaryList
+        ...state, // 얕은 복사로 기본 객체 복사
+        monthSalary: action.payload.FullTimeSalaryList // payload로 불러와서 fulltimesalarylist만 불러온다.
       };
     case SEARCH_MONTH_SALARY_LIST_FAILURE:
       return {

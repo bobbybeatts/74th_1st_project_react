@@ -38,22 +38,22 @@ const MonthSalaryContainer = () => {
         console.log('핸들체인지')
         if (selectName === '부서') {
             setSelectDeptTitle(selectValue);
-            console.log('부서'+selectValue)
-            console.log(selectData.emp[0].value)
-            console.log('222'+selectData)
+            // console.log('부서'+selectValue)
+            // console.log(selectData.emp[0].value)
+            // console.log('222'+selectData)
         } else if (selectName === '달력') {
             setSelectCalendar(selectValue)
-            console.log('달력='+selectValue)
-            console.log('SelectCalendar='+selectCalendar)
+            // console.log('달력='+selectValue)
+            // console.log('SelectCalendar='+selectCalendar)
         }
     }, []);
 
     useEffect(() => {
-        console.log("@@@@사가 디스페쳐 성민아 떠라")
+        //console.log("@@@@사가 디스페쳐 성민아 떠라")
         monthSalaryListDispatch({
-            type: SEARCH_MONTH_SALARY_LIST_REQUEST,
+            type: SEARCH_MONTH_SALARY_LIST_REQUEST, // 여기서 액션을 발생시킴
         });
-    }, []);
+    }, []);//빈배열로 한번만 생성
 
     useEffect(() => {
         if (selectDeptTitle === 'ALL' && selectCalendar === 'ALL') {
@@ -64,7 +64,7 @@ const MonthSalaryContainer = () => {
         let filterData = data;
         if (selectDeptTitle !== 'ALL') {
             filterData = filterData.filter(e => e.empCode === selectDeptTitle);
-            console.log("이건요? 찍혀요? selectDeptTitle not all")
+            //console.log("이건요? 찍혀요? selectDeptTitle not all")
            // console.log("@@@@@@@@@@@@@filterData=="+filterData);
         }
         if (selectCalendar !== 'ALL') {

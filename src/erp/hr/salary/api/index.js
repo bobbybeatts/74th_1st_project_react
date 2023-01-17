@@ -11,7 +11,7 @@ export const baseSalaryUpdate =
 //=====급여조회 => 월별급여조회=====
 export const searchMonthSalary =
 () =>{
-return axios.get(
+return axios.get( // ajax처럼 컨트롤러 호출, 뒷단의 데이터를 갖고 옴 get을 사용 -> 조회를 했다.
   "/salaryinfomgmt/salary/list"
 )}
 

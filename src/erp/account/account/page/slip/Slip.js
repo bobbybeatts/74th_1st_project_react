@@ -129,7 +129,7 @@ const SlipForm = () => {
     const yearLast = year + '-12-31';
 
     const theme = useTheme();
-    const dispatch = useDispatch();
+    const dispatch = useDispatch(); // useDispatch()는 리덕스 내장 함순데 밖에서 사용하기 위해서 dispatch변수 적어준다.
     const [slipStatus, setSlipStatus] = useState('전체');
     const [startDate, setStartDate] = useState(monthFirstDay); //시작 날짜
     const [endDate, setEndDate] = useState(toDay);
@@ -158,7 +158,7 @@ const SlipForm = () => {
 
 
     const searchSlip = () => {
-        dispatch({
+        dispatch({//const dispatch = useDispatch();
             type : types.SELECT_SLIP_START,
             params : {
                 startDate : startDate,

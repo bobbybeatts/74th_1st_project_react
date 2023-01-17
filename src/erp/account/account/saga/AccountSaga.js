@@ -7,7 +7,7 @@ import * as api from '../api';
 
 //------------일반전표------------------
 //------------전표------------------
-const selectSlipSaga = createRequestSaga(types.SELECT_SLIP_START, api.selectSlip);
+const selectSlipSaga = createRequestSaga(types.SELECT_SLIP_START, api.selectSlip);//리듀서가 실행되기 전에 먼저 실행됨
 
 const deleteSlipSaga = createRequestSaga(types.DELETE_SLIP_START, api.deleteSlip);
 

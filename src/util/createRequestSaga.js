@@ -10,10 +10,11 @@ export default function createRequestSaga(type, request) {
         // console.log(action);
         // console.log(request);
         // console.log('로딩 시작');
-        yield put(startLoading(type)); //로딩 시작
+        yield put(startLoading(type)); //로딩 시작 -- 이부분은 제외해도 됨
         try {
             
-            const response = yield call(request, action);
+            const response = yield call(request, action); //call이 호출하는 부분 / action이 request의 매개부분
+            //api.뭐시기가 실행되면서 뒷단의 값들을 갖고 옴
             // console.log('response');
             // console.log(response);
 

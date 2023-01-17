@@ -195,7 +195,7 @@ const initialState = {
     deptList:[]
 };
 
-const AccountReducer = (state = initialState, action) => {
+const AccountReducer = (state = initialState, action) => {// 위에서 만든 액션을 넣어 준다.
     switch (action.type) {
         //========================================= 2020-09-05 일반전표 조편백 ================================
         //====================전표====================
