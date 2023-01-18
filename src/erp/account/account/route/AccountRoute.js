@@ -20,7 +20,7 @@ const AccountRoute = {
     ),
     children : [
         {
-            path: '/app/acc/account/slipForm',
+            path: '/app/acc/account/slipForm',//localhost:3000/app/acc/account/slipForm을 입력하면 '일반전표' 화면으로 이동
             element : <Slip/>
         },
         {

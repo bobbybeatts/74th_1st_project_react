@@ -11,7 +11,7 @@ export const selectSlip = (action) =>// 전표 조회 사가
     });
 
 export const deleteSlip = (action) =>// 전표 삭제 사가
-    accountApi.get('/account/deleteSlip', {
+    accountApi.get('/posting/deleteSlip', {
         params: { slipNo: action.payload.slipNo }
     });
 

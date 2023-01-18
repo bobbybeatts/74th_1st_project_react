@@ -133,6 +133,9 @@ const SlipForm = () => {
     const [slipStatus, setSlipStatus] = useState('전체');
     const [startDate, setStartDate] = useState(monthFirstDay); //시작 날짜
     const [endDate, setEndDate] = useState(toDay);
+
+    const [slipNo, setSlipNo] = useState('');
+
     
 
     const [newAccount, setNewAccount] = useState({
@@ -172,18 +175,16 @@ const SlipForm = () => {
         console.log("insertSlip");
         dispatch({
             type: types.ADD_SALARY_SLIP_REQUEST,
-            params:{
-                
-            }
+
         })
     }
 
-    const deleteSlip = (row) => {
-        console.log("deleteSlip");
+    const deleteSlip = () => { //e는 버튼임 버튼을 주면 안됨
+        console.log(slipNo+"삭제 좀 되라");
         dispatch({
             type: types.DELETE_SLIP_START,
             params:{
-                slipNo: row.slipNo
+                slipNo:slipNo
             }
         })
     }
@@ -193,13 +194,13 @@ const SlipForm = () => {
     }
 
     const searchJour= (e) => {
-        // console.log(e);
         dispatch({
             type : types.SELECT_JOURNAL_START,
             params : {
                 slipNo : e.row.slipNo
             }
         });
+        setSlipNo(e.id);
     }
 
     const searchDetail = (e) => {
