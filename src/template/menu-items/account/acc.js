@@ -5,7 +5,7 @@ import basePages from "./base";
 import statementPages from "./statement";
 import previousPages from "./previousStatement";
 import currentAssetPages from "./currentAsset";
-
+import budgetPages from "./budget";
 
 const icons = {
     IconCash
@@ -16,7 +16,7 @@ const accPages = {
     title: <FormattedMessage id="회계 업무" />,
     type: 'collapse',
     icon: icons.IconCash,
-    children: [accountPages,basePages,statementPages,currentAssetPages]
+    children: [accountPages,basePages,statementPages,currentAssetPages,budgetPages]
 };
 
 export default accPages;
