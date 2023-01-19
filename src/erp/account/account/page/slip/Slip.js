@@ -18,7 +18,6 @@ import {gridSpacing} from '../../../../../template/store/constant';
 import { useDispatch, useSelector } from 'react-redux';
 import * as types from '../../reducer/AccountReducer';
 import moment from 'moment/moment'
-import { deleteSlip, updateSlip } from '../../api';
 
 //Columns
 //전표칼럼
@@ -78,40 +77,6 @@ const indignationDetailColumns = [
     }
 ];
 
-//table data
-//전표데이터
-// const slipRows = [{
-//     id: 1,
-//     slipNum: 'Snow',
-//     gisu: 'Jon',
-//     deptCode: 35,
-//     gubun: 'asdf',
-//     summary: '적요',
-//     status: '승인대기',
-//     code: 'admin',
-//     date: '2022-10-13'
-// }];
-//분개데이터
-// const indignationRows = [{
-//     id: 1,
-//     indignationNum: 'Snow',
-//     gubun: 'Jon',
-//     accountCode: 35,
-//     accountName: 'adsfasdf',
-//     debit: '차변',
-//     credit: '대변',
-//     workplace: '거래처',
-//     status: '승인대기'
-// }];
-//분개상세데이터
-// const indignationDetailRows = [{
-//     id: 1,
-//     accountOption: 'Snow',
-//     indignationDetailNum: 'Jon',
-//     indignationDetail: 35,
-//     indignationDetailContents: '분개상세내용'
-// }];
-
 // ==============================|| 일반전표 ||============================== //
 
 const SlipForm = () => {
@@ -161,6 +126,7 @@ const SlipForm = () => {
 
 
     const searchSlip = () => {
+        console.log(slipData);
         dispatch({//const dispatch = useDispatch();
             type : types.SELECT_SLIP_START,
             params : {
@@ -173,11 +139,11 @@ const SlipForm = () => {
 // insertSlip, deleteSlip,update 추가 하는 중임
     const insertSlip = () => {
         console.log("insertSlip");
+        console.log(slipData);
         dispatch({
-            type: types.ADD_SALARY_SLIP_REQUEST,
-
+            type: types.ADD_SLIP
         })
-    }
+        }
 
     const deleteSlip = () => { //e는 버튼임 버튼을 주면 안됨
         console.log(slipNo+"삭제 좀 되라");

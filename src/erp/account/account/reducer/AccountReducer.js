@@ -1,9 +1,12 @@
+import { initial } from "lodash";
 import { createAction } from "redux-actions";
 
 //========================================= 2020-09-04 일반전표  조진주 시작 ==============================================
 export const SELECT_SLIP_START = "src/erp/account/Saga/Saga/SELECT_SLIP"; //전표 조회
 export const SELECT_SLIP_SUCCESS = "src/erp/account/Saga/Saga/SELECT_SLIP_SUCCESS";
 export const SELECT_SLIP_FAILURE = "src/erp/account/Saga/Saga/SELECT_SLIP_FAILURE";
+
+export const ADD_SLIP = "src/erp/account/Saga/Saga/ADD_SLIP";
 
 export const DELETE_SLIP_START = "src/erp/account/Saga/Saga/DELETE_SLIP"; //전표 삭제
 export const DELETE_SLIP_SUCCESS = "src/erp/account/Saga/Saga/DELETE_SLIP_SUCCESS"; //전표 삭제 성공
@@ -195,6 +198,26 @@ const initialState = {
     deptList:[]
 };
 
+const initialSlip = {
+    accountPeriodNo:"4",
+approvalDate:"2023-01-03",
+approvalEmpCode:"admin",
+authorizationStatus:null,
+balanceDivision:null,
+deptCode: "DPT-01",
+deptName: null,
+expenseReport: null,
+id: null,
+positionCode: null,
+reportingDate: "2023-01-03",
+reportingEmpCode: "admin",
+reportingEmpName: null,
+slipNo: "20230103SLIP00001",
+slipStatus: "승인완료",
+slipType: "결산",
+status: "normal",
+}
+
 const AccountReducer = (state = initialState, action) => {// 위에서 만든 액션을 넣어 준다.
     switch (action.type) {
         //========================================= 2020-09-05 일반전표 조편백 ================================
@@ -221,6 +244,12 @@ const AccountReducer = (state = initialState, action) => {// 위에서 만든 �
             return {
                 ...state,
                 error: action.payload,
+            };
+        case ADD_SLIP:
+            console.log("addslip")
+            return{
+                ...state,
+                slipFormList: initialSlip
             };
         case DELETE_SLIP_SUCCESS: //전표삭제 성공
             return {
