@@ -12,7 +12,7 @@ import TotalGrowthBarChart from "../../../util/TotalGrowthBarChart";
 const SamplePage = () => (
     <MainCard title="74th React Project">
         <Typography variant="body2">
-            74기 리액트 프로젝트
+            74기 회계 리액트 프로젝트
         <TotalGrowthBarChart />
         </Typography>
     </MainCard>

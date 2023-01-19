@@ -34,7 +34,7 @@ import transportRoute from "../erp/logistic/transport/route/transportRoute";
 //
 // export default RootRoute;
 
-const RootRoute = [ //각 업무들을 묶어 놓은걸 묶어놨다.
+const RootRoute = [
     ...AccRoute,
     ...HrRootRoute,
     ...LogiRootRoute

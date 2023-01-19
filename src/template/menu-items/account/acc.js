@@ -16,7 +16,7 @@ const accPages = {
     title: <FormattedMessage id="회계 업무" />,
     type: 'collapse',
     icon: icons.IconCash,
-    children: [accountPages,basePages,statementPages,currentAssetPages,budgetPages]
+    children: [accountPages,basePages,statementPages,budgetPages,currentAssetPages]
 };
 
 export default accPages;

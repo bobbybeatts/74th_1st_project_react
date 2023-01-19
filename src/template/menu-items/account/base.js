@@ -6,7 +6,7 @@ const icons = {
 };
 
 const basePages = {
-    id: 'base',
+    id: 'acBase',
     title : <FormattedMessage id="기초 정보관리" />,
     type: 'collapse',
     children: [

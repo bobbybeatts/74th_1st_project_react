@@ -6,7 +6,7 @@ const icons = {
 };
 
 const currentAssetPages = {
-    id: 'base',
+    id: 'asset',
     title : <FormattedMessage id="고정자산관리" />,
     type: 'collapse',
     children: [

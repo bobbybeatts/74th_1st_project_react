@@ -1,7 +1,7 @@
 import { FormattedMessage } from 'react-intl';
 
 export const base = {
-    id: 'base',
+    id: 'logiBase',
     title: <FormattedMessage id="기초정보 관리" />,
     type: 'collapse',
     children: [
