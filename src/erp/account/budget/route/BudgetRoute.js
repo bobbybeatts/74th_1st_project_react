@@ -1,17 +1,15 @@
 import React from "react";
 
-// 전 표  =========================================================================================================================
-import { default as Slip } from "../page/slip/Slip"; // 일반전표
-import { default as ApprovalManager } from "../page/approvalmanager/ApprovalManager"; // 전표승인
-import { default as JournalForm } from "../page/journalform/JournalForm"; // 분개장
-import { default as GeneralAccountLedger } from "../page/generalaccountledger/GeneralAccountLedger"; // 총계정원장 2020-11-23 추가
-// 고정 자산 ===============================================================================================================================
-import { default as NonCurrentAsset } from "../page/noncurrentasset/NonCurrentAsset";
+//  예 산 =========================================================================================================================
+import { default as BudgetRequest } from "../page/budgetrequest/BudgetRequest"; // 예산 신청
+import { default as BudgetFormulation } from "../page/budgetformulation/BudgetFormulation"; // 예산 편성
+import { default as BudgetStatus } from "../page/budgetstatus/BudgetStatus"; // 예산 실적현황
+
 import AuthGuard from "../../../../utils/route-guard/AuthGuard";
 import MainLayout from "../../../../template/layout/MainLayout";
 
 
-const AccountRoute = {
+const BudgetRoute = {
     path: '/',
     element: (
         <AuthGuard>
@@ -20,26 +18,18 @@ const AccountRoute = {
     ),
     children : [
         {
-            path: '/app/acc/account/slipForm',//localhost:3000/app/acc/account/slipForm을 입력하면 '일반전표' 화면으로 이동
-            element : <Slip/>
+            path: '/app/acc/budget/BudgetRequest',
+            element : <BudgetRequest/>
         },
         {
-            path: '/app/acc/account/approvalManager',
-            element : <ApprovalManager/>
+            path: '/app/acc/budget/BudgetFormulation',
+            element : <BudgetFormulation/>
         },
         {
-            path:  '/app/acc/account/journalForm',
-            element : <JournalForm/>
-        },
-        {
-            path: '/app/acc/account/GeneralAccountLedger',
-            element : <GeneralAccountLedger/>
-        },
-        {
-            path: '/app/acc/account/CurrentAssetRegister',
-            element : <NonCurrentAsset/>
+            path:  '/app/acc/budget/BudgetStatus',
+            element : <BudgetStatus/>
         }
     ]
 };
 
-export default AccountRoute;
+export default BudgetRoute;

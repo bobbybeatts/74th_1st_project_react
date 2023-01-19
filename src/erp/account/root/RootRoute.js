@@ -4,6 +4,7 @@ import { Route, Switch, Redirect, withRouter } from "react-router-dom";
 import AccountRoute from '../account/route/AccountRoute';
 import StatementRoute from '../statement/route/StatementRoute';
 import BaseRoute from '../base/route/BaseRoute';
+import BudgetRoute from "../budget/route/BudgetRoute";
 
 
 // const AccRootRoute = () => {
@@ -21,7 +22,8 @@ import BaseRoute from '../base/route/BaseRoute';
 const AccRootRoute = [
     AccountRoute,
     StatementRoute,
-    BaseRoute
+    BaseRoute,
+    BudgetRoute
 ];
 
 export default AccRootRoute;

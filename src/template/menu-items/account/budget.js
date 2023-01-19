@@ -3,8 +3,8 @@ import { IconCash } from '@tabler/icons';
 
 const icons = {
     IconCash
-};//예산편성, 예산 실적현황
-
+};
+//예산 관리, 예산편성, 예산 실적현황
 const budgetPages = {
     id: 'budget',
     title : <FormattedMessage id="예산 관리" />,
@@ -18,7 +18,7 @@ const budgetPages = {
                 </>
             ),
             type: 'item',
-            url: '/app/acc/account/BudgetRequest',
+            url: '/app/acc/budget/BudgetRequest',
         },
         {
             id : 'budgetFormulation',
@@ -28,7 +28,7 @@ const budgetPages = {
                 </>
             ),
             type: 'item',
-            url: '/app/acc/account/BudgetFormulation',
+            url: '/app/acc/budget/BudgetFormulation',
         },
         {
             id : 'budgetStatus',
@@ -38,7 +38,7 @@ const budgetPages = {
                 </>
             ),
             type: 'item',
-            url: '/app/acc/account/BudgetStatus',
+            url: '/app/acc/budget/BudgetStatus',
         },
 
     ]
