@@ -31,7 +31,6 @@ const slipColumns = [
     { headerName: '승인자', field: 'reportingEmpName' },
     { headerName: '승인상태', field: 'slipStatus' }
 ];
-
 //분개칼럼
 const indignationColumns = [
     { width: '50', headerCheckboxSelection: true, checkboxSelection: true }, //체크박스
@@ -100,7 +99,6 @@ const SlipForm = () => {
     const [endDate, setEndDate] = useState(toDay);
 
     const [slipNo, setSlipNo] = useState('');
-
     
 
     const [newAccount, setNewAccount] = useState({
@@ -116,13 +114,14 @@ const SlipForm = () => {
         editable: "",
         accountInnerName: ""
     })
-    const accountInnerCodeChange = e => {
-        setNewAccount({
-            ...newAccount,
-            accountInnerCode: e.target.value,
-            accountCode: e.target.value
-        })
-    }
+    // const accountInnerCodeChange = e => {
+    //     setNewAccount({
+    //         ...newAccount,
+    //         accountInnerCode: e.target.value,
+    //         accountCode: e.target.value
+    //     })
+    // }
+    
 
 
     const searchSlip = () => {
@@ -139,10 +138,10 @@ const SlipForm = () => {
 // insertSlip, deleteSlip,update 추가 하는 중임
     const insertSlip = () => {
         console.log("insertSlip");
-        console.log(slipData);
-        dispatch({
-            type: types.ADD_SLIP
-        })
+       dispatch({
+        type:types.ADD_SLIP
+       })
+       console.log(slipData);
         }
 
     const deleteSlip = () => { //e는 버튼임 버튼을 주면 안됨
