@@ -3,8 +3,8 @@ import { Route, withRouter } from 'react-router-dom';
 // 인 사 관 리 =========================================================================================================================
 import { default as EmpDetailedContainer } from '../page/EmpDetailed/SimpleEmpSearch/EmpDetailedContainer'; // 사원상세조회          //유주
 import { default as EmpRegist } from '../page/EmpRegist/EmpRegist'; //사원등록     //성훈
-import { default as EmploymentManage } from '../page/employmentmanage/EmploymentManageContainer'; //2020-11-19 64rl동욱 재직증명서관리
-import { default as EmploymentAssign } from '../page/empassign/EmpAssignContainer';
+import { default as EmploymentManage } from '../page/EmploymentManage/EmploymentManageContainer'; //2020-11-19 64rl동욱 재직증명서관리
+import { default as EmploymentAssign } from '../page/EmpAssign/EmpAssignContainer';
 
 const EmpRoute = () => {
     return (
