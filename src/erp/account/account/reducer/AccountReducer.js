@@ -244,7 +244,6 @@ const AccountReducer = (state = initialState, action) => {// 위에서 만든 �
                 error: action.payload,
             };
         case DELETE_SLIP_SUCCESS: //전표삭제 성공
-        console.log({slipNo});
             return {
                 ...state,
                 slipFormList: [], //전표그리드 초기화
