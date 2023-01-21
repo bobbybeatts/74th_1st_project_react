@@ -47,11 +47,6 @@ export default function DeleteCheckDialog(props) {
 
   const [itemList, setItemList] = useState({});
 
-  const onChange = (e) => {
-    setItemList({...itemList,[e.target.name]: e.target.value});
-    console.log(itemList);
-  }
-
   const onSubmit = (e) => {
     e.preventDefault();
     console.log("버튼")

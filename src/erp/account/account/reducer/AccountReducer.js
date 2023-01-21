@@ -218,7 +218,7 @@ const AccountReducer = (state = initialState, action) => {// 위에서 만든 �
             console.log("addslip")
             return {
                 ...state,
-                slipFormList: initialColumns.concat(state.slipFormList)
+                slipFormList: initialColumns.concat(state.slipFormList),
             };
         case SELECT_SLIP_START:
             console.log("날짜 조회 성공",action);
@@ -244,6 +244,7 @@ const AccountReducer = (state = initialState, action) => {// 위에서 만든 �
                 error: action.payload,
             };
         case DELETE_SLIP_SUCCESS: //전표삭제 성공
+        console.log({slipNo});
             return {
                 ...state,
                 slipFormList: [], //전표그리드 초기화
