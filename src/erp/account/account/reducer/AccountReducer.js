@@ -44,7 +44,7 @@ export const ADD_SALARY_SLIP_SUCCESS = "src/erp/account/Saga/Saga/ADD_HRSLIP_SUC
 export const ADD_SALARY_SLIP_FAILURE = "src/erp/account/Saga/Saga/ADD_HRSLIP_FAILURE";
 
 //========================= 일반전표 2020-09-04 조편백 시작 ======================//
-export const addSlip = createAction(ADD_SLIP);
+export const addSlip = createAction(ADD_SLIP); // 전표추가
 
 export const selectSlipStart = createAction(SELECT_SLIP_START); //전표조회
 export const selectSlipSuccess = createAction(SELECT_SLIP_SUCCESS);
@@ -215,9 +215,14 @@ const AccountReducer = (state = initialState, action) => {// 위에서 만든 �
         //========================================= 2020-09-05 일반전표 조편백 ================================
         //====================전표====================
         case ADD_SLIP:
+            console.log("addslip")
             return {
                 ...state,
+<<<<<<< HEAD
                 slipFormList:initialColumns
+=======
+                slipFormList: initialColumns.concat(state.slipFormList),
+>>>>>>> c5d389d7575c041aaaea9c1e4ca1ab3238c640a1
             };
         case SELECT_SLIP_START:
             console.log("날짜 조회 성공",action);
@@ -243,6 +248,7 @@ const AccountReducer = (state = initialState, action) => {// 위에서 만든 �
                 error: action.payload,
             };
         case DELETE_SLIP_SUCCESS: //전표삭제 성공
+        console.log({slipNo});
             return {
                 ...state,
                 slipFormList: [], //전표그리드 초기화
