@@ -22,18 +22,18 @@ import moment from 'moment/moment'
 //Columns
 //전표칼럼
 const slipColumns = [
-    { width: '60', headerCheckboxSelection: true, checkboxSelection: true }, //체크박스
-    { width: '150', headerName: '기수일련번호', field: 'accountPeriodNo' },
-    { width: '250', headerName: '전표일련번호', field: 'slipNo' },
-    { headerName: '작성날짜', field: 'reportingDate' },
-    { headerName: '작성자코드', field: 'reportingEmpCode' },
-    { headerName: '품의내역', field: 'expenseReport', editable: true }, // editable : 편집가능
-    { headerName: '승인자', field: 'reportingEmpName' },
-    { headerName: '승인상태', field: 'slipStatus' }
+    { width: '30', headerCheckboxSelection: true, checkboxSelection: true, key:'slipCheck',field:' '}, //체크박스
+    { width: '90', headerName: '기수일련번호', field: 'accountPeriodNo' , key:'accountPeriodNo'},
+    { width: '150', headerName: '전표일련번호', field: 'slipNo' , key:'slipNo'},
+    { headerName: '작성날짜', field: 'reportingDate' , key:'reportingDate'},
+    { headerName: '작성자코드', field: 'reportingEmpCode' , key:'reportingEmpCode'},
+    { width: '150', headerName: '품의내역', field: 'expenseReport', editable: true , key:'expenseReport'}, // editable : 편집가능
+    { headerName: '승인자', field: 'reportingEmpName' , key:'reportingEmpName'},
+    { headerName: '승인상태', field: 'slipStatus', key:'slipStatus' }
 ];
 //분개칼럼
 const indignationColumns = [
-    { width: '50', headerCheckboxSelection: true, checkboxSelection: true }, //체크박스
+    { width: '50', headerCheckboxSelection: true, checkboxSelection: true,field:' '}, //체크박스
     { headerName: '분개일련번호', field: 'journalNo', editable: true },
     { headerName: '계정코드', field: 'accountCode' },
     { headerName: '계정명', field: 'accountName' },
@@ -64,7 +64,7 @@ const indignationColumns = [
 ];
 //분개상세칼럼
 const indignationDetailColumns = [
-    { width: '50', headerCheckboxSelection: true, checkboxSelection: true }, //체크박스
+    { width: '50', headerCheckboxSelection: true, checkboxSelection: true ,field:' '}, //체크박스
     { headerName: '분개번호', field: 'journalDetailNo',width: 250 },
     { headerName: '계정명', field: 'accountControlName',width: 250 },
     { headerName: '계정내용', field: 'accountControlType',width: 250 },
@@ -125,7 +125,6 @@ const SlipForm = () => {
 
 
     const searchSlip = () => {
-        console.log(slipData);
         dispatch({//const dispatch = useDispatch();
             type : types.SELECT_SLIP_START,
             params : {
@@ -134,14 +133,15 @@ const SlipForm = () => {
                 slipStatus : slipStatus
             }
         })
+        console.log(slipData);
     }
 // insertSlip, deleteSlip,update 추가 하는 중임
     const insertSlip = () => {
         console.log("insertSlip");
-       dispatch({
-        type:types.ADD_SLIP
-       })
-       console.log(slipData);
+        console.log(slipData);
+        dispatch({
+            type: types.ADD_SLIP
+        })
         }
 
     const deleteSlip = () => { //e는 버튼임 버튼을 주면 안됨
