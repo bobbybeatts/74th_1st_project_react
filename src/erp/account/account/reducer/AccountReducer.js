@@ -218,11 +218,7 @@ const AccountReducer = (state = initialState, action) => {// 위에서 만든 �
             console.log("addslip")
             return {
                 ...state,
-<<<<<<< HEAD
-                slipFormList:initialColumns
-=======
                 slipFormList: initialColumns.concat(state.slipFormList),
->>>>>>> c5d389d7575c041aaaea9c1e4ca1ab3238c640a1
             };
         case SELECT_SLIP_START:
             console.log("날짜 조회 성공",action);
