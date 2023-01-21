@@ -11,6 +11,8 @@ import SearchIcon from '@mui/icons-material/Search';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import MyDialog from 'util/LogiUtil/MyDialog';
+import DeleteCheckDialog from './DeleteCheckDialog'
 // project imports
 import MainCard from '../../../../../template/ui-component/cards/MainCard';
 import {gridSpacing} from '../../../../../template/store/constant';
@@ -99,21 +101,27 @@ const SlipForm = () => {
     const [endDate, setEndDate] = useState(toDay);
 
     const [slipNo, setSlipNo] = useState('');
-    
+    const [openDialog, setOpenDialog] = useState(false);
+    const close = () => {
+        setOpenDialog(false);
+    };
+    const deleteCheck = () => {
+         setOpenDialog(true);
+    };
 
-    const [newAccount, setNewAccount] = useState({
-        accountInnerCode: "",
-        parentAccountInnercode: "",
-        accountCode: "",
-        accountCharacter: "",
-        accountName: "",
-        accountUseCheck: "",
-        accountDivision: "",
-        accountDescription: "",
-        groupCode: "",
-        editable: "",
-        accountInnerName: ""
-    })
+    // const [newAccount, setNewAccount] = useState({
+    //     accountInnerCode: "",
+    //     parentAccountInnercode: "",
+    //     accountCode: "",
+    //     accountCharacter: "",
+    //     accountName: "",
+    //     accountUseCheck: "",
+    //     accountDivision: "",
+    //     accountDescription: "",
+    //     groupCode: "",
+    //     editable: "",
+    //     accountInnerName: ""
+    // })
     // const accountInnerCodeChange = e => {
     //     setNewAccount({
     //         ...newAccount,
@@ -122,8 +130,7 @@ const SlipForm = () => {
     //     })
     // }
     
-
-
+//==========================전표=================================
     const searchSlip = () => {
         dispatch({//const dispatch = useDispatch();
             type : types.SELECT_SLIP_START,
@@ -135,15 +142,20 @@ const SlipForm = () => {
         })
         console.log(slipData);
     }
-// insertSlip, deleteSlip,update 추가 하는 중임
+
     const insertSlip = () => {
-        console.log("insertSlip");
-        console.log(slipData);
+        console.log("전표 추가");
         dispatch({
             type: types.ADD_SLIP
         })
         }
-
+    // const deleteCheck = () => {
+    //     return Swal.fire({
+    //         icon: 'error',
+    //         title: '정말 삭제 하시겠습니까?',
+    //         showConfirmButton: 'true'
+    //     })
+    // }
     const deleteSlip = () => { //e는 버튼임 버튼을 주면 안됨
         console.log(slipNo+"삭제 좀 되라");
         dispatch({
@@ -152,12 +164,13 @@ const SlipForm = () => {
                 slipNo:slipNo
             }
         })
+        close();
     }
 
     const updateSlip = () => {
         console.log("updateSlip");
     }
-
+//==========================분개=================================
     const searchJour= (e) => {
         dispatch({
             type : types.SELECT_JOURNAL_START,
@@ -167,7 +180,7 @@ const SlipForm = () => {
         });
         setSlipNo(e.id);
     }
-
+//==========================분개상세=================================
     const searchDetail = (e) => {
         // console.log(e);
         dispatch({
@@ -236,6 +249,12 @@ const SlipForm = () => {
                         </Button>
                     </div>
                 </div>
+                <MyDialog close={close} open={openDialog}>
+                <div>
+                     <DeleteCheckDialog onSubmit={deleteSlip} />
+               </div>
+                </MyDialog>
+                {/* =================================전표데이터그리드================================= */}
                 <MainCard
                     content={false}
                     title="전표"
@@ -247,7 +266,7 @@ const SlipForm = () => {
                             <Button variant="contained" color="secondary" startIcon={<AddCircleIcon/>} onClick={insertSlip}>추가</Button>
                         </Grid>
                         <Grid item>
-                            <Button variant="contained" color="secondary" startIcon={<DeleteIcon/>} onClick={deleteSlip}>삭제</Button>
+                            <Button variant="contained" color="secondary" startIcon={<DeleteIcon/>} onClick={deleteCheck}>삭제</Button>
                         </Grid>
                         <Grid item>
                             <Button variant="contained" color="secondary" startIcon={<SaveIcon/>} onClick={updateSlip}>저장</Button>
@@ -279,6 +298,7 @@ const SlipForm = () => {
                         />
                     </Box>
                 </MainCard>
+                {/* =================================분개데이터그리드================================= */}
                 <MainCard
                     content={false}
                     title="분개"
@@ -322,6 +342,7 @@ const SlipForm = () => {
                         />
                     </Box>
                 </MainCard>
+                {/* =================================분개상세데이터그리드================================= */}
                 <MainCard
                     content={false}
                     title="분개상세"
