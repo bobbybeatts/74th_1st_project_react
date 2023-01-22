@@ -35,25 +35,11 @@ const useStyles = makeStyles((theme) => ({
 export default function DeleteCheckDialog(props) {
 
   const classes = useStyles();
-
-  const itemCode = '';
-  const itemName = '';
-  const itemGroupCode = '';
-  const itemClassification = '';
-  const lossRate = '';
-  const leadTime = '';
-  const standardUnitPrice = '';
-  const description = '';
-
-  const [itemList, setItemList] = useState({});
-
   const onSubmit = (e) => {
     e.preventDefault();
     console.log("버튼")
     props.onSubmit();
   }
-
-
 
   return (
     <Container component="main" maxWidth="xs">
