@@ -34,29 +34,29 @@ import Swal from "sweetalert2";
 //전표칼럼
 const slipColumns = [
     { width: '30', headerCheckboxSelection: true, checkboxSelection: true, key: 'slipCheck', field: ' ' }, //체크박스
-    { width: '90', headerName: '기수일련번호', field: 'accountPeriodNo', key: 'accountPeriodNo' },
-    { width: '150', headerName: '전표일련번호', field: 'slipNo', key: 'slipNo' },
-    { headerName: '작성날짜', field: 'reportingDate', key: 'reportingDate' },
+    { width: '90', headerName: '기수일련번호', field: 'accountPeriodNo', key: 'accountPeriodNo', align: 'center' },
+    { width: '180', headerName: '전표일련번호', field: 'slipNo', key: 'slipNo' },
+    { headerName: '작성날짜', field: 'reportingDate', key: 'reportingDate', type: 'date' },
     { headerName: '작성자코드', field: 'reportingEmpCode', key: 'reportingEmpCode' },
-    { width: '150', headerName: '품의내역', field: 'expenseReport', editable: true, key: 'expenseReport' }, // editable : 편집가능
+    { width: '200', headerName: '품의내역', field: 'expenseReport', editable: true, key: 'expenseReport' }, // editable : 편집가능
     { headerName: '승인자', field: 'reportingEmpName', key: 'reportingEmpName' },
     { headerName: '승인상태', field: 'slipStatus', key: 'slipStatus' }
 ];
 //분개칼럼
 const indignationColumns = [
-    { width: '50', headerCheckboxSelection: true, checkboxSelection: true, field: ' ' }, //체크박스
-    { headerName: '분개일련번호', field: 'journalNo', editable: true },
+    { width: '30', headerCheckboxSelection: true, checkboxSelection: true, field: ' ' }, //체크박스
+    { width: '250', headerName: '분개일련번호', field: 'journalNo', editable: true },
     { headerName: '계정코드', field: 'accountCode' },
     { headerName: '계정명', field: 'accountName' },
     {
         headerName: '대차구분',
         field: 'balanceDivision',
         editable: true,
-        cellEditor: 'agSelectCellEditor', //콤보 생성
-        //콤보List
-        cellEditorParams: {
-            values: ['대변', '차변']
-        }
+        // cellEditor: 'agSelectCellEditor', //콤보 생성
+        // //콤보List
+        // cellEditorParams: {
+        //     values: ['대변', '차변']
+        // }
     },
     { headerName: '거래처코드', field: 'customerCode' },
     { headerName: '거래처명', field: 'customerName', hide: true },
@@ -75,7 +75,7 @@ const indignationColumns = [
 ];
 //분개상세칼럼
 const indignationDetailColumns = [
-    { width: '50', headerCheckboxSelection: true, checkboxSelection: true, field: ' ' }, //체크박스
+    { width: '30', headerCheckboxSelection: true, checkboxSelection: true, field: ' ' }, //체크박스
     { headerName: '분개번호', field: 'journalDetailNo', width: 250 },
     { headerName: '계정명', field: 'accountControlName', width: 250 },
     { headerName: '계정내용', field: 'accountControlType', width: 250 },
@@ -110,6 +110,7 @@ const SlipForm = () => {
     const [endDate, setEndDate] = useState(toDay);
 
     const [slipNo, setSlipNo] = useState('');
+    const [expenseReport, setExpenseReport] = useState('');
     //============다이알로그 세팅============
     // const [openDialog, setOpenDialog] = useState(false);
     // const close = (e) => {
@@ -149,6 +150,10 @@ const SlipForm = () => {
     // }
 
     //==========================전표=================================
+    const cellclick = (e) => {
+        console.log(e.value);
+    }
+
     const searchSlip = () => {
         dispatch({//const dispatch = useDispatch();
             type: types.SELECT_SLIP_START,
@@ -163,8 +168,12 @@ const SlipForm = () => {
 
     const insertSlip = () => {
         console.log("전표 추가");
+        console.log(slipData);
         dispatch({
-            type: types.ADD_SLIP
+            type: types.ADD_SLIP,
+            params: {
+                toDay: endDate,
+            }
         })
     }
     // const deleteCheck = () => {
@@ -179,7 +188,7 @@ const SlipForm = () => {
         dispatch({
             type: types.DELETE_SLIP_START,
             params: {
-                slipNo: slipNo
+                slipNo: slipNo,
             }
         })
         handleClose();
@@ -192,6 +201,13 @@ const SlipForm = () => {
 
     const updateSlip = () => {
         console.log("updateSlip");
+        dispatch({
+            type: types.UPDATE_SLIP_START,
+            params: {
+                reportingDate: endDate,
+                expenseReport: expenseReport,
+            }
+        })
     }
     //==========================분개=================================
     const searchJour = (e) => {
@@ -202,6 +218,7 @@ const SlipForm = () => {
             }
         });
         setSlipNo(e.id);
+        setExpenseReport(e.row.expenseReport);
     }
     //==========================분개상세=================================
     const searchDetail = (e) => {
@@ -323,10 +340,11 @@ const SlipForm = () => {
                         <DataGrid
                             rows={slipData}
                             columns={slipColumns}
-                            checkboxSelection
+                            // checkboxSelection
                             hideFooter
                             getRowId={(row) => row.slipNo}
-                            onCellClick={searchJour}
+                            onRowClick={searchJour}
+                            onCellDoubleClick={cellclick}
                         />
                     </Box>
                 </MainCard>
@@ -367,7 +385,7 @@ const SlipForm = () => {
                         <DataGrid
                             rows={journalData}
                             columns={indignationColumns}
-                            checkboxSelection
+                            //checkboxSelection
                             hideFooter
                             getRowId={(row) => row.journalNo}
                             onCellClick={searchDetail}
@@ -401,7 +419,7 @@ const SlipForm = () => {
                             rows={journalDetailData}
                             columns={indignationDetailColumns}
                             hideFooter
-                            checkboxSelection
+                            //checkboxSelection
                             getRowId={(row) => row.journalDetailNo
                             }
                         />

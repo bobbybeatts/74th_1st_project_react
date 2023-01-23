@@ -1,5 +1,5 @@
 import accountApi from 'api/accountApi';
-import {SEARCH_ASSET_DTA_REQUEST} from "../reducer/AccountReducer";
+import { SEARCH_ASSET_DTA_REQUEST } from "../reducer/AccountReducer";
 
 export const selectSlip = (action) =>// 전표 조회 사가
     accountApi.get('/posting/rangedsliplist', {
@@ -18,9 +18,9 @@ export const deleteSlip = (action) =>// 전표 삭제 사가
 export const updateSlip = (action) =>
     accountApi.get('/account/updateSlip', {
         params: {
-            slipType: action.payload.slipType,
-            expenseReport: action.payload.expenseReport,
-            slipNo: action.payload.slipNo
+            // slipType: action.payload.slipType,
+            expenseReport: action.params.expenseReport,
+            slipNo: action.params.slipNo
         }
     });
 
@@ -123,25 +123,25 @@ export const deleteNonCurrent = (action) =>
 
 //자산 관리 리스트
 export const searchCurrent = (action) =>
-    accountApi.get('/posting/assetlist',{})
+    accountApi.get('/posting/assetlist', {})
 
 
 //세부자산관리 리스트
 export const searchAssetList = (action) =>
     accountApi.get('/posting/assetitemlist', {
-        params : {
-            parentsCode : action.params.parentsCode
+        params: {
+            parentsCode: action.params.parentsCode
         }
     })
 
 export const searchAssetDta = (action) =>
-    accountApi.get('/posting/assetDta',{
-        params : {
-            parentsCode : action.params.parentsCode
+    accountApi.get('/posting/assetDta', {
+        params: {
+            parentsCode: action.params.parentsCode
         }
     })
 
 export const searchDept = (action) =>
-    accountApi.get ('/operate/deptlist',{
+    accountApi.get('/operate/deptlist', {
 
     })

@@ -13,6 +13,7 @@ export const DELETE_SLIP_SUCCESS = "src/erp/account/Saga/Saga/DELETE_SLIP_SUCCES
 export const DELETE_SLIP_FAILURE = "src/erp/account/Saga/Saga/DELETE_SLIP_FAILURE";
 
 export const UPDATE_SLIP_START = "src/erp/account/Saga/Saga/UPDATE_SLIP"; //전표 UPDATE
+export const UPDATE_SLIP_SUCCESS = "src/erp/account/Saga/Saga/UPDATE_SLIP_SUCCESS";
 export const UPDATE_SLIP_FAILURE = "src/erp/account/Saga/Saga/UPDATE_SLIP_FAILURE";
 
 export const SELECT_JOURNAL_START = "src/erp/account/Saga/Saga/SELECT_JOURNAL"; //분개 조회
@@ -59,6 +60,7 @@ export const deleteSlipSuccess = createAction(DELETE_SLIP_SUCCESS); //전표삭�
 export const deleteSlipFailure = createAction(DELETE_SLIP_FAILURE);
 
 export const updateSlipStart = createAction(UPDATE_SLIP_START); //전표 update
+export const updateSlipSuccess = createAction(UPDATE_SLIP_SUCCESS); UPDATE_SLIP_SUCCESS
 export const updateSlipFailure = createAction(UPDATE_SLIP_FAILURE);
 
 export const selectJournalStart = createAction(SELECT_JOURNAL_START); //분개조회
@@ -193,21 +195,31 @@ const initialState = {
     journalDoubleList: [],
     nonCurrentAsset: [],
     nonCurrentAsset1: [],
-    assetList:[],
-    detailAssetList:[],
+    assetList: [],
+    detailAssetList: [],
     assetDta: [],
-    deptList:[]
+    deptList: []
 };
 
 
 const initialColumns = [{
-        accountPeriodNo:"",
-        slipNo:"new",
-        reportingDate:"",
-        reportingEmpCode:"",
-        expenseReport:"내용을 기입하세요",
-        reportingEmpName:"",
-        slipStatus:"작성중"
+    accountPeriodNo: "",
+    approvalDate: "",
+    approvalEmpCode: "admin",
+    authorizationStatus: null,
+    balanceDivision: null,
+    deptCode: "",
+    deptName: null,
+    expenseReport: "내용을 기입하세요",
+    id: null,
+    positionCode: null,
+    reportingDate: "",
+    reportingEmpCode: "",
+    reportingEmpName: null,
+    slipNo: "new",
+    slipStatus: "",
+    slipType: "",
+    status: "",
 }]
 
 const AccountReducer = (state = initialState, action) => {// 위에서 만든 액션을 넣어 준다.
@@ -215,13 +227,14 @@ const AccountReducer = (state = initialState, action) => {// 위에서 만든 �
         //========================================= 2020-09-05 일반전표 조편백 ================================
         //====================전표====================
         case ADD_SLIP:
-            console.log("addslip")
+            console.log("addslip");
+            console.log(action.params);
             return {
                 ...state,
                 slipFormList: initialColumns.concat(state.slipFormList),
             };
         case SELECT_SLIP_START:
-            console.log("날짜 조회 성공",action);
+            console.log("날짜 조회 성공", action);
             return {
                 ...state,
                 slipFormList: [], //전표그리드 초기화
@@ -246,7 +259,7 @@ const AccountReducer = (state = initialState, action) => {// 위에서 만든 �
         case DELETE_SLIP_SUCCESS: //전표삭제 성공
             return {
                 ...state,
-                slipFormList: [], //전표그리드 초기화
+                slipFormList: [],
                 journalList: [], //분개 그리드 초기화
                 journalDetailList: [], //분개상세 그리드 초기화
             };
@@ -254,6 +267,11 @@ const AccountReducer = (state = initialState, action) => {// 위에서 만든 �
             return {
                 ...state,
                 error: action.payload,
+            };
+        case UPDATE_SLIP_SUCCESS: //전표 UPdate
+            return {
+                ...state,
+                slipFormList: action.payload,
             };
         case UPDATE_SLIP_FAILURE: //전표 UPdate
             return {
@@ -439,12 +457,12 @@ const AccountReducer = (state = initialState, action) => {// 위에서 만든 �
         case SEARCH_CURRENT_SUCCESS:
             return {
                 ...state,
-                assetList : action.payload
+                assetList: action.payload
             };
         case SEARCH_CURRENT_FAILURE:
             return {
                 ...state,
-                error:action.error
+                error: action.error
             };
         case SEARCH_ASSET_LIST_SUCCESS:
             return {
@@ -454,17 +472,17 @@ const AccountReducer = (state = initialState, action) => {// 위에서 만든 �
         case SEARCH_ASSET_LIST_FAILURE:
             return {
                 ...state,
-                error : action.error
+                error: action.error
             }
         case SEARCH_ASSET_DTA_SUCCESS:
             return {
                 ...state,
-                assetDta : action.payload
+                assetDta: action.payload
             }
         case SEARCH_ASSET_DTA_FAILURE:
             return {
                 ...state,
-                error : action.error
+                error: action.error
             }
         case SEARCH_DEPT_LIST_SUCCESS:
             return {
