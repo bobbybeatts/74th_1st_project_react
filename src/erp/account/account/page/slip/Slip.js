@@ -52,6 +52,8 @@ const indignationColumns = [
         headerName: '대차구분',
         field: 'balanceDivision',
         editable: true,
+        type: "singleSelect",
+        valueOptions: ["대변","차변"]
         // cellEditor: 'agSelectCellEditor', //콤보 생성
         // //콤보List
         // cellEditorParams: {
@@ -176,13 +178,7 @@ const SlipForm = () => {
             }
         })
     }
-    // const deleteCheck = () => {
-    //     return Swal.fire({
-    //         icon: 'error',
-    //         title: '정말 삭제 하시겠습니까?',
-    //         showConfirmButton: 'true'
-    //     })
-    // }
+
     const deleteSlip = () => { //e는 버튼임 버튼을 주면 안됨
         console.log(slipNo + "삭제 좀 되라");
         dispatch({
@@ -211,6 +207,7 @@ const SlipForm = () => {
     }
     //==========================분개=================================
     const searchJour = (e) => {
+        console.log(journalData);
         dispatch({
             type: types.SELECT_JOURNAL_START,
             params: {
@@ -219,6 +216,12 @@ const SlipForm = () => {
         });
         setSlipNo(e.id);
         setExpenseReport(e.row.expenseReport);
+    }
+    const addJour = () => {
+        console.log("addJour");
+        dispatch({
+            type: types.INSERT_JOURNAL,
+        })
     }
     //==========================분개상세=================================
     const searchDetail = (e) => {
@@ -357,7 +360,7 @@ const SlipForm = () => {
                             <Button variant="contained" color="secondary" >발주/납품 마감신청</Button>
                         </Grid>
                         <Grid item>
-                            <Button variant="contained" color="secondary">분개추가</Button>
+                            <Button variant="contained" color="secondary" onClick={addJour}>분개추가</Button>
                         </Grid>
                         <Grid item>
                             <Button variant="contained" color="secondary">분개삭제</Button>

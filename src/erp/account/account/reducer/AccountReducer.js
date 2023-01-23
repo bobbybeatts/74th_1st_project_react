@@ -1,4 +1,4 @@
-import { initial } from "lodash";
+
 import { createAction } from "redux-actions";
 
 //========================================= 2020-09-04 일반전표  조진주 시작 ==============================================
@@ -19,6 +19,8 @@ export const UPDATE_SLIP_FAILURE = "src/erp/account/Saga/Saga/UPDATE_SLIP_FAILUR
 export const SELECT_JOURNAL_START = "src/erp/account/Saga/Saga/SELECT_JOURNAL"; //분개 조회
 export const SELECT_JOURNAL_SUCCESS = "src/erp/account/Saga/Saga/SELECT_JOURNAL_SUCCESS";
 export const SELECT_JOURNAL_FAILURE = "src/erp/account/Saga/Saga/SELECT_JOURNAL_FAILURE";
+
+export const INSERT_JOURNAL = "src/erp/account/Saga/Saga/INSERT_JOURNAL";
 
 export const DELETE_JOURNAL_START = "src/erp/account/Saga/Saga/DELETE_JOURNAL"; //분개삭제
 export const DELETE_JOURAL_FAILURE = "src/erp/account/Saga/Saga/DELETE_JOURAL_FAILURE";
@@ -66,6 +68,8 @@ export const updateSlipFailure = createAction(UPDATE_SLIP_FAILURE);
 export const selectJournalStart = createAction(SELECT_JOURNAL_START); //분개조회
 export const selectJournalSuccess = createAction(SELECT_JOURNAL_SUCCESS);
 export const selectJournalFailure = createAction(SELECT_JOURNAL_FAILURE);
+
+export const insertJournal = createAction(INSERT_JOURNAL);
 
 export const deleteJournalStart = createAction(DELETE_JOURNAL_START); //분개삭제
 export const deleteJournalFailure = createAction(DELETE_JOURAL_FAILURE);
@@ -202,7 +206,7 @@ const initialState = {
 };
 
 
-const initialColumns = [{
+const initialSlipColumns = [{
     accountPeriodNo: "",
     approvalDate: "",
     approvalEmpCode: "admin",
@@ -220,6 +224,24 @@ const initialColumns = [{
     slipStatus: "",
     slipType: "",
     status: "",
+}];
+
+const initialJourColumns = [{
+    accountCode: "",
+accountName:"",
+accountPeriodNo:null,
+balanceDivision: "",
+customerCode: "",
+customerName: null,
+deptCode: null,
+id: null,
+journalDetailList: null,
+journalNo: "",
+leftDebtorPrice: "",
+price:null,
+rightCreditsPrice: "",
+slipNo: "",
+status: "",
 }]
 
 const AccountReducer = (state = initialState, action) => {// 위에서 만든 액션을 넣어 준다.
@@ -229,9 +251,12 @@ const AccountReducer = (state = initialState, action) => {// 위에서 만든 �
         case ADD_SLIP:
             console.log("addslip");
             console.log(action.params);
+            console.log(action.payload);
             return {
                 ...state,
-                slipFormList: initialColumns.concat(state.slipFormList),
+                ...initialSlipColumns,
+                reportingDate:action.params,
+                slipFormList: initialSlipColumns.concat(state.slipFormList),
             };
         case SELECT_SLIP_START:
             console.log("날짜 조회 성공", action);
@@ -290,6 +315,11 @@ const AccountReducer = (state = initialState, action) => {// 위에서 만든 �
             return {
                 ...state,
                 error: action.payload,
+            };
+        case INSERT_JOURNAL:
+            return {
+                ...state,
+                journalList: initialJourColumns,
             };
         case DELETE_JOURAL_FAILURE: //분개삭제실패
             return {
