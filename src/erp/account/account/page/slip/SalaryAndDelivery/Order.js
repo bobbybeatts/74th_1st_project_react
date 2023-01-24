@@ -29,7 +29,7 @@ const Order = props => {
 
 
     const orderCompleteData = useSelector(
-        state  => state.RootReducers.logistic.Sales.orderCompleteData);
+        state => state.RootReducers.logistic.Sales.orderCompleteData);
 
     const [orderInfoRows, setOrderInfoRows] = useState([]);
 
@@ -64,7 +64,7 @@ const Order = props => {
         accountColumnDefs: [
             { width: '50', headerCheckboxSelection: true, checkboxSelection: true },
             { headerName: '제품코드', field: 'itemCode', width: 150 },
-            { headerName: '제품명', field: 'itemName', width: 150  },
+            { headerName: '제품명', field: 'itemName', width: 150 },
             { headerName: '단위', field: 'unitOfMrp', width: 100 },
             { headerName: '발주량', field: 'requiredAmount', width: 110 }, //valueFormatter: currencyFormatter
             { headerName: '재고량', field: 'stockAmount', width: 110 },
@@ -84,8 +84,8 @@ const Order = props => {
     };
 
     useEffect(() => {
-            setSearchOrderInfoListOnDelivery(setOrderInfoRows)
-        }
+        setSearchOrderInfoListOnDelivery(setOrderInfoRows)
+    }
         , []);
 
     function currencyFormatter(params) {
@@ -148,7 +148,7 @@ const Order = props => {
     return (
         <div>
             <List>
-                <div Align="center">
+                <div align="center">
                     <TextField
                         id="startDate"
                         type={"date"}
@@ -189,7 +189,7 @@ const Order = props => {
                     <AgGridReact
                         columnDefs={column.accountColumnDefs} //컬럼명
                         rowSelection="multiple"
-                        getRowStyle={function(param) {
+                        getRowStyle={function (param) {
                             return { 'text-align': 'center' };
                         }} //body 가운데 정렬
                         onGridReady={onGridReady}
@@ -202,9 +202,9 @@ const Order = props => {
             <div>
                 <DialogActions>
                     <Button variant="contained"
-                            size="large"
-                            color="primary"
-                            onClick={SumOrder}>
+                        size="large"
+                        color="primary"
+                        onClick={SumOrder}>
                         발주 승인
                     </Button>
                 </DialogActions>

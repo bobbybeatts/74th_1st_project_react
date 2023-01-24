@@ -14,11 +14,11 @@ const Delivery = props => {
     const [positionGridApi, setPositionGridApi] = React.useState();
     const dispatch = useDispatch();
 
-//
+    //
 
 
     const deliveryCompleteData = useSelector(
-        state  => state.RootReducers.logistic.Sales.deliveryCompleteData);
+        state => state.RootReducers.logistic.Sales.deliveryCompleteData);
 
     const [deliveryList, setDeliveryList] = useState([
         {
@@ -75,10 +75,10 @@ const Delivery = props => {
             { headerName: '납품날짜', field: 'deliverydate', width: 150 },
             { headerName: '배송지', field: 'deliveryPlaceName', width: 120 },
             { headerName: '마감여부', field: 'finalizeStatus', width: 100 },
-            { headerName: '상태', field: 'status', width: 100 , hide:true},
-            { headerName: '에러메세지', field: 'errorMsg', width: 100 , hide:true},
-            { headerName: '에러코드', field: 'errorCode', width: 100 , hide:true},
-            { headerName: 'chk', field: 'chk', width: 100 , hide:true},
+            { headerName: '상태', field: 'status', width: 100, hide: true },
+            { headerName: '에러메세지', field: 'errorMsg', width: 100, hide: true },
+            { headerName: '에러코드', field: 'errorCode', width: 100, hide: true },
+            { headerName: 'chk', field: 'chk', width: 100, hide: true },
         ],
         autoGroupColumnDef: { minWidth: 100 }
     };
@@ -150,7 +150,7 @@ const Delivery = props => {
     return (
         <div>
             <List>
-                <div Align="center">
+                <div align="center">
                     <Button
                         variant="contained"
                         size="large"
@@ -173,7 +173,7 @@ const Delivery = props => {
                     <AgGridReact
                         columnDefs={column.accountColumnDefs} //컬럼명
                         rowSelection="multiple"
-                        getRowStyle={function(param) {
+                        getRowStyle={function (param) {
                             return { 'text-align': 'center' };
                         }} //body 가운데 정렬
                         onGridReady={onGridReady}
@@ -186,9 +186,9 @@ const Delivery = props => {
             <div>
                 <DialogActions>
                     <Button variant="contained"
-                            size="large"
-                            color="primary"
-                            onClick={SumDelivery}>
+                        size="large"
+                        color="primary"
+                        onClick={SumDelivery}>
                         납품마감
                     </Button>
                 </DialogActions>

@@ -53,7 +53,7 @@ const indignationColumns = [
         field: 'balanceDivision',
         editable: true,
         type: "singleSelect",
-        valueOptions: ["대변","차변"]
+        valueOptions: ["대변", "차변"]
         // cellEditor: 'agSelectCellEditor', //콤보 생성
         // //콤보List
         // cellEditorParams: {
@@ -237,7 +237,7 @@ const SlipForm = () => {
     return (
         <Grid container spacing={gridSpacing}>
             <Grid item xs={12}>
-                <div Align="center">
+                <div align="center">
                     <Typography variant="h3">[ 검색조건 ]</Typography>
                     <div>
                         <TextField

@@ -1,7 +1,7 @@
 // material-ui
-import {Box, Button, Grid, TextField, Typography} from '@mui/material';
-import {DataGrid} from '@mui/x-data-grid';
-import {useTheme} from '@mui/material/styles';
+import { Box, Button, Grid, TextField, Typography } from '@mui/material';
+import { DataGrid } from '@mui/x-data-grid';
+import { useTheme } from '@mui/material/styles';
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SaveIcon from "@mui/icons-material/Save";
@@ -18,20 +18,21 @@ import TotalGrowthBarChart from 'template/ui-component/cards/Skeleton/TotalGrowt
 
 
 
-const BudgetRequest = () => {return (
-    <Grid>
-        <Grid item xs={12}>
-            <div Align="center">
-                <Typography variant="h3">[ 검색조건 ]</Typography>
-                <div>
-                    <TextField
-                    value={"Hi"}
+const BudgetRequest = () => {
+    return (
+        <Grid>
+            <Grid item xs={12}>
+                <div align="center">
+                    <Typography variant="h3">[ 검색조건 ]</Typography>
+                    <div>
+                        <TextField
+                            value={"Hi"}
                         />
-                        </div>
                     </div>
-                    </Grid>
-                    </Grid>
-)
+                </div>
+            </Grid>
+        </Grid>
+    )
 }
 
 export default BudgetRequest;

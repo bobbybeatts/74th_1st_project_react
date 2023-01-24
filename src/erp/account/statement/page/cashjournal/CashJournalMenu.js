@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import moment from "moment";
 import SearchIcon from "@material-ui/icons/Search";
-import {useTheme} from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles';
 import { useDispatch } from "react-redux";
-import { Button, Grid, TextField, Typography} from '@mui/material';
+import { Button, Grid, TextField, Typography } from '@mui/material';
 import * as types from "../../reducer/StatementReducer";
 
-import {gridSpacing} from '../../../../../template/store/constant';
+import { gridSpacing } from '../../../../../template/store/constant';
 
 const CashJournalMenu = () => {
   const theme = useTheme();
@@ -32,21 +32,21 @@ const CashJournalMenu = () => {
   };
 
   return (
-      <Grid container spacing={gridSpacing}>
-        <Grid item xs={12}>
-          <div Align="center">
-            <Typography variant="h3">[ 검색조건 ]</Typography>
-            <div>
-              <TextField id="startDate" type={"date"} variant={"standard"}  defaultValue={fromDate} //defaultValue : 초기값.
-                         onChange={(e) => setFromDate(e.target.value)} sx={{mx: 1}}/>
-              <TextField id="endDate" type={"date"} variant={"standard"}  defaultValue={toDate}
-                         onChange={(e) => setToDate(e.target.value)} sx={{mx: 1}}/>
-              <Button variant="contained" color="secondary" startIcon={<SearchIcon/>} onClick={searchData}
-                      sx={{mx: 1, mb: "10px"}}>조회</Button>
-            </div>
+    <Grid container spacing={gridSpacing}>
+      <Grid item xs={12}>
+        <div align="center">
+          <Typography variant="h3">[ 검색조건 ]</Typography>
+          <div>
+            <TextField id="startDate" type={"date"} variant={"standard"} defaultValue={fromDate} //defaultValue : 초기값.
+              onChange={(e) => setFromDate(e.target.value)} sx={{ mx: 1 }} />
+            <TextField id="endDate" type={"date"} variant={"standard"} defaultValue={toDate}
+              onChange={(e) => setToDate(e.target.value)} sx={{ mx: 1 }} />
+            <Button variant="contained" color="secondary" startIcon={<SearchIcon />} onClick={searchData}
+              sx={{ mx: 1, mb: "10px" }}>조회</Button>
           </div>
-        </Grid>
+        </div>
       </Grid>
+    </Grid>
   );
 };
 

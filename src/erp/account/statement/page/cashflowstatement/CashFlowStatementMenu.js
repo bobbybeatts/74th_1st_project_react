@@ -1,17 +1,17 @@
 import React, { useState } from "react";
-import {useDispatch, useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import * as types from "../../reducer/StatementReducer";
-import {useTheme} from "@mui/material/styles";
-import {gridSpacing} from "../../../../../template/store/constant";
-import {Box, Grid, Modal, Button,Typography } from "@mui/material";
-import {DataGrid} from "@mui/x-data-grid";
+import { useTheme } from "@mui/material/styles";
+import { gridSpacing } from "../../../../../template/store/constant";
+import { Box, Grid, Modal, Button, Typography } from "@mui/material";
+import { DataGrid } from "@mui/x-data-grid";
 
 const CashFlowStatementMenu = () => {
   const list = useSelector((state) => state.RootReducers.AccReducer.StatementReducer.periodNoList);
 
   const theme = useTheme();
   const dispatch = useDispatch();
-  const [open , setOpen] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const periodListData = () => {
     setOpen(true);
@@ -24,7 +24,7 @@ const CashFlowStatementMenu = () => {
     dispatch({
       type: types.SEARCH_CASHFLOW_REQUEST,
       params: {
-        searchData : e.row.periodEndDate
+        searchData: e.row.periodEndDate
       },
     });
   };
@@ -44,38 +44,38 @@ const CashFlowStatementMenu = () => {
   ]
 
   return (
-      <Grid container spacing={gridSpacing}>
-        <Grid item xs={12}>
-          <div Align="center">
-            <Typography variant="h3">[ 검색조건 ]</Typography>
-            <div>
-              <Button onClick={periodListData} variant="contained" color="secondary">
-                회계 기수조회
-              </Button>
-              <Modal open={open}>
-                <Box
-                    sx={{
+    <Grid container spacing={gridSpacing}>
+      <Grid item xs={12}>
+        <div align="center">
+          <Typography variant="h3">[ 검색조건 ]</Typography>
+          <div>
+            <Button onClick={periodListData} variant="contained" color="secondary">
+              회계 기수조회
+            </Button>
+            <Modal open={open}>
+              <Box
+                sx={{
 
-                      height: 400,
-                      width: '50%',
-                      backgroundColor: 'white',
-                      border: '1px solid black'
-                    }}
-                >
-                  <DataGrid
-                      rows={list}
-                      columns={columns}
-                      pageSize={5}
-                      rowsPerPageOptions={[5]}
-                      getRowId={(row) => row.accountPeriodNo}
-                      onCellClick={searchData}
-                  />
-                </Box>
-              </Modal>
-            </div>
+                  height: 400,
+                  width: '50%',
+                  backgroundColor: 'white',
+                  border: '1px solid black'
+                }}
+              >
+                <DataGrid
+                  rows={list}
+                  columns={columns}
+                  pageSize={5}
+                  rowsPerPageOptions={[5]}
+                  getRowId={(row) => row.accountPeriodNo}
+                  onCellClick={searchData}
+                />
+              </Box>
+            </Modal>
           </div>
-        </Grid>
+        </div>
       </Grid>
+    </Grid>
   );
 };
 

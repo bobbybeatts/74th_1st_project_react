@@ -128,8 +128,8 @@ const OpenSearchSalaryDialog = ({ open, close, value }) => {
     // this puts commas into the number eg 1000 goes to 1,000,
     // i pulled this from stack overflow, i have no idea how it works
     return Math.floor(number)
-        .toString()
-        .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+      .toString()
+      .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
   }
 
   const Close = () => {
@@ -223,67 +223,67 @@ const OpenSearchSalaryDialog = ({ open, close, value }) => {
   const { dark } = useThemeSwitcher();
 
   return (
-      <Dialog
-          aria-labelledby="simple-dialog-title"
-          open={open}
-          fullWidth={true}
-          maxWidth={"70%"}
-      >
-        <DialogTitle id="simple-dialog-title" Align="center">
-          임금/납품
-        </DialogTitle>
-        <DialogContent dividers>
-          <List>
-            <div Align="center">
-              <FormControl style={{ minWidth: "250px" }}>
-                <Select
-                    styles={customStyles}
-                    onChange={DatehandleChange}
-                    options={set1.selectedmonth}
-                    placeholder="값을 선택해주세요"
-                ></Select>
-              </FormControl>
-              <Button
-                  variant="contained"
-                  size="large"
-                  color="primary"
-                  startIcon={<SearchIcon />} //아이콘
-                  onClick={selectData}
-              >
-                검색
-              </Button>
-            </div>
-            <div
-                className={dark ? "ag-theme-alpine-dark" : "ag-theme-material"}
-                style={{
-                  height: "800px",
-                  width: "100%",
-
-                  paddingTop: "8px",
-                }}
+    <Dialog
+      aria-labelledby="simple-dialog-title"
+      open={open}
+      fullWidth={true}
+      maxWidth={"70%"}
+    >
+      <DialogTitle id="simple-dialog-title" Align="center">
+        임금/납품
+      </DialogTitle>
+      <DialogContent dividers>
+        <List>
+          <div align="center">
+            <FormControl style={{ minWidth: "250px" }}>
+              <Select
+                styles={customStyles}
+                onChange={DatehandleChange}
+                options={set1.selectedmonth}
+                placeholder="값을 선택해주세요"
+              ></Select>
+            </FormControl>
+            <Button
+              variant="contained"
+              size="large"
+              color="primary"
+              startIcon={<SearchIcon />} //아이콘
+              onClick={selectData}
             >
-              <AgGridReact
-                  columnDefs={accountColumnDefs} //컬럼명
-                  rowSelection="multiple" // 하나만 선택 가능.
-                  getRowStyle={function(param) {
-                    return { "text-align": "center" };
-                  }} //body 가운데 정렬
-                  onGridReady={onGridReady}
-                  rowData={data}
-              />
-            </div>
-          </List>
-        </DialogContent>
+              검색
+            </Button>
+          </div>
+          <div
+            className={dark ? "ag-theme-alpine-dark" : "ag-theme-material"}
+            style={{
+              height: "800px",
+              width: "100%",
 
-        <DialogActions>
-          <Button onClick={SumSalary} color="primary">
-            Submit
-          </Button>
-          <Button onClick={Close} color="primary">
-            Close
-          </Button>
-        </DialogActions>
-      </Dialog>
+              paddingTop: "8px",
+            }}
+          >
+            <AgGridReact
+              columnDefs={accountColumnDefs} //컬럼명
+              rowSelection="multiple" // 하나만 선택 가능.
+              getRowStyle={function (param) {
+                return { "text-align": "center" };
+              }} //body 가운데 정렬
+              onGridReady={onGridReady}
+              rowData={data}
+            />
+          </div>
+        </List>
+      </DialogContent>
+
+      <DialogActions>
+        <Button onClick={SumSalary} color="primary">
+          Submit
+        </Button>
+        <Button onClick={Close} color="primary">
+          Close
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 };
 export default OpenSearchSalaryDialog;

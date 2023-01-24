@@ -1,11 +1,11 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import SearchIcon from "@material-ui/icons/Search";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-balham-dark.css";
-import { useDispatch, useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { SEARCH_MONTH_SALARY_LIST_REQUEST } from "erp/hr/salary/saga/SearchMonthSalSaga";
-import {thisYear} from "erp/account/util/lib"
+import { thisYear } from "erp/account/util/lib"
 import Select from "react-select";
 import {
     List,
@@ -17,8 +17,8 @@ import {
 
 const MonthSalary = (props) => {
     const [date, setDate] = useState("");
-    const [positionGridApi, setPositionGridApi] =React.useState();
-    const data = useSelector(({HrReducer})=>HrReducer.monthSalary,[]);
+    const [positionGridApi, setPositionGridApi] = React.useState();
+    const data = useSelector(({ HrReducer }) => HrReducer.monthSalary, []);
     const dispatch = useDispatch();
 
     const [journalLists, setJournalLists] = useState([
@@ -64,27 +64,27 @@ const MonthSalary = (props) => {
             rightCreditsPrice: "", // 대변
         },
     ]);
-    console.log("data",data);
+    console.log("data", data);
     const onGridReady = params => {
         setPositionGridApi(params.api);
         params.api.sizeColumnsToFit(); // 칼럼 사이즈 자동조절
     };
-    const DatehandleChange = (newValue) => {setDate(newValue.value);};
+    const DatehandleChange = (newValue) => { setDate(newValue.value); };
     //========================== 그리드내용 ==========================
     const accountColumnDefs = [
         { width: "100", headerCheckboxSelection: true, checkboxSelection: true, },
         { headerName: "사원코드", field: "empCode" },
-        { headerName: "적용연월", field: "applyYearMonth" , hide: true},
-        { headerName: "총 급여", field: "salary" , valueFormatter: currencyFormatter },
-        { headerName: "연차미사용수당", field: "unusedDaySalary" , valueFormatter: currencyFormatter  },
-        { headerName: "경비지급액", field: "cost" , valueFormatter: currencyFormatter  },
-        { headerName: "초과수당 합계", field: "totalExtSal" , valueFormatter: currencyFormatter  },
-        { headerName: "공제금액 합계", field: "totalDeduction" , valueFormatter: currencyFormatter  },
-        { headerName: "차인지급액", field: "realSalary" , valueFormatter: currencyFormatter  },
-        { headerName: "실지급액", field: "totalPayment" , hide: true},
+        { headerName: "적용연월", field: "applyYearMonth", hide: true },
+        { headerName: "총 급여", field: "salary", valueFormatter: currencyFormatter },
+        { headerName: "연차미사용수당", field: "unusedDaySalary", valueFormatter: currencyFormatter },
+        { headerName: "경비지급액", field: "cost", valueFormatter: currencyFormatter },
+        { headerName: "초과수당 합계", field: "totalExtSal", valueFormatter: currencyFormatter },
+        { headerName: "공제금액 합계", field: "totalDeduction", valueFormatter: currencyFormatter },
+        { headerName: "차인지급액", field: "realSalary", valueFormatter: currencyFormatter },
+        { headerName: "실지급액", field: "totalPayment", hide: true },
         { headerName: "마감여부", field: "finalizeStatus" }
     ]
-//========================== 그리드를 클릭했을 때 발생되는 이벤트 ==========================
+    //========================== 그리드를 클릭했을 때 발생되는 이벤트 ==========================
     // onClose 와 open 값을 비구조 할당과 동시에 Dialog가 닫히면서
     // onClose안에 객체(data, division) 을 가지고 AccountSearch 컴포넌트로 감.
 
@@ -100,26 +100,26 @@ const MonthSalary = (props) => {
         return Math.floor(number).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
     }
 
-    const SumSalary=()=>{
+    const SumSalary = () => {
 
-        const salaryRows= positionGridApi.getSelectedRows();
-        var realSalary=0;
-        var totalDeduction=0;
+        const salaryRows = positionGridApi.getSelectedRows();
+        var realSalary = 0;
+        var totalDeduction = 0;
 
-        if(salaryRows.length===0){
+        if (salaryRows.length === 0) {
             alert("선택된 값이 없습니다")
             return;
         }
         console.log(salaryRows[0].finalizeStatus);
 
-        for(var i=0; i<salaryRows.length; i++){
+        for (var i = 0; i < salaryRows.length; i++) {
 
-            if(salaryRows[i].finalizeStatus==='Y'){
+            if (salaryRows[i].finalizeStatus === 'Y') {
                 alert("마감여부 확인 바랍니다")
                 return;
             }
-            realSalary+=parseInt(salaryRows[i].realSalary);
-            totalDeduction+=parseInt(salaryRows[i].totalDeduction)
+            realSalary += parseInt(salaryRows[i].realSalary);
+            totalDeduction += parseInt(salaryRows[i].totalDeduction)
 
         }
         const newJournal = journalLists.map((journalState, index) => {
@@ -152,7 +152,7 @@ const MonthSalary = (props) => {
                     return { ...journalState };
             }
         });
-        console.log("newJournal",newJournal)
+        console.log("newJournal", newJournal)
 
         props.close({
             newJournal,
@@ -165,7 +165,7 @@ const MonthSalary = (props) => {
             type: SEARCH_MONTH_SALARY_LIST_REQUEST,
             payload: {
                 applyYearMonth: date,
-                deptCode:'ALL'
+                deptCode: 'ALL'
             },
         });
 
@@ -187,10 +187,10 @@ const MonthSalary = (props) => {
         },
     };
 
-    return(
+    return (
         <div>
             <List>
-                <div Align="center">
+                <div align="center">
                     <FormControl style={{ minWidth: "250px" }}>
                         <Select
                             styles={customStyles}

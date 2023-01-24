@@ -1,23 +1,23 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import moment from "moment";
 import SearchIcon from "@material-ui/icons/Search";
-import {useDispatch, useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import * as types from "../../reducer/AccountReducer";
 
 // material-ui
-import {Box, Button, Grid, TextField, Typography} from '@mui/material';
-import {DataGrid} from '@mui/x-data-grid';
-import {useTheme} from '@mui/material/styles';
+import { Box, Button, Grid, TextField, Typography } from '@mui/material';
+import { DataGrid } from '@mui/x-data-grid';
+import { useTheme } from '@mui/material/styles';
 import ApprovalIcon from '@mui/icons-material/Approval';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import CallMissedIcon from '@mui/icons-material/CallMissed';
 
 // project imports
 import MainCard from '../../../../../template/ui-component/cards/MainCard';
-import {gridSpacing} from '../../../../../template/store/constant';
-import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
-import {AdapterDateFns} from "@mui/x-date-pickers/AdapterDateFns";
-import {DatePicker} from "@mui/x-date-pickers/DatePicker";
+import { gridSpacing } from '../../../../../template/store/constant';
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
@@ -29,8 +29,8 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 const ApprovalManager = () => {
 
     //데이터 뽑아오기
-    const slipData = useSelector( state  => state.RootReducers.AccReducer.AccountReducer.approvalSlipList);
-    const journalData = useSelector( state  => state.RootReducers.AccReducer.AccountReducer.approvalJournalList);
+    const slipData = useSelector(state => state.RootReducers.AccReducer.AccountReducer.approvalSlipList);
+    const journalData = useSelector(state => state.RootReducers.AccReducer.AccountReducer.approvalJournalList);
 
     //날짜 세팅
     const theme = useTheme();
@@ -183,7 +183,7 @@ const ApprovalManager = () => {
         <>
             <Grid container spacing={gridSpacing}>
                 <Grid item xs={12}>
-                    <div Align="center">
+                    <div align="center">
                         <Typography variant="h3">[ 검색조건 ]</Typography>
                         <div>
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -196,7 +196,7 @@ const ApprovalManager = () => {
                                     inputFormat={"yyyy-MM-dd"}
                                     mask={"____-__-__"}
                                     renderInput={(params) => <TextField {...params} variant="standard"
-                                                                        sx={{mb: 1, mx: 1, width: 120}} size={"small"}/>}
+                                        sx={{ mb: 1, mx: 1, width: 120 }} size={"small"} />}
                                 />
                                 <DatePicker
                                     label="End Date"
@@ -207,17 +207,17 @@ const ApprovalManager = () => {
                                     inputFormat={"yyyy-MM-dd"}
                                     mask={"____-__-__"}
                                     renderInput={(params) =>
-                                        <TextField {...params} variant="standard" sx={{mb: 1, mx: 1, width: 120}}
-                                                   size={"small"}/>}
+                                        <TextField {...params} variant="standard" sx={{ mb: 1, mx: 1, width: 120 }}
+                                            size={"small"} />}
                                 />
                             </LocalizationProvider>
-                            <Button variant="contained" color="secondary" startIcon={<CalendarMonthIcon/>}
-                                    sx={{mt: "5px", mx: 1, mb: "10px"}} onClick={thisYear}
+                            <Button variant="contained" color="secondary" startIcon={<CalendarMonthIcon />}
+                                sx={{ mt: "5px", mx: 1, mb: "10px" }} onClick={thisYear}
                             >
                                 올해
                             </Button>
-                            <Button variant="contained" color="secondary" startIcon={<SearchIcon/>} onClick={approvalSearchData}
-                                    sx={{mt: "5px", mx: 1, mb: "10px"}} >
+                            <Button variant="contained" color="secondary" startIcon={<SearchIcon />} onClick={approvalSearchData}
+                                sx={{ mt: "5px", mx: 1, mb: "10px" }} >
                                 조회
                             </Button>
                         </div>
@@ -226,18 +226,18 @@ const ApprovalManager = () => {
                         content={false}
                         title="전표"
                         sx={{
-                            '&MuiCard-root': {color: theme.palette.text.primary}
+                            '&MuiCard-root': { color: theme.palette.text.primary }
                         }}
                         secondary={
                             <Grid container spacing={1}>
                                 <Grid item>
-                                    <Button variant="contained" color="secondary" onClick={approvalBtn} startIcon={<ApprovalIcon/>}>전표승인</Button>
+                                    <Button variant="contained" color="secondary" onClick={approvalBtn} startIcon={<ApprovalIcon />}>전표승인</Button>
                                 </Grid>
                                 <Grid item>
-                                    <Button variant="contained" color="secondary" onClick={companionBtn} startIcon={<CallMissedIcon/>}>반려</Button>
+                                    <Button variant="contained" color="secondary" onClick={companionBtn} startIcon={<CallMissedIcon />}>반려</Button>
                                 </Grid>
                                 <Grid item>
-                                    <Button variant="contained" color="secondary" onClick={initalBtn} startIcon={<RefreshIcon/>}>초기화</Button>
+                                    <Button variant="contained" color="secondary" onClick={initalBtn} startIcon={<RefreshIcon />}>초기화</Button>
                                 </Grid>
                             </Grid>
                         }
@@ -296,7 +296,7 @@ const ApprovalManager = () => {
                                 }
                             }}
                         >
-                            <DataGrid hideFooter rows={journalData} columns={journalColumnDefs}/>
+                            <DataGrid hideFooter rows={journalData} columns={journalColumnDefs} />
                         </Box>
                     </MainCard>
                 </Grid>
