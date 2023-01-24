@@ -206,42 +206,42 @@ const initialState = {
 };
 
 
-const initialSlipColumns = [{
-    accountPeriodNo: "",
-    approvalDate: "",
-    approvalEmpCode: "admin",
-    authorizationStatus: null,
-    balanceDivision: null,
-    deptCode: "",
-    deptName: null,
-    expenseReport: "내용을 기입하세요",
-    id: null,
-    positionCode: null,
-    reportingDate: "",
-    reportingEmpCode: "",
-    reportingEmpName: null,
-    slipNo: "new",
-    slipStatus: "",
-    slipType: "",
-    status: "",
-}];
+// const initialSlipColumns = [{
+//     accountPeriodNo: "",
+//     approvalDate: "",
+//     approvalEmpCode: "admin",
+//     authorizationStatus: null,
+//     balanceDivision: null,
+//     deptCode: "",
+//     deptName: null,
+//     expenseReport: "내용을 기입하세요",
+//     id: null,
+//     positionCode: null,
+//     reportingDate: "",
+//     reportingEmpCode: "",
+//     reportingEmpName: null,
+//     slipNo: "new",
+//     slipStatus: "",
+//     slipType: "",
+//     status: "",
+// }];
 
 const initialJourColumns = [{
     accountCode: "",
-accountName:"",
-accountPeriodNo:null,
-balanceDivision: "",
-customerCode: "",
-customerName: null,
-deptCode: null,
-id: null,
-journalDetailList: null,
-journalNo: "",
-leftDebtorPrice: "",
-price:null,
-rightCreditsPrice: "",
-slipNo: "",
-status: "",
+    accountName: "",
+    accountPeriodNo: null,
+    balanceDivision: "",
+    customerCode: "",
+    customerName: null,
+    deptCode: null,
+    id: null,
+    journalDetailList: null,
+    journalNo: "",
+    leftDebtorPrice: "",
+    price: null,
+    rightCreditsPrice: "",
+    slipNo: "",
+    status: "",
 }]
 
 const AccountReducer = (state = initialState, action) => {// 위에서 만든 액션을 넣어 준다.
@@ -249,14 +249,10 @@ const AccountReducer = (state = initialState, action) => {// 위에서 만든 �
         //========================================= 2020-09-05 일반전표 조편백 ================================
         //====================전표====================
         case ADD_SLIP:
-            console.log("addslip");
             console.log(action.params);
-            console.log(action.payload);
             return {
                 ...state,
-                ...initialSlipColumns,
-                reportingDate:action.params,
-                slipFormList: initialSlipColumns.concat(state.slipFormList),
+                slipFormList: [action.params].concat(state.slipFormList),
             };
         case SELECT_SLIP_START:
             console.log("날짜 조회 성공", action);

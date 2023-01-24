@@ -130,6 +130,12 @@ const SlipForm = () => {
     const deleteCheck = () => {
         setOpenDialog(true);
     };
+    const initCell = (e) => {
+        console.log(e);
+        // if (e.editable) {
+        //     e.expenseReport == ""
+        // }
+    }
     // const [newAccount, setNewAccount] = useState({
     //     accountInnerCode: "",
     //     parentAccountInnercode: "",
@@ -152,8 +158,29 @@ const SlipForm = () => {
     // }
 
     //==========================전표=================================
-    const cellclick = (e) => {
-        console.log(e.value);
+    const initialSlipColumns = [{
+        accountPeriodNo: "",
+        approvalDate: "",
+        approvalEmpCode: "admin",
+        authorizationStatus: null,
+        balanceDivision: null,
+        deptCode: "",
+        deptName: null,
+        expenseReport: "내용을 기입하세요",
+        id: null,
+        positionCode: null,
+        reportingDate: endDate,
+        reportingEmpCode: "",
+        reportingEmpName: null,
+        slipNo: "new",
+        slipStatus: "",
+        slipType: "",
+        status: "",
+    }];
+    const accountSelect = (e) => {
+        if (e.field == 'accountName') {
+            console.log(e.field);
+        }
     }
 
     const searchSlip = () => {
@@ -167,14 +194,28 @@ const SlipForm = () => {
         })
         console.log(slipData);
     }
-
-    const insertSlip = () => {
+    const addSlip = () => {
         console.log("전표 추가");
-        console.log(slipData);
         dispatch({
             type: types.ADD_SLIP,
             params: {
-                toDay: endDate,
+                accountPeriodNo: "",
+                approvalDate: "",
+                approvalEmpCode: "admin",
+                authorizationStatus: null,
+                balanceDivision: null,
+                deptCode: "",
+                deptName: null,
+                expenseReport: "내용을 기입하세요",
+                id: null,
+                positionCode: null,
+                reportingDate: endDate,
+                reportingEmpCode: "",
+                reportingEmpName: null,
+                slipNo: "new",
+                slipStatus: "",
+                slipType: "",
+                status: "",
             }
         })
     }
@@ -207,7 +248,6 @@ const SlipForm = () => {
     }
     //==========================분개=================================
     const searchJour = (e) => {
-        console.log(journalData);
         dispatch({
             type: types.SELECT_JOURNAL_START,
             params: {
@@ -315,7 +355,7 @@ const SlipForm = () => {
                     }}
                     secondary={<Grid container spacing={1}>
                         <Grid item>
-                            <Button variant="contained" color="secondary" startIcon={<AddCircleIcon />} onClick={insertSlip}>추가</Button>
+                            <Button variant="contained" color="secondary" startIcon={<AddCircleIcon />} onClick={addSlip}>추가</Button>
                         </Grid>
                         <Grid item>
                             <Button variant="contained" color="secondary" startIcon={<DeleteIcon />} onClick={deleteCheck}>삭제</Button>
@@ -347,7 +387,7 @@ const SlipForm = () => {
                             hideFooter
                             getRowId={(row) => row.slipNo}
                             onRowClick={searchJour}
-                            onCellDoubleClick={cellclick}
+                            onCellDoubleClick={initCell}
                         />
                     </Box>
                 </MainCard>
@@ -392,6 +432,7 @@ const SlipForm = () => {
                             hideFooter
                             getRowId={(row) => row.journalNo}
                             onCellClick={searchDetail}
+                            onCellDoubleClick={accountSelect}
                         />
                     </Box>
                 </MainCard>
