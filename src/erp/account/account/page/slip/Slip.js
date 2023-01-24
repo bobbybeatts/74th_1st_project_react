@@ -111,9 +111,15 @@ const SlipForm = () => {
     const [startDate, setStartDate] = useState(monthFirstDay); //시작 날짜
     const [endDate, setEndDate] = useState(toDay);
 
-    const [slipNo, setSlipNo] = useState('1');
-    const [jourNo,setJourNo] = useState('1');
+    const [periodNo, setPeriodNo] = useState('4');
+    const [slipNo, setSlipNo] = useState('');
+    const [slipCount, setSlipCount] = useState('0001');
     const [expenseReport, setExpenseReport] = useState('내용을 입력해주세요');
+
+    const [jourNo, setJourNo] = useState('');
+    const [jourCount, setJourCount] = useState('1');
+
+
     const [openDialog, setOpenDialog] = useState(false);
     const handleClose = () => {
         setOpenDialog(false);
@@ -143,25 +149,6 @@ const SlipForm = () => {
     // }
 
     //==========================전표=================================
-    // const initialSlipColumns = [{
-    //     accountPeriodNo: "",
-    //     approvalDate: "",
-    //     approvalEmpCode: "admin",
-    //     authorizationStatus: null,
-    //     balanceDivision: null,
-    //     deptCode: "",
-    //     deptName: null,
-    //     expenseReport: "내용을 기입하세요",
-    //     id: null,
-    //     positionCode: null,
-    //     reportingDate: endDate,
-    //     reportingEmpCode: "",
-    //     reportingEmpName: null,
-    //     slipNo: "new",
-    //     slipStatus: "",
-    //     slipType: "",
-    //     status: "",
-    // }];
     const accountSelect = (e) => {
         if (e.field == 'accountName') {
             console.log(e.field);
@@ -184,7 +171,7 @@ const SlipForm = () => {
         dispatch({
             type: types.ADD_SLIP,
             params: {
-                accountPeriodNo: "",
+                accountPeriodNo: periodNo,
                 approvalDate: "",
                 approvalEmpCode: "admin",
                 authorizationStatus: null,
@@ -192,19 +179,22 @@ const SlipForm = () => {
                 deptCode: "",
                 deptName: null,
                 expenseReport: expenseReport,
-                id: slipNo,
+                id: slipCount,
                 positionCode: null,
                 reportingDate: endDate,
                 reportingEmpCode: "admin",
                 reportingEmpName: "",
-                slipNo: "new "+slipNo,
+                slipNo: (
+                    endDate.split('-').join('') + "SLIP" + slipCount
+                ),
                 slipStatus: "",
                 slipType: "",
                 status: "작성중",
             }
         })
-        setSlipNo(parseInt(slipNo) + 1);
-        console.log(slipNo);
+        if (slipCount == "0009") setSlipCount("00" + (parseInt(slipCount) + 1))
+        else setSlipCount("000" + (parseInt(slipCount) + 1));
+        console.log(slipCount);
     }
 
     const deleteSlip = () => { //e는 버튼임 버튼을 주면 안됨
@@ -245,37 +235,41 @@ const SlipForm = () => {
         setExpenseReport(e.row.expenseReport);
     }
     const addJour = () => {
-        if(slipNo=="1"){
+        if (slipCount == "0001") {
             Swal.fire({
-            icon: 'error',
-            title: '전표부터 입력해 주시기 바랍니다',
-            showConfirmButton: '확인'
-        })
-        }else{
-        console.log("addJour");
-        dispatch({
-            type: types.INSERT_JOURNAL,
-            params:{
-                accountCode: "",
-                accountName: "",
-                accountPeriodNo: null,
-                balanceDivision: "대변",
-                customerCode: "",
-                customerName: null,
-                deptCode: null,
-                id: jourNo,
-                journalDetailList: null,
-                journalNo: "new "+jourNo,
-                leftDebtorPrice: "0",
-                price: null,
-                rightCreditsPrice: "0",
-                slipNo: slipNo,
-                status: "",
-            }
-        })
-        setJourNo(parseInt(jourNo) + 1);
-        console.log(jourNo);
-    }}
+                icon: 'error',
+                title: '전표부터 입력해 주시기 바랍니다',
+                showConfirmButton: '확인'
+            })
+        } else {
+            console.log("addJour");
+            dispatch({
+                type: types.INSERT_JOURNAL,
+                params: {
+                    accountCode: "",
+                    accountName: "",
+                    accountPeriodNo: periodNo,
+                    balanceDivision: "대변",
+                    customerCode: "",
+                    customerName: null,
+                    deptCode: null,
+                    id: slipNo + "JOURNAL" + jourCount,
+                    journalDetailList: null,
+                    journalNo: (
+                        slipNo + "JOURNAL" + jourCount
+                    ),
+                    leftDebtorPrice: "0",
+                    price: null,
+                    rightCreditsPrice: "0",
+                    slipNo: slipNo,
+                    status: "",
+                }
+            })
+            console.log(slipNo);
+            setJourCount((parseInt(jourCount) + 1));
+            console.log(jourCount);
+        }
+    }
     //==========================분개상세=================================
     const searchDetail = (e) => {
         // console.log(e);
