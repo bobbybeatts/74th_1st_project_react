@@ -1,68 +1,48 @@
-import React, { useEffect, useState } from 'react';
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import Grid from '@material-ui/core/Grid';
-import Warning from '@material-ui/icons/Warning';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-import InputLabel from '@material-ui/core/InputLabel';
-import Axios from 'axios';
+//**************************************** 2020-11-19 최지은 시작 ****************************************
+import React from 'react';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import { Button } from '@material-ui/core';
 
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(3),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
-}));
-
-export default function DeleteCheckDialog(props) {
-
-  const classes = useStyles();
-  const onSubmit = (e) => {
-    e.preventDefault();
-    console.log("버튼")
-    props.onSubmit();
-  }
-
-  return (
-    <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <Warning />
-        </Avatar>
-        <Typography component="h2" variant="h5">
-          삭제 하시겠습니까?
-        </Typography>
-        <form className={classes.form} onSubmit={onSubmit}>
-          <Button
-            type='submit'
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
-            삭제
-          </Button>
-        </form>
-      </div>
-    </Container>
-  );
+{
+    /* <DeleteCheckDialog open={openDialog} onClose={handleClose} onClick={deleteSlip} /> */
 }
+export default function DeleteCheckDialog({ open, onClose, onClick }) {
+    // const DeleteCheckDialog = ({ open, onClose, onClick }) => {
+    const Close = () => {
+        onClose(false);
+    };
+    const deleteSlip = () => {
+        onClick();
+    };
+    //========================================================================
+    return (
+        <div>
+            <Dialog
+                fullWidth={true}
+                maxWidth={'xs'}
+                open={open}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">{'삭제 확인'}</DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">정말 삭제 하시겠습니까?</DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button variant="outlined" color="secondary" onClick={Close}>
+                        닫기
+                    </Button>
+                    <Button variant="outlined" color="secondary" onClick={deleteSlip}>
+                        삭제
+                    </Button>
+                </DialogActions>
+            </Dialog>
+        </div>
+    );
+}
+
+// export default DeleteCheckDialog;

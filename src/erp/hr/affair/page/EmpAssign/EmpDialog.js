@@ -5,14 +5,19 @@ import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-theme-material.css';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 
-const EmpDialog = ({
-    EmpList,
-    open,
-    setOpenD,
-    setSearchName,
-    setWorkplaceCode,
-    DialogCellClick
-}) => {
+{
+    /* <EmpDialog
+                open={openD}
+                setOpenD={setOpenD}
+                EmpList={EmpList}
+                // setSearchName={setSearchName}
+                // setWorkplaceCode={setWorkplaceCode}
+                // onGridReady={onGridReady}
+                // DeptColDefs={DeptColDefs}
+                DialogCellClick={DialogCellClick}
+            /> */
+}
+const EmpDialog = ({ EmpList, open, setOpenD, setSearchName, setWorkplaceCode, DialogCellClick }) => {
     console.log('오픈' + open);
     const WorkplaceColDefs = [
         { headerName: '사번', field: 'empCode', width: 100 },
@@ -22,7 +27,7 @@ const EmpDialog = ({
 
     // codeList=[ {key:value}, {}, {}] ,
     //그리드 사이즈 자동 조절
-    const onGridReady = params => {
+    const onGridReady = (params) => {
         params.api.sizeColumnsToFit();
     };
     //========================================================================
@@ -38,17 +43,14 @@ const EmpDialog = ({
                 <DialogContent>
                     <List>
                         {
-                            <div
-                                className={'ag-theme-material'}
-                                style={{ height: '300px', width: '100%', paddingTop: '8px' }}
-                            >
+                            <div className={'ag-theme-material'} style={{ height: '300px', width: '100%', paddingTop: '8px' }}>
                                 <AgGridReact
                                     columnDefs={WorkplaceColDefs}
                                     rowData={EmpList} // 뿌릴 data
                                     rowSelection="single" // 하나만 선택 가능.
                                     onGridReady={onGridReady}
                                     onRowClicked={DialogCellClick}
-                                    getRowStyle={function() {
+                                    getRowStyle={function () {
                                         return { 'text-align': 'center' };
                                     }}
                                 />

@@ -3,32 +3,26 @@ import React, { useCallback, useState } from 'react';
 import { Box, Button, Grid, TextField, Typography } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import { useTheme } from '@mui/material/styles';
-import AddCircleIcon from "@mui/icons-material/AddCircle";
-import DeleteIcon from "@mui/icons-material/Delete";
-import SaveIcon from "@mui/icons-material/Save";
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import DeleteIcon from '@mui/icons-material/Delete';
+import SaveIcon from '@mui/icons-material/Save';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import SearchIcon from '@mui/icons-material/Search';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import MyDialog from 'util/LogiUtil/MyDialog';
-import DeleteCheckDialog1 from './DeleteCheckDialog'
+import DeleteCheckDialog from './DeleteCheckDialog';
+import AccountDialog from '../../../base/page/accountform/AccountDialog';
 // project imports
 import MainCard from '../../../../../template/ui-component/cards/MainCard';
 import { gridSpacing } from '../../../../../template/store/constant';
 // assets
 import { useDispatch, useSelector } from 'react-redux';
 import * as types from '../../reducer/AccountReducer';
-import moment from 'moment/moment'
+import moment from 'moment/moment';
 
-import {
-    Dialog,
-    DialogTitle,
-    DialogContent,
-    DialogActions,
-    DialogContentText
-} from "@material-ui/core";
-import Swal from "sweetalert2";
+import { Dialog, DialogTitle, DialogContent, DialogActions, DialogContentText } from '@material-ui/core';
+import Swal from 'sweetalert2';
 
 //Columns
 //전표칼럼
@@ -52,8 +46,8 @@ const indignationColumns = [
         headerName: '대차구분',
         field: 'balanceDivision',
         editable: true,
-        type: "singleSelect",
-        valueOptions: ["대변", "차변"]
+        type: 'singleSelect',
+        valueOptions: ['대변', '차변']
         // cellEditor: 'agSelectCellEditor', //콤보 생성
         // //콤보List
         // cellEditorParams: {
@@ -88,14 +82,22 @@ const indignationDetailColumns = [
         width: 250
     }
 ];
-
+//계정과목대분류 칼럼
+const accountCodeColumn = [
+    { headerName: '계정과목코드분류', field: '' },
+    { headerName: '계정과목대분류', fiedl: '' }
+];
+//계정과목소분류 컬럼
+const accountCodeDetailColumn = [
+    { headerName: '계정과목코드', field: '' },
+    { headerName: '계정과목', fiedl: '' }
+];
 // ==============================|| 일반전표 ||============================== //
 
 const SlipForm = () => {
     const slipData = useSelector((state) => state.RootReducers.AccReducer.AccountReducer.slipFormList);
     const journalData = useSelector((state) => state.RootReducers.AccReducer.AccountReducer.journalList);
     const journalDetailData = useSelector((state) => state.RootReducers.AccReducer.AccountReducer.journalDetailList);
-
 
     let year = moment(new Date()).format('yyyy');
     let month = moment(new Date()).format('MM');
@@ -119,14 +121,15 @@ const SlipForm = () => {
     const [jourNo, setJourNo] = useState('');
     const [jourCount, setJourCount] = useState('1');
 
-
     const [openDialog, setOpenDialog] = useState(false);
     const handleClose = () => {
         setOpenDialog(false);
+        setAccountSelectDialog(false);
     };
     const deleteCheck = () => {
         setOpenDialog(true);
     };
+    const [accountSelectDialog, setAccountSelectDialog] = useState(false);
     // const [newAccount, setNewAccount] = useState({
     //     accountInnerCode: "",
     //     parentAccountInnercode: "",
@@ -151,78 +154,78 @@ const SlipForm = () => {
     //==========================전표=================================
     const accountSelect = (e) => {
         if (e.field == 'accountName') {
-            console.log(e.field);
+            setAccountSelectDialog(true);
         }
-    }
+    };
 
     const searchSlip = () => {
-        dispatch({//const dispatch = useDispatch();
+        dispatch({
+            //const dispatch = useDispatch();
             type: types.SELECT_SLIP_START,
             params: {
                 startDate: startDate,
                 endDate: endDate,
                 slipStatus: slipStatus
             }
-        })
+        });
         console.log(slipData);
-    }
+    };
     const addSlip = () => {
-        console.log("전표 추가");
+        console.log('전표 추가');
         dispatch({
             type: types.ADD_SLIP,
             params: {
                 accountPeriodNo: periodNo,
-                approvalDate: "",
-                approvalEmpCode: "admin",
+                approvalDate: '',
+                approvalEmpCode: 'admin',
                 authorizationStatus: null,
                 balanceDivision: null,
-                deptCode: "",
+                deptCode: '',
                 deptName: null,
                 expenseReport: expenseReport,
                 id: slipCount,
                 positionCode: null,
                 reportingDate: endDate,
-                reportingEmpCode: "admin",
-                reportingEmpName: "",
-                slipNo: (
-                    endDate.split('-').join('') + "SLIP" + slipCount
-                ),
-                slipStatus: "",
-                slipType: "",
-                status: "작성중",
+                reportingEmpCode: 'admin',
+                reportingEmpName: '',
+                slipNo: endDate.split('-').join('') + 'SLIP' + slipCount,
+                slipStatus: '',
+                slipType: '',
+                status: '작성중'
             }
-        })
-        if (slipCount == "0009") setSlipCount("00" + (parseInt(slipCount) + 1))
-        else setSlipCount("000" + (parseInt(slipCount) + 1));
+        });
+        if (slipCount == '0009') setSlipCount('00' + (parseInt(slipCount) + 1));
+        else setSlipCount('000' + (parseInt(slipCount) + 1));
         console.log(slipCount);
-    }
+    };
 
-    const deleteSlip = () => { //e는 버튼임 버튼을 주면 안됨
-        console.log(slipNo + "삭제 좀 되라");
+    const deleteSlip = () => {
+        //e는 버튼임 버튼을 주면 안됨
+        console.log(slipNo + '삭제 좀 되라');
         dispatch({
             type: types.DELETE_SLIP_START,
             params: {
-                slipNo: slipNo,
+                slipNo: slipNo
             }
-        })
+        });
         handleClose();
         return Swal.fire({
             icon: 'error',
             title: '삭제되었습니다',
             showConfirmButton: '확인'
-        })
-    }
+        });
+    };
 
     const updateSlip = () => {
-        console.log("updateSlip");
+        console.log('updateSlip');
         dispatch({
             type: types.UPDATE_SLIP_START,
             params: {
                 reportingDate: endDate,
-                expenseReport: expenseReport,
+                expenseReport: expenseReport
             }
-        })
-    }
+        });
+    };
     //==========================분개=================================
     const searchJour = (e) => {
         dispatch({
@@ -232,44 +235,42 @@ const SlipForm = () => {
             }
         });
         setSlipNo(e.id);
-        setExpenseReport(e.row.expenseReport);
-    }
+        // setExpenseReport(e.row.expenseReport);
+    };
     const addJour = () => {
-        if (slipCount == "0001") {
+        if (slipNo == '') {
             Swal.fire({
                 icon: 'error',
                 title: '전표부터 입력해 주시기 바랍니다',
                 showConfirmButton: '확인'
-            })
+            });
         } else {
-            console.log("addJour");
+            console.log('addJour');
             dispatch({
                 type: types.INSERT_JOURNAL,
                 params: {
-                    accountCode: "",
-                    accountName: "",
+                    accountCode: '',
+                    accountName: '',
                     accountPeriodNo: periodNo,
-                    balanceDivision: "대변",
-                    customerCode: "",
+                    balanceDivision: '대변',
+                    customerCode: '',
                     customerName: null,
                     deptCode: null,
-                    id: slipNo + "JOURNAL" + jourCount,
+                    id: slipNo + 'JOURNAL' + jourCount,
                     journalDetailList: null,
-                    journalNo: (
-                        slipNo + "JOURNAL" + jourCount
-                    ),
-                    leftDebtorPrice: "0",
+                    journalNo: slipNo + 'JOURNAL' + jourCount,
+                    leftDebtorPrice: '0',
                     price: null,
-                    rightCreditsPrice: "0",
+                    rightCreditsPrice: '0',
                     slipNo: slipNo,
-                    status: "",
+                    status: ''
                 }
-            })
+            });
             console.log(slipNo);
-            setJourCount((parseInt(jourCount) + 1));
+            setJourCount(parseInt(jourCount) + 1);
             console.log(jourCount);
         }
-    }
+    };
     //==========================분개상세=================================
     const searchDetail = (e) => {
         // console.log(e);
@@ -278,8 +279,8 @@ const SlipForm = () => {
             params: {
                 journalNo: e.row.journalNo
             }
-        })
-    }
+        });
+    };
 
     return (
         <Grid container spacing={gridSpacing}>
@@ -289,18 +290,19 @@ const SlipForm = () => {
                     <div>
                         <TextField
                             id="startDate"
-                            type={"date"}
-                            variant={"standard"}
+                            type={'date'}
+                            variant={'standard'}
                             sx={{ mx: 1 }}
                             value={startDate}
                             defaultValue={monthFirstDay}
                             onChange={(e) => {
                                 setStartDate(e.target.value);
-                            }} />
+                            }}
+                        />
                         <TextField
                             id="endDate"
-                            type={"date"}
-                            variant={"standard"}
+                            type={'date'}
+                            variant={'standard'}
                             sx={{ mx: 1 }}
                             value={endDate}
                             defaultValue={toDay}
@@ -308,7 +310,7 @@ const SlipForm = () => {
                                 setEndDate(e.target.value);
                             }}
                         />
-                        <FormControl variant="standard" sx={{ mx: 1, mb: "10px", minWidth: 120 }} >
+                        <FormControl variant="standard" sx={{ mx: 1, mb: '10px', minWidth: 120 }}>
                             <Select
                                 value={slipStatus}
                                 defaultValue={slipStatus}
@@ -326,7 +328,7 @@ const SlipForm = () => {
                             variant="contained"
                             color="secondary"
                             startIcon={<CalendarMonthIcon />}
-                            sx={{ mx: 1, mb: "10px" }}
+                            sx={{ mx: 1, mb: '10px' }}
                             onClick={() => {
                                 setStartDate(yearFirst);
                                 setEndDate(yearLast);
@@ -334,25 +336,17 @@ const SlipForm = () => {
                         >
                             올해
                         </Button>
-                        <Button variant="contained" color="secondary" startIcon={<SearchIcon />} sx={{ mx: 1, mb: "10px" }} onClick={searchSlip}>
+                        <Button
+                            variant="contained"
+                            color="secondary"
+                            startIcon={<SearchIcon />}
+                            sx={{ mx: 1, mb: '10px' }}
+                            onClick={searchSlip}
+                        >
                             조회
                         </Button>
                     </div>
                 </div>
-
-                <Dialog
-                    open={openDialog}
-                    onClose={handleClose}
-                >
-                    <DialogContent>
-                        정말 삭제 하시겠습니까?
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={handleClose}>취소</Button>
-                        <Button onClick={deleteSlip}>삭제</Button>
-                    </DialogActions>
-                </Dialog>
-
                 {/* =================================전표데이터그리드================================= */}
                 <MainCard
                     content={false}
@@ -360,28 +354,51 @@ const SlipForm = () => {
                     sx={{
                         '&MuiCard-root': { color: theme.palette.text.primary }
                     }}
-                    secondary={<Grid container spacing={1}>
-                        <Grid item>
-                            <Button variant="contained" color="secondary" startIcon={<AddCircleIcon />} onClick={addSlip}>추가</Button>
+                    secondary={
+                        <Grid container spacing={1}>
+                            <Grid item>
+                                <Button variant="contained" color="secondary" startIcon={<AddCircleIcon />} onClick={addSlip}>
+                                    추가
+                                </Button>
+                            </Grid>
+                            <Grid item>
+                                <Button variant="contained" color="secondary" startIcon={<DeleteIcon />} onClick={deleteCheck}>
+                                    삭제
+                                </Button>
+                            </Grid>
+                            <Dialog open={openDialog} onClose={handleClose}>
+                                <DialogContent>정말 삭제 하시겠습니까?</DialogContent>
+                                <DialogActions>
+                                    <Button onClick={handleClose}>취소</Button>
+                                    <Button onClick={deleteSlip}>삭제</Button>
+                                </DialogActions>
+                            </Dialog>
+                            {/*<DeleteCheckDialog open={openDialog} onClose={handleClose} onClick={deleteSlip} />
+                            다이알로그 모듈화하면 원본 화면 이상하게 보임
+                            */}
+                            <Grid item>
+                                <Button variant="contained" color="secondary" startIcon={<SaveIcon />} onClick={updateSlip}>
+                                    저장
+                                </Button>
+                            </Grid>
                         </Grid>
-                        <Grid item>
-                            <Button variant="contained" color="secondary" startIcon={<DeleteIcon />} onClick={deleteCheck}>삭제</Button>
-                        </Grid>
-                        <Grid item>
-                            <Button variant="contained" color="secondary" startIcon={<SaveIcon />} onClick={updateSlip}>저장</Button>
-                        </Grid>
-                    </Grid>}
+                    }
                 >
                     {/* table data grid */}
                     <Box
                         sx={{
-                            height: 300, width: '100%', '& .MuiDataGrid-root': {
-                                border: 'none', '& .MuiDataGrid-cell': {
+                            height: 300,
+                            width: '100%',
+                            '& .MuiDataGrid-root': {
+                                border: 'none',
+                                '& .MuiDataGrid-cell': {
                                     borderColor: theme.palette.mode === 'dark' ? theme.palette.text.primary + 15 : 'grey.200'
-                                }, '& .MuiDataGrid-columnsContainer': {
+                                },
+                                '& .MuiDataGrid-columnsContainer': {
                                     color: theme.palette.mode === 'dark' ? 'grey.600' : 'grey.900',
                                     borderColor: theme.palette.mode === 'dark' ? theme.palette.text.primary + 15 : 'grey.200'
-                                }, '& .MuiDataGrid-columnSeparator': {
+                                },
+                                '& .MuiDataGrid-columnSeparator': {
                                     color: theme.palette.mode === 'dark' ? theme.palette.text.primary + 15 : 'grey.200'
                                 }
                             }
@@ -401,31 +418,46 @@ const SlipForm = () => {
                 <MainCard
                     content={false}
                     title="분개"
-                    secondary={<Grid container spacing={1}>
-                        <Grid item>
-                            <Button variant="contained" color="secondary" >발주/납품 마감신청</Button>
+                    secondary={
+                        <Grid container spacing={1}>
+                            <Grid item>
+                                <Button variant="contained" color="secondary">
+                                    발주/납품 마감신청
+                                </Button>
+                            </Grid>
+                            <Grid item>
+                                <Button variant="contained" color="secondary" onClick={addJour}>
+                                    분개추가
+                                </Button>
+                            </Grid>
+                            <Grid item>
+                                <Button variant="contained" color="secondary">
+                                    분개삭제
+                                </Button>
+                            </Grid>
+                            <Grid item>
+                                <Button variant="contained" color="secondary">
+                                    분개저장
+                                </Button>
+                            </Grid>
                         </Grid>
-                        <Grid item>
-                            <Button variant="contained" color="secondary" onClick={addJour}>분개추가</Button>
-                        </Grid>
-                        <Grid item>
-                            <Button variant="contained" color="secondary">분개삭제</Button>
-                        </Grid>
-                        <Grid item>
-                            <Button variant="contained" color="secondary">분개저장</Button>
-                        </Grid>
-                    </Grid>}
+                    }
                 >
                     {/* table data grid */}
                     <Box
                         sx={{
-                            height: 300, width: '100%', '& .MuiDataGrid-root': {
-                                border: 'none', '& .MuiDataGrid-cell': {
+                            height: 300,
+                            width: '100%',
+                            '& .MuiDataGrid-root': {
+                                border: 'none',
+                                '& .MuiDataGrid-cell': {
                                     borderColor: theme.palette.mode === 'dark' ? theme.palette.text.primary + 15 : 'grey.200'
-                                }, '& .MuiDataGrid-columnsContainer': {
+                                },
+                                '& .MuiDataGrid-columnsContainer': {
                                     color: theme.palette.mode === 'dark' ? 'grey.600' : 'grey.900',
                                     borderColor: theme.palette.mode === 'dark' ? theme.palette.text.primary + 15 : 'grey.200'
-                                }, '& .MuiDataGrid-columnSeparator': {
+                                },
+                                '& .MuiDataGrid-columnSeparator': {
                                     color: theme.palette.mode === 'dark' ? theme.palette.text.primary + 15 : 'grey.200'
                                 }
                             }
@@ -440,26 +472,45 @@ const SlipForm = () => {
                             onCellClick={searchDetail}
                             onCellDoubleClick={accountSelect}
                         />
+                        {/* <Dialog open={openDialog} onClose={handleClose}>
+                            <DialogContent>정말 삭제 하시겠습니까?</DialogContent>
+                            <DialogActions>
+                                <Button onClick={handleClose}>취소</Button>
+                                <Button onClick={deleteSlip}>삭제</Button>
+                            </DialogActions>
+                        </Dialog> */}
+                        <Dialog open={accountSelectDialog} onClose={handleClose}>
+                            <AccountDialog />
+                        </Dialog>
                     </Box>
                 </MainCard>
                 {/* =================================분개상세데이터그리드================================= */}
                 <MainCard
                     content={false}
                     title="분개상세"
-                    secondary={<Grid item>
-                        <Button variant="contained" color="secondary">분개상세 저장</Button>
-                    </Grid>}
+                    secondary={
+                        <Grid item>
+                            <Button variant="contained" color="secondary">
+                                분개상세 저장
+                            </Button>
+                        </Grid>
+                    }
                 >
                     {/* table data grid */}
                     <Box
                         sx={{
-                            height: 300, width: '100%', '& .MuiDataGrid-root': {
-                                border: 'none', '& .MuiDataGrid-cell': {
+                            height: 300,
+                            width: '100%',
+                            '& .MuiDataGrid-root': {
+                                border: 'none',
+                                '& .MuiDataGrid-cell': {
                                     borderColor: theme.palette.mode === 'dark' ? theme.palette.text.primary + 15 : 'grey.200'
-                                }, '& .MuiDataGrid-columnsContainer': {
+                                },
+                                '& .MuiDataGrid-columnsContainer': {
                                     color: theme.palette.mode === 'dark' ? 'grey.600' : 'grey.900',
                                     borderColor: theme.palette.mode === 'dark' ? theme.palette.text.primary + 15 : 'grey.200'
-                                }, '& .MuiDataGrid-columnSeparator': {
+                                },
+                                '& .MuiDataGrid-columnSeparator': {
                                     color: theme.palette.mode === 'dark' ? theme.palette.text.primary + 15 : 'grey.200'
                                 }
                             }
@@ -470,14 +521,13 @@ const SlipForm = () => {
                             columns={indignationDetailColumns}
                             hideFooter
                             //checkboxSelection
-                            getRowId={(row) => row.journalDetailNo
-                            }
+                            getRowId={(row) => row.journalDetailNo}
                         />
                     </Box>
                 </MainCard>
             </Grid>
-        </Grid >
+        </Grid>
     );
-}
+};
 
 export default SlipForm;
