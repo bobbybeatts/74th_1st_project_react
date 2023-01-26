@@ -16,13 +16,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as types from '../../reducer/BaseReducer';
 
 const accountColumns = [
-    { headerName: '계정과목 코드', field: 'accountInnerCode', width: 100 },
-    { headerName: '계정과목', field: 'accountName', width: 250 }
+    { headerName: '계정과목 코드', field: 'accountInnerCode', width: 120 },
+    { headerName: '계정과목', field: 'accountName', width: 180 }
 ];
 
 const accountDetailcolums = [
-    { field: 'accountInnerCode', headerName: '계정과목코드', width: 200 },
-    { field: 'accountName', headerName: '계정과목명', width: 200 }
+    { field: 'accountInnerCode', headerName: '계정과목코드', width: 120 },
+    { field: 'accountName', headerName: '계정과목명', width: 250 }
 ];
 
 // ==============================|| 계정과목관리 ||============================== //
@@ -50,9 +50,11 @@ export default function TableBasic() {
         });
     };
 
+    const onSelectAccount = (e) => {};
+
     return (
         <Grid container spacing={gridSpacing}>
-            <Grid item sm={4}>
+            <Grid item sm={5}>
                 <MainCard content={false} title="계정">
                     {/* table data grid */}
                     <Box
@@ -85,29 +87,29 @@ export default function TableBasic() {
                     </Box>
                 </MainCard>
             </Grid>
-            <Grid item sm={8}>
+            <Grid item sm={7}>
                 <MainCard
                     content={false}
                     title="계정과목"
-                    secondary={
-                        <Grid container spacing={1}>
-                            <Grid item>
-                                <Button variant="contained" color="secondary" startIcon={<AddCircleIcon />}>
-                                    추가
-                                </Button>
-                            </Grid>
-                            <Grid item>
-                                <Button variant="contained" color="secondary" startIcon={<DeleteIcon />}>
-                                    삭제
-                                </Button>
-                            </Grid>
-                            <Grid item>
-                                <Button variant="contained" color="secondary" startIcon={<SaveIcon />}>
-                                    저장
-                                </Button>
-                            </Grid>
-                        </Grid>
-                    }
+                    // secondary={
+                    //     <Grid container spacing={1}>
+                    //         <Grid item>
+                    //             <Button variant="contained" color="secondary" startIcon={<AddCircleIcon />}>
+                    //                 추가
+                    //             </Button>
+                    //         </Grid>
+                    //         <Grid item>
+                    //             <Button variant="contained" color="secondary" startIcon={<DeleteIcon />}>
+                    //                 삭제
+                    //             </Button>
+                    //         </Grid>
+                    //         <Grid item>
+                    //             <Button variant="contained" color="secondary" startIcon={<SaveIcon />}>
+                    //                 저장
+                    //             </Button>
+                    //         </Grid>
+                    //     </Grid>
+                    // }
                 >
                     {/* table data grid */}
                     <Box
@@ -134,8 +136,9 @@ export default function TableBasic() {
                             columns={accountDetailcolums}
                             // pageSize={5}
                             // rowsPerPageOptions={[5]}
-                            checkboxSelection
+                            // checkboxSelection
                             getRowId={(row) => row.accountInnerCode}
+                            onRowClick={onSelectAccount}
                         />
                     </Box>
                 </MainCard>

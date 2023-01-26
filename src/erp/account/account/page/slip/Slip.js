@@ -479,7 +479,7 @@ const SlipForm = () => {
                                 <Button onClick={deleteSlip}>삭제</Button>
                             </DialogActions>
                         </Dialog> */}
-                        <Dialog open={accountSelectDialog} onClose={handleClose}>
+                        <Dialog open={accountSelectDialog} onClose={handleClose} maxWidth={'xl'}>
                             <AccountDialog />
                         </Dialog>
                     </Box>
