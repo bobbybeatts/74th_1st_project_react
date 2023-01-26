@@ -38,7 +38,7 @@ function EmpAssign({ searchAssign, assignData }) {
     //오늘 날짜
     let today = moment().format('YYYY-MM-DD');
 
-    const codeDivision = element => {
+    const codeDivision = (element) => {
         if (typeof element == 'undefined') return '';
         else {
             // console.log(element.value);
@@ -71,18 +71,18 @@ function EmpAssign({ searchAssign, assignData }) {
 
     const searchEmp = () => {
         setOpenD(true);
-        Axios.get('http://localhost:8282/hr/affair/empList') 
-            .then(response => {
+        Axios.get('http://localhost:8282/hr/affair/empList')
+            .then((response) => {
                 console.log(response.data.empList);
                 setEmpList(response.data.empList);
             })
-            .catch(e => {
+            .catch((e) => {
                 alert(e);
             });
     };
 
     //다이얼로그 셀 클릭
-    const DialogCellClick = e => {
+    const DialogCellClick = (e) => {
         console.log(e.data);
         setEmpName(e.data.empName);
         setdeptCode(e.data.deptCode);
@@ -91,15 +91,15 @@ function EmpAssign({ searchAssign, assignData }) {
         setOpenD(false);
     };
 
-    const currentDeptClick = e => {
+    const currentDeptClick = (e) => {
         setCurrentDept(e.target.value);
     };
 
-    const moveDeptClick = e => {
+    const moveDeptClick = (e) => {
         setMoveDept(e.target.value);
     };
 
-    const appointment = e => {
+    const appointment = (e) => {
         if (!EmpName) {
             alert('이름을 입력하세요');
             return;
@@ -143,7 +143,7 @@ function EmpAssign({ searchAssign, assignData }) {
                                 type="date"
                                 variant="outlined"
                                 defaultValue={assignDate}
-                                onChange={e => {
+                                onChange={(e) => {
                                     setassignDate(e.target.value);
                                 }}
                                 className={classes.textField}
@@ -244,12 +244,7 @@ function EmpAssign({ searchAssign, assignData }) {
                                 className={classes.textField}
                                 variant="outlined"
                             />
-                            <Button
-                                variant={'outlined'}
-                                color={'primary'}
-                                onClick={search}
-                                className={classes.button}
-                            >
+                            <Button variant={'outlined'} color={'primary'} onClick={search} className={classes.button}>
                                 조회
                             </Button>
                         </div>
@@ -260,10 +255,7 @@ function EmpAssign({ searchAssign, assignData }) {
                                 width: '100%'
                             }}
                         >
-                            <AgGridReact
-                                columnDefs={columnDefs}
-                                rowData={assignData ? assignData : []}
-                            />
+                            <AgGridReact columnDefs={columnDefs} rowData={assignData ? assignData : []} />
                         </div>
                     </Paper>
                 </Grid>
@@ -279,6 +271,19 @@ function EmpAssign({ searchAssign, assignData }) {
                 // DeptColDefs={DeptColDefs}
                 DialogCellClick={DialogCellClick}
             />
+            {/* const [openD, setOpenD] = useState(false);
+
+        const [EmpList, setEmpList] = useState([]);
+        
+        const DialogCellClick = e => {
+        console.log(e.data);
+        setEmpName(e.data.empName);
+        setdeptCode(e.data.deptCode);
+        setEmpCode(e.data.empCode);
+        setDeptName(e.data.detailCodeName);
+        setOpenD(false);
+    };  
+            */}
         </div>
     );
 }

@@ -1,16 +1,14 @@
 // material-ui
 import { Box, Button, Grid } from '@mui/material';
-// material-ui
 import { DataGrid } from '@mui/x-data-grid';
 import { useTheme } from '@mui/material/styles';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
-import DeleteIcon from '@mui/icons-material/Delete';
-import SaveIcon from '@mui/icons-material/Save';
+import CheckIcon from '@mui/icons-material/Check';
+import Dialog from '@mui/material/Dialog';
 
 // project imports
 import MainCard from '../../../../../template/ui-component/cards/MainCard';
 import { gridSpacing } from '../../../../../template/store/constant';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import * as types from '../../reducer/BaseReducer';
@@ -27,7 +25,7 @@ const accountDetailcolums = [
 
 // ==============================|| 계정과목관리 ||============================== //
 
-export default function TableBasic() {
+const AccountDialog = ({ open, onClose, setAccountCode, setAccountName }) => {
     const dispatch = useDispatch();
     const theme = useTheme();
 
@@ -50,99 +48,112 @@ export default function TableBasic() {
         });
     };
 
-    const onSelectAccount = (e) => {};
+    const onSelectAccount = (e) => {
+        //선택한 계정을 세팅
+        console.log(e);
+        console.log(e);
+        setAccountCode(e.row.accountInnerCode);
+        setAccountName(e.row.accountName);
+    };
+    const setAccountDetail = () => {
+        onClose(false);
+    };
 
     return (
-        <Grid container spacing={gridSpacing}>
-            <Grid item sm={5}>
-                <MainCard content={false} title="계정">
-                    {/* table data grid */}
-                    <Box
-                        sx={{
-                            height: 500,
-                            width: '100%',
-                            '& .MuiDataGrid-root': {
-                                border: 'none',
-                                '& .MuiDataGrid-cell': {
-                                    borderColor: theme.palette.mode === 'dark' ? theme.palette.text.primary + 15 : 'grey.200'
-                                },
-                                '& .MuiDataGrid-columnsContainer': {
-                                    color: theme.palette.mode === 'dark' ? 'grey.600' : 'grey.900',
-                                    borderColor: theme.palette.mode === 'dark' ? theme.palette.text.primary + 15 : 'grey.200'
-                                },
-                                '& .MuiDataGrid-columnSeparator': {
-                                    color: theme.palette.mode === 'dark' ? theme.palette.text.primary + 15 : 'grey.200'
+        <Dialog open={open} fullWidth={true} maxWidth={'xl'}>
+            <Grid container spacing={gridSpacing}>
+                <Grid item sm={5}>
+                    <MainCard content={false} title="계정">
+                        {/* table data grid */}
+                        <Box
+                            sx={{
+                                height: 500,
+                                width: '100%',
+                                '& .MuiDataGrid-root': {
+                                    border: 'none',
+                                    '& .MuiDataGrid-cell': {
+                                        borderColor: theme.palette.mode === 'dark' ? theme.palette.text.primary + 15 : 'grey.200'
+                                    },
+                                    '& .MuiDataGrid-columnsContainer': {
+                                        color: theme.palette.mode === 'dark' ? 'grey.600' : 'grey.900',
+                                        borderColor: theme.palette.mode === 'dark' ? theme.palette.text.primary + 15 : 'grey.200'
+                                    },
+                                    '& .MuiDataGrid-columnSeparator': {
+                                        color: theme.palette.mode === 'dark' ? theme.palette.text.primary + 15 : 'grey.200'
+                                    }
                                 }
-                            }
-                        }}
+                            }}
+                        >
+                            <DataGrid
+                                rows={accountData}
+                                columns={accountColumns}
+                                // pageSize={15}
+                                // rowsPerPageOptions={[5]}
+                                getRowId={(row) => row.accountName}
+                                onRowClick={onRowClicked}
+                            />
+                        </Box>
+                    </MainCard>
+                </Grid>
+                <Grid item sm={7}>
+                    <MainCard
+                        content={false}
+                        title="계정과목"
+                        secondary={
+                            <Grid container spacing={1}>
+                                <Grid item>
+                                    <Button variant="contained" color="secondary" startIcon={<CheckIcon />} onClick={setAccountDetail}>
+                                        선택
+                                    </Button>
+                                </Grid>
+                                {/* <Grid item>
+                                <Button variant="contained" color="secondary" startIcon={<DeleteIcon />}>
+                                    삭제
+                                </Button>
+                            </Grid>
+                            <Grid item>
+                                <Button variant="contained" color="secondary" startIcon={<SaveIcon />}>
+                                    저장
+                                </Button> 
+                            </Grid>*/}
+                            </Grid>
+                        }
                     >
-                        <DataGrid
-                            rows={accountData}
-                            columns={accountColumns}
-                            // pageSize={15}
-                            // rowsPerPageOptions={[5]}
-                            getRowId={(row) => row.accountName}
-                            onRowClick={onRowClicked}
-                        />
-                    </Box>
-                </MainCard>
-            </Grid>
-            <Grid item sm={7}>
-                <MainCard
-                    content={false}
-                    title="계정과목"
-                    // secondary={
-                    //     <Grid container spacing={1}>
-                    //         <Grid item>
-                    //             <Button variant="contained" color="secondary" startIcon={<AddCircleIcon />}>
-                    //                 추가
-                    //             </Button>
-                    //         </Grid>
-                    //         <Grid item>
-                    //             <Button variant="contained" color="secondary" startIcon={<DeleteIcon />}>
-                    //                 삭제
-                    //             </Button>
-                    //         </Grid>
-                    //         <Grid item>
-                    //             <Button variant="contained" color="secondary" startIcon={<SaveIcon />}>
-                    //                 저장
-                    //             </Button>
-                    //         </Grid>
-                    //     </Grid>
-                    // }
-                >
-                    {/* table data grid */}
-                    <Box
-                        sx={{
-                            height: 500,
-                            width: '100%',
-                            '& .MuiDataGrid-root': {
-                                border: 'none',
-                                '& .MuiDataGrid-cell': {
-                                    borderColor: theme.palette.mode === 'dark' ? theme.palette.text.primary + 15 : 'grey.200'
-                                },
-                                '& .MuiDataGrid-columnsContainer': {
-                                    color: theme.palette.mode === 'dark' ? 'grey.600' : 'grey.900',
-                                    borderColor: theme.palette.mode === 'dark' ? theme.palette.text.primary + 15 : 'grey.200'
-                                },
-                                '& .MuiDataGrid-columnSeparator': {
-                                    color: theme.palette.mode === 'dark' ? theme.palette.text.primary + 15 : 'grey.200'
+                        {/* table data grid */}
+                        <Box
+                            sx={{
+                                height: 500,
+                                width: '100%',
+                                '& .MuiDataGrid-root': {
+                                    border: 'none',
+                                    '& .MuiDataGrid-cell': {
+                                        borderColor: theme.palette.mode === 'dark' ? theme.palette.text.primary + 15 : 'grey.200'
+                                    },
+                                    '& .MuiDataGrid-columnsContainer': {
+                                        color: theme.palette.mode === 'dark' ? 'grey.600' : 'grey.900',
+                                        borderColor: theme.palette.mode === 'dark' ? theme.palette.text.primary + 15 : 'grey.200'
+                                    },
+                                    '& .MuiDataGrid-columnSeparator': {
+                                        color: theme.palette.mode === 'dark' ? theme.palette.text.primary + 15 : 'grey.200'
+                                    }
                                 }
-                            }
-                        }}
-                    >
-                        <DataGrid
-                            rows={accountDetailData}
-                            columns={accountDetailcolums}
-                            // pageSize={5}
-                            // rowsPerPageOptions={[5]}
-                            // checkboxSelection
-                            getRowId={(row) => row.accountInnerCode}
-                            onRowClick={onSelectAccount}
-                        />
-                    </Box>
-                </MainCard>
+                            }}
+                        >
+                            <DataGrid
+                                rows={accountDetailData}
+                                columns={accountDetailcolums}
+                                // pageSize={5}
+                                // rowsPerPageOptions={[5]}
+                                // checkboxSelection
+                                getRowId={(row) => row.accountInnerCode}
+                                onRowClick={onSelectAccount}
+                            />
+                        </Box>
+                    </MainCard>
+                </Grid>
             </Grid>
-        </Grid>
+        </Dialog>
     );
-}
+};
+
+export default AccountDialog;

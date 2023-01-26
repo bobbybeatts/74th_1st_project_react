@@ -120,16 +120,17 @@ const SlipForm = () => {
 
     const [jourNo, setJourNo] = useState('');
     const [jourCount, setJourCount] = useState('1');
+    const [accountCode, setAccountCode] = useState(''); //계정선택 useState();
+    const [accountName, setAccountName] = useState('');
 
     const [openDialog, setOpenDialog] = useState(false);
     const handleClose = () => {
         setOpenDialog(false);
-        setAccountSelectDialog(false);
     };
     const deleteCheck = () => {
         setOpenDialog(true);
     };
-    const [accountSelectDialog, setAccountSelectDialog] = useState(false);
+    const [accountSelectDialog, setAccountSelectDialog] = useState(false); //계정선택 dialog
     // const [newAccount, setNewAccount] = useState({
     //     accountInnerCode: "",
     //     parentAccountInnercode: "",
@@ -153,9 +154,23 @@ const SlipForm = () => {
 
     //==========================전표=================================
     const accountSelect = (e) => {
+        //분개 - 계정과목명 더블 클릭 --> 계정 선택 다이알로그
         if (e.field == 'accountName') {
             setAccountSelectDialog(true);
         }
+    };
+
+    const setAccountDetail = () => {
+        setAccountSelectDialog(false);
+        console.log(accountCode);
+        console.log(accountName);
+        // dispatch({
+        //     type: types.INSERT_ACCOUNT,              <<<<<<이거하는중
+        //     params: {
+        //         accountCode: accountCode,
+        //         accountName: accountName
+        //     }
+        // });
     };
 
     const searchSlip = () => {
@@ -249,8 +264,8 @@ const SlipForm = () => {
             dispatch({
                 type: types.INSERT_JOURNAL,
                 params: {
-                    accountCode: '',
-                    accountName: '',
+                    accountCode: accountCode,
+                    accountName: accountName,
                     accountPeriodNo: periodNo,
                     balanceDivision: '대변',
                     customerCode: '',
@@ -479,9 +494,12 @@ const SlipForm = () => {
                                 <Button onClick={deleteSlip}>삭제</Button>
                             </DialogActions>
                         </Dialog> */}
-                        <Dialog open={accountSelectDialog} onClose={handleClose} maxWidth={'xl'}>
-                            <AccountDialog />
-                        </Dialog>
+                        <AccountDialog
+                            open={accountSelectDialog}
+                            onClose={setAccountDetail}
+                            setAccountCode={setAccountCode}
+                            setAccountName={setAccountName}
+                        />
                     </Box>
                 </MainCard>
                 {/* =================================분개상세데이터그리드================================= */}
