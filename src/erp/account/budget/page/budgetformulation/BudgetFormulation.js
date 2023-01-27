@@ -49,7 +49,6 @@ const BudgetStatus = () => {
                                 inputProps={{ 'aria-label': 'Fisical Year' }}
                                 value={year}
                             />
-
                             <IconButton type="button" sx={{ p: '10px' }} aria-label="search" onClick={selectYear}>
                                 <SearchIcon />
                             </IconButton>
