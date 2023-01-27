@@ -270,11 +270,11 @@ const AccountReducer = (state = initialState, action) => {
                 ...state,
                 error: action.payload
             };
-        // case INSERT_JOURNAL: // 분개 추가
-        //     return {
-        //         ...state,
-        //         journalList: [action.params].concat(state.journalList)
-        //     };
+        case INSERT_JOURNAL: // 분개 추가
+            return {
+                ...state,
+                journalList: [action.params].concat(state.journalList)
+            };
         case INSERT_ACCOUNT: //분개 계정 추가
             return {
                 ...state,
