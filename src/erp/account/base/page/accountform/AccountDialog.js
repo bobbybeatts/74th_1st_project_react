@@ -10,8 +10,9 @@ import MainCard from '../../../../../template/ui-component/cards/MainCard';
 import { gridSpacing } from '../../../../../template/store/constant';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import YearDialog from 'erp/account/budget/page/budgetformulation/YearDialog';
 
-import * as types from '../../reducer/BaseReducer';
+import * as types from '../../../base/reducer/BaseReducer';
 
 const accountColumns = [
     { headerName: '계정과목 코드', field: 'accountInnerCode', width: 120 },

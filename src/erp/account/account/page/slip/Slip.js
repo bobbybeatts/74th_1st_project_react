@@ -40,8 +40,8 @@ const slipColumns = [
 const indignationColumns = [
     { width: '30', headerCheckboxSelection: true, checkboxSelection: true, field: ' ' }, //체크박스
     { width: '250', headerName: '분개일련번호', field: 'journalNo', editable: true },
-    { headerName: '계정코드', field: 'accountCode' },
-    { headerName: '계정명', field: 'accountName' },
+    { headerName: '계정코드', field: 'accountCode', editable: true },
+    { headerName: '계정명', field: 'accountName', editable: true },
     {
         headerName: '대차구분',
         field: 'balanceDivision',
@@ -164,13 +164,13 @@ const SlipForm = () => {
         setAccountSelectDialog(false);
         console.log(accountCode);
         console.log(accountName);
-        // dispatch({
-        //     type: types.INSERT_ACCOUNT,              <<<<<<이거하는중
-        //     params: {
-        //         accountCode: accountCode,
-        //         accountName: accountName
-        //     }
-        // });
+        dispatch({
+            type: types.INSERT_ACCOUNT,
+            params: {
+                accountCode: accountCode,
+                accountName: accountName
+            }
+        });
     };
 
     const searchSlip = () => {
@@ -264,8 +264,8 @@ const SlipForm = () => {
             dispatch({
                 type: types.INSERT_JOURNAL,
                 params: {
-                    accountCode: '',
-                    accountName: '',
+                    accountCode: accountCode,
+                    accountName: accountName,
                     accountPeriodNo: periodNo,
                     balanceDivision: '대변',
                     customerCode: '',
@@ -485,7 +485,7 @@ const SlipForm = () => {
                             hideFooter
                             getRowId={(row) => row.journalNo}
                             onCellClick={searchDetail}
-                            onCellDoubleClick={accountSelect}
+                            onCellDoubleClick={accountSelect} // 어카운트를 등록 하는 게 안됨
                         />
                         {/* <Dialog open={openDialog} onClose={handleClose}>
                             <DialogContent>정말 삭제 하시겠습니까?</DialogContent>

@@ -1,10 +1,11 @@
 // material-ui
-import { Box, Button, Grid, TextField, Typography } from '@mui/material';
+import { Box, Button, Grid, TextField, Typography, Paper } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import { useTheme } from '@mui/material/styles';
-import AddCircleIcon from "@mui/icons-material/AddCircle";
-import DeleteIcon from "@mui/icons-material/Delete";
-import SaveIcon from "@mui/icons-material/Save";
+import { gridSpacing } from '../../../../../template/store/constant';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import DeleteIcon from '@mui/icons-material/Delete';
+import SaveIcon from '@mui/icons-material/Save';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import SearchIcon from '@mui/icons-material/Search';
 import MenuItem from '@mui/material/MenuItem';
@@ -16,23 +17,31 @@ import TotalGrowthBarChart from 'template/ui-component/cards/Skeleton/TotalGrowt
 
 // ==============================|| SAMPLE PAGE ||============================== //
 
-
-
 const BudgetStatus = () => {
+    const theme = useTheme();
+    const selectYear = () => {
+        console.log(1);
+    };
     return (
-        <Grid>
+        <Grid container spacing={gridSpacing}>
             <Grid item xs={12}>
-                <div align="center">
-                    <Typography variant="h3">[ 검색조건 ]</Typography>
-                    <div>
-                        <TextField
-                            value={"Hi"}
-                        />
-                    </div>
-                </div>
+                <MainCard
+                    content={false}
+                    title=""
+                    sx={{
+                        '&MuiCard-root': { color: theme.palette.text.primary }
+                    }}
+                    secondary={
+                        <Grid container spacing={4}>
+                            <Grid item>
+                                <Paper id="selectYear" variant="contained" onClick={selectYear}></Paper>
+                            </Grid>
+                        </Grid>
+                    }
+                ></MainCard>
             </Grid>
         </Grid>
-    )
-}
+    );
+};
 
 export default BudgetStatus;

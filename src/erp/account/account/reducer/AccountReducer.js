@@ -278,7 +278,7 @@ const AccountReducer = (state = initialState, action) => {
         case INSERT_ACCOUNT: //분개 계정 추가
             return {
                 ...state,
-                journalList: state.journalList
+                journalList: state.journalList.concat(action.params)
             };
         case DELETE_JOURAL_FAILURE: //분개삭제실패
             return {
