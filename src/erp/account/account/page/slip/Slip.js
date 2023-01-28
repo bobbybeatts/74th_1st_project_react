@@ -32,7 +32,13 @@ const slipColumns = [
     { width: '180', headerName: '전표일련번호', field: 'slipNo', key: 'slipNo' },
     { headerName: '작성날짜', field: 'reportingDate', key: 'reportingDate', type: 'date' },
     { headerName: '작성자코드', field: 'reportingEmpCode', key: 'reportingEmpCode' },
-    { width: '200', headerName: '품의내역', field: 'expenseReport', editable: true, key: 'expenseReport' }, // editable : 편집가능
+    {
+        width: '200',
+        headerName: '품의내역',
+        field: 'expenseReport',
+        editable: true,
+        key: 'expenseReport'
+    }, // editable : 편집가능
     { headerName: '승인자', field: 'reportingEmpName', key: 'reportingEmpName' },
     { headerName: '승인상태', field: 'slipStatus', key: 'slipStatus' }
 ];
@@ -69,6 +75,7 @@ const indignationColumns = [
         //valueFormatter:' Math.floor(value).toString().replace(/(\\d)(?=(\\d{3})+(?!\\d))/g, "$1,")+"원"',
     }
 ];
+
 //분개상세칼럼
 const indignationDetailColumns = [
     { width: '30', headerCheckboxSelection: true, checkboxSelection: true, field: ' ' }, //체크박스
@@ -82,16 +89,7 @@ const indignationDetailColumns = [
         width: 250
     }
 ];
-//계정과목대분류 칼럼
-const accountCodeColumn = [
-    { headerName: '계정과목코드분류', field: '' },
-    { headerName: '계정과목대분류', fiedl: '' }
-];
-//계정과목소분류 컬럼
-const accountCodeDetailColumn = [
-    { headerName: '계정과목코드', field: '' },
-    { headerName: '계정과목', fiedl: '' }
-];
+
 // ==============================|| 일반전표 ||============================== //
 
 const SlipForm = () => {
@@ -161,6 +159,7 @@ const SlipForm = () => {
     };
 
     const setAccountDetail = () => {
+        //분개 계정 선택
         setAccountSelectDialog(false);
         console.log(accountCode);
         console.log(accountName);
@@ -168,9 +167,11 @@ const SlipForm = () => {
             type: types.INSERT_ACCOUNT,
             params: {
                 accountCode: accountCode,
-                accountName: accountName
+                accountName: accountName,
+                journalData: journalData
             }
         });
+        console.log(journalData);
     };
 
     const searchSlip = () => {
