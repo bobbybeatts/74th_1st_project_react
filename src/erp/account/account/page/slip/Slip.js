@@ -23,6 +23,7 @@ import moment from 'moment/moment';
 
 import { Dialog, DialogTitle, DialogContent, DialogActions, DialogContentText } from '@material-ui/core';
 import Swal from 'sweetalert2';
+import { id } from 'date-fns/locale';
 
 //Columns
 //전표칼럼
