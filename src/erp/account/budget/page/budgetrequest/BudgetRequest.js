@@ -9,20 +9,13 @@ import Divider from '@mui/material/Divider';
 
 import { gridSpacing } from '../../../../../template/store/constant';
 import MainCard from 'template/ui-component/cards/MainCard';
-import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 
 import { DataGrid } from '@mui/x-data-grid';
 import { useTheme } from '@mui/material/styles';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
-import DeleteIcon from '@mui/icons-material/Delete';
-import SaveIcon from '@mui/icons-material/Save';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-// project imports
+import YearDialog from '../budgetformulation/YearDialog';
+import DeptDialog from './DeptDialog';
 
 import TotalGrowthBarChart from 'template/ui-component/cards/Skeleton/TotalGrowthBarChart';
 
@@ -43,37 +36,36 @@ import TotalGrowthBarChart from 'template/ui-component/cards/Skeleton/TotalGrowt
 // 예산신청 계정관련 : https://mui.com/material-ui/react-text-field/
 
 const BudgetRequest = () => {
-    const [open, setOpen] = useState(false);
-    const budgetListData = () => {};
-    const theme = useTheme();
-    const [year, setYear] = useState('2020');
+    const [openDialog, setOpenDialog] = useState(false);
+    const [openDialog2, setOpenDialog2] = useState(false);
+    const [Workplace, setWorkplace] = useState('');
 
-    const [openY, setOpenY] = useState(false);
+    const theme = useTheme();
+    const [year, setYear] = useState('');
+    const onClose = () => {
+        setOpenDialog(false);
+    };
+
+    const onClose2 = () => {
+        setOpenDialog2(false);
+    };
+
+    const onOpen = () => {
+  
+        setOpenDialog(true);
+    };
+
+    const onOpen2 = () => {
+        setOpenDialog2(true);
+    };
 
     return (
         <Grid container spacing={gridSpacing}>
             <Grid item xs={12}>
-                <div align="center">
-                    <div>
-                        <Button onClick={budgetListData} variant="contained" color="secondary">
-                            회계 연도 조회
-                        </Button>
-                        <Modal open={open}>
-                            <div
-                                align="center"
-                                className="ag-theme-balham"
-                                style={{
-                                    width: '50%',
-                                    height: 500,
-                                    background: 'white'
-                                }}
-                            ></div>
-                        </Modal>
-                    </div>
-                </div>
+                <div align="center"></div>
                 <MainCard
                     content={false}
-                    title="계정과목선택"
+                    title="연도,부서선택"
                     sx={{
                         '&MuiCard-root': { color: theme.palette.text.primary }
                     }}
@@ -87,14 +79,16 @@ const BudgetRequest = () => {
                                 >
                                     <InputBase
                                         sx={{ ml: 1, flex: 1 }}
-                                        placeholder="Search Google Maps"
+                                        placeholder="회계연도 2023"
                                         inputProps={{ 'aria-label': 'search google maps' }}
+                                        value={year}
                                     />
-                                    <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
+                                    <IconButton type="button" sx={{ p: '10px' }} aria-label="search" onClick={onOpen}>
                                         <SearchIcon />
                                     </IconButton>
                                     <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
                                 </Paper>
+                                <YearDialog open={openDialog} onClose={onClose} setYear={setYear} />
                             </Grid>
                             <Grid item>
                                 <Paper
@@ -107,11 +101,12 @@ const BudgetRequest = () => {
                                         placeholder="Search Google Maps"
                                         inputProps={{ 'aria-label': 'search google maps' }}
                                     />
-                                    <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
+                                    <IconButton type="button" sx={{ p: '10px' }} aria-label="search" onClick={onOpen2}>
                                         <SearchIcon />
                                     </IconButton>
                                     <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
                                 </Paper>
+                                <DeptDialog open2={openDialog2} onClose2={onClose2} setWorkplace={setWorkplace}/>
                             </Grid>
                             <Grid item>
                                 <Paper
@@ -148,16 +143,7 @@ const BudgetRequest = () => {
                                 }
                             }
                         }}
-                    >
-                        {/* <DataGrid
-                            rows={slipData}
-                            columns={slipColumns}
-                            // checkboxSelection
-                            hideFooter
-                            getRowId={(row) => row.slipNo}
-                            onRowClick={searchJour}
-                        /> */}
-                    </Box>
+                    ></Box>
                 </MainCard>
             </Grid>
         </Grid>
