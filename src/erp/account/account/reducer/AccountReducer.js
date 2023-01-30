@@ -280,32 +280,11 @@ const AccountReducer = (state = initialState, action) => {
             console.log(state.journalList);
             return {
                 ...state,
-                journalList: action.params.journalData,
-                ...action.params.journalData,
-                journalData: [
-                    {
-                        accountCode: action.params.accountCode,
-                        accountName: action.params.accountName
-                    }
-                ]
-
-                // [
-                //     ...state.journalList,
-                //     {
-                //         [accountCode]: action.params.accountCode,
-                //         [accountName]: action.params.accountName
-                //     }
-                // ]
-                // accountCode: action.params.accountCode,
-                // accountName: action.params.accountName
-
-                // setState({
-                //     ...state,
-                //     obj: {
-                //       ...state.obj,
-                //       key: value,
-                //     }
-                //   })
+                journalList: {
+                    ...action.params.journalData,
+                    'action.params.journalData[0].accountCode': action.params.accountCode,
+                    'action.params.journalData[0].accountName': action.params.accountName
+                }
             };
         case DELETE_JOURAL_FAILURE: //분개삭제실패
             return {

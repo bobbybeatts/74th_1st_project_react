@@ -265,8 +265,8 @@ const SlipForm = () => {
             dispatch({
                 type: types.INSERT_JOURNAL,
                 params: {
-                    accountCode: accountCode,
-                    accountName: accountName,
+                    accountCode: '',
+                    accountName: '',
                     accountPeriodNo: periodNo,
                     balanceDivision: '대변',
                     customerCode: '',
