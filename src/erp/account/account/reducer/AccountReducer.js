@@ -276,10 +276,16 @@ const AccountReducer = (state = initialState, action) => {
                 journalList: [action.params].concat(state.journalList)
             };
         case INSERT_ACCOUNT: //분개 계정 추가
-            console.log(action.params.journalList);
+            console.log(action.params.journalList); //  넘어오는 데이터
             return {
                 ...state,
-                journalList: state.journalList
+                journalList: [
+                    {
+                        ...action.params.journalList,
+                        accountCode: action.params.accountCode,
+                        accountName: action.params.accountName
+                    }
+                ]
             };
         case DELETE_JOURAL_FAILURE: //분개삭제실패
             return {

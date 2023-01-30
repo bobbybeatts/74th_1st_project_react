@@ -120,6 +120,7 @@ const SlipForm = () => {
     const [jourCount, setJourCount] = useState('1');
     const [accountCode, setAccountCode] = useState(''); //계정선택 useState();
     const [accountName, setAccountName] = useState('');
+    const [selecJour, setSelecJour] = useState('');
 
     const [openDialog, setOpenDialog] = useState(false);
     const handleClose = () => {
@@ -155,23 +156,22 @@ const SlipForm = () => {
         //분개 - 계정과목명 더블 클릭 --> 계정 선택 다이알로그
         if (e.field == 'accountName') {
             setAccountSelectDialog(true);
+            setSelecJour(e.row);
         }
     };
 
     const setAccountDetail = () => {
         //분개 계정 선택
         setAccountSelectDialog(false);
-        console.log(accountCode);
-        console.log(accountName);
+        console.log(selecJour);
         dispatch({
             type: types.INSERT_ACCOUNT,
             params: {
                 accountCode: accountCode,
                 accountName: accountName,
-                journalList: journalData
+                journalList: selecJour
             }
         });
-        console.log(journalData);
     };
 
     const searchSlip = () => {
@@ -210,8 +210,8 @@ const SlipForm = () => {
                 status: '작성중'
             }
         });
-        if (slipCount == '0009') setSlipCount('00' + (parseInt(slipCount) + 1));
-        else setSlipCount('000' + (parseInt(slipCount) + 1));
+        if (slipCount == '00009') setSlipCount('000' + (parseInt(slipCount) + 1));
+        else setSlipCount('0000' + (parseInt(slipCount) + 1));
         console.log(slipCount);
     };
 
