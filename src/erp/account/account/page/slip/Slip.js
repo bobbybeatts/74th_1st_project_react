@@ -168,7 +168,7 @@ const SlipForm = () => {
             params: {
                 accountCode: accountCode,
                 accountName: accountName,
-                journalData: journalData
+                journalList: journalData
             }
         });
         console.log(journalData);
@@ -265,8 +265,8 @@ const SlipForm = () => {
             dispatch({
                 type: types.INSERT_JOURNAL,
                 params: {
-                    accountCode: '',
-                    accountName: '',
+                    accountCode: accountCode,
+                    accountName: accountName,
                     accountPeriodNo: periodNo,
                     balanceDivision: '대변',
                     customerCode: '',
