@@ -173,8 +173,6 @@ const SlipForm = () => {
                 journalList: selecJour
             }
         });
-        setAccountCode('');
-        setAccountName('');
     };
 
     const searchSlip = () => {
