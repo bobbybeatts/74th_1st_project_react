@@ -55,11 +55,6 @@ const indignationColumns = [
         editable: true,
         type: 'singleSelect',
         valueOptions: ['대변', '차변']
-        // cellEditor: 'agSelectCellEditor', //콤보 생성
-        // //콤보List
-        // cellEditorParams: {
-        //     values: ['대변', '차변']
-        // }
     },
     { headerName: '거래처코드', field: 'customerCode' },
     { headerName: '거래처명', field: 'customerName', hide: true },
@@ -131,26 +126,6 @@ const SlipForm = () => {
         setOpenDialog(true);
     };
     const [accountSelectDialog, setAccountSelectDialog] = useState(false); //계정선택 dialog
-    // const [newAccount, setNewAccount] = useState({
-    //     accountInnerCode: "",
-    //     parentAccountInnercode: "",
-    //     accountCode: "",
-    //     accountCharacter: "",
-    //     accountName: "",
-    //     accountUseCheck: "",
-    //     accountDivision: "",
-    //     accountDescription: "",
-    //     groupCode: "",
-    //     editable: "",
-    //     accountInnerName: ""
-    // })
-    // const accountInnerCodeChange = e => {
-    //     setNewAccount({
-    //         ...newAccount,
-    //         accountInnerCode: e.target.value,
-    //         accountCode: e.target.value
-    //     })
-    // }
 
     //==========================전표=================================
     const accountSelect = (e) => {
@@ -192,27 +167,29 @@ const SlipForm = () => {
         dispatch({
             type: types.ADD_SLIP,
             params: {
+                // accountPeriodNo: periodNo,
+                // approvalDate: '',
+                // approvalEmpCode: 'admin',
+                // authorizationStatus: null,
+                // balanceDivision: null,
+                // deptCode: '',
+                // deptName: null,
+                // expenseReport: expenseReport,
+                // id: slipCount,
+                // positionCode: null,
+                // reportingDate: endDate,
+                // reportingEmpCode: 'admin',
+                // reportingEmpName: '',
+                // slipNo: endDate.split('-').join('') + 'SLIP' + slipCount,
+                // slipStatus: '',
+                // slipType: '',
+                // status: '작성중'
                 accountPeriodNo: periodNo,
-                approvalDate: '',
-                approvalEmpCode: 'admin',
-                authorizationStatus: null,
-                balanceDivision: null,
-                deptCode: '',
-                deptName: null,
-                expenseReport: expenseReport,
-                id: slipCount,
-                positionCode: null,
                 reportingDate: endDate,
-                reportingEmpCode: 'admin',
-                reportingEmpName: '',
-                slipNo: endDate.split('-').join('') + 'SLIP' + slipCount,
-                slipStatus: '',
-                slipType: '',
-                status: '작성중'
+                id: slipCount
             }
         });
-        if (slipCount == '00009') setSlipCount('000' + (parseInt(slipCount) + 1));
-        else setSlipCount('0000' + (parseInt(slipCount) + 1));
+        setSlipCount(parseInt(slipCount) + 1);
         console.log(slipCount);
     };
 
@@ -245,12 +222,16 @@ const SlipForm = () => {
     };
     //==========================분개=================================
     const searchJour = (e) => {
-        dispatch({
-            type: types.SELECT_JOURNAL_START,
-            params: {
-                slipNo: e.row.slipNo
-            }
-        });
+        if (e.row.slipNo == 'new') {
+            console.log('newSlip');
+        } else {
+            dispatch({
+                type: types.SELECT_JOURNAL_START,
+                params: {
+                    slipNo: e.row.slipNo
+                }
+            });
+        }
         setSlipNo(e.id);
         // setExpenseReport(e.row.expenseReport);
     };
@@ -489,13 +470,6 @@ const SlipForm = () => {
                             onCellClick={searchDetail}
                             onCellDoubleClick={accountSelect} // 어카운트를 등록 하는 게 안됨
                         />
-                        {/* <Dialog open={openDialog} onClose={handleClose}>
-                            <DialogContent>정말 삭제 하시겠습니까?</DialogContent>
-                            <DialogActions>
-                                <Button onClick={handleClose}>취소</Button>
-                                <Button onClick={deleteSlip}>삭제</Button>
-                            </DialogActions>
-                        </Dialog> */}
                         <AccountDialog
                             open={accountSelectDialog}
                             onClose={setAccountDetail}

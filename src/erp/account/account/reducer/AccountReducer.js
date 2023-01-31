@@ -1,3 +1,4 @@
+import { AcUnitTwoTone } from '@material-ui/icons';
 import { createAction } from 'redux-actions';
 
 //========================================= 2020-09-04 일반전표  조진주 시작 ==============================================
@@ -200,6 +201,43 @@ const initialState = {
     assetDta: [],
     deptList: []
 };
+const initialslipFormList = {
+    accountPeriodNo: '',
+    approvalDate: '',
+    approvalEmpCode: 'admin',
+    authorizationStatus: null,
+    balanceDivision: null,
+    deptCode: '',
+    deptName: null,
+    expenseReport: '',
+    id: '',
+    positionCode: null,
+    reportingDate: '',
+    reportingEmpCode: 'admin',
+    reportingEmpName: '',
+    slipNo: 'new',
+    slipStatus: '',
+    slipType: '',
+    status: '작성중'
+};
+
+const initialJournalList = {
+    accountCode: '',
+    accountName: '',
+    accountPeriodNo: '',
+    balanceDivision: '대변',
+    customerCode: '',
+    customerName: null,
+    deptCode: null,
+    id: '',
+    journalDetailList: null,
+    journalNo: '',
+    leftDebtorPrice: '0',
+    price: null,
+    rightCreditsPrice: '0',
+    slipNo: '',
+    status: ''
+};
 
 const AccountReducer = (state = initialState, action) => {
     // 위에서 만든 액션을 넣어 준다.
@@ -210,7 +248,24 @@ const AccountReducer = (state = initialState, action) => {
             console.log(action.params);
             return {
                 ...state,
-                slipFormList: [action.params].concat(state.slipFormList)
+                slipFormList: [
+                    {
+                        ...initialslipFormList,
+                        accountPeriodNo: action.params.accountPeriodNo,
+                        reportingDate: action.params.reportingDate,
+                        id: action.params.id
+                    }
+                ].concat(state.slipFormList),
+                journalList: [
+                    {
+                        ...initialJournalList,
+                        id: action.params.id
+                    },
+                    {
+                        ...initialJournalList,
+                        id: action.params.id + 1
+                    }
+                ]
             };
         case SELECT_SLIP_START:
             console.log('날짜 조회 성공', action);

@@ -14,8 +14,8 @@ import SearchIcon from '@mui/icons-material/Search';
 import { DataGrid } from '@mui/x-data-grid';
 import { useTheme } from '@mui/material/styles';
 
-import YearDialog from '../budgetformulation/YearDialog';
-import DeptDialog from './DeptDialog';
+import YearDialog from '../dialog/YearDialog';
+import DeptDialog from '../dialog/DeptDialog';
 
 import TotalGrowthBarChart from 'template/ui-component/cards/Skeleton/TotalGrowthBarChart';
 
@@ -51,7 +51,6 @@ const BudgetRequest = () => {
     };
 
     const onOpen = () => {
-  
         setOpenDialog(true);
     };
 
@@ -106,7 +105,7 @@ const BudgetRequest = () => {
                                     </IconButton>
                                     <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
                                 </Paper>
-                                <DeptDialog open2={openDialog2} onClose2={onClose2} setWorkplace={setWorkplace}/>
+                                <DeptDialog open2={openDialog2} onClose2={onClose2} setWorkplace={setWorkplace} />
                             </Grid>
                             <Grid item>
                                 <Paper
