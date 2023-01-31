@@ -1,7 +1,9 @@
 import accountApi from 'api/accountApi';
-import { SEARCH_ASSET_DTA_REQUEST } from "../reducer/AccountReducer";
+import { SEARCH_ASSET_DTA_REQUEST } from '../reducer/AccountReducer';
 
-export const selectSlip = (action) =>// 전표 조회 사가
+export const selectSlip = (
+    action // 전표 조회 사가
+) =>
     accountApi.get('/posting/rangedsliplist', {
         params: {
             startDate: action.params.startDate,
@@ -9,8 +11,8 @@ export const selectSlip = (action) =>// 전표 조회 사가
             slipStatus: action.params.slipStatus
         }
     });
-
-export const deleteSlip = (action) =>// 전표 삭제 사가
+// 전표 삭제 사가
+export const deleteSlip = (action) =>
     accountApi.get('/posting/deleteSlip', {
         params: { slipNo: action.params.slipNo }
     });
@@ -30,12 +32,10 @@ export const searchJournal = (action) =>
     });
 
 export const deleteJournal = (action) =>
-    accountApi.get('/account/deleteJournalRow', {
+    accountApi.get('/posting/journalremoval', {
         params: {
-            slipNo: action.payload.slipNo,
-            journalNo: action.payload.journalNo
+            journalNo: action.params.journalNo
         }
-        //이희선
     });
 
 export const saveJournal = (action) =>
@@ -122,9 +122,7 @@ export const deleteNonCurrent = (action) =>
     });
 
 //자산 관리 리스트
-export const searchCurrent = (action) =>
-    accountApi.get('/posting/assetlist', {})
-
+export const searchCurrent = (action) => accountApi.get('/posting/assetlist', {});
 
 //세부자산관리 리스트
 export const searchAssetList = (action) =>
@@ -132,16 +130,13 @@ export const searchAssetList = (action) =>
         params: {
             parentsCode: action.params.parentsCode
         }
-    })
+    });
 
 export const searchAssetDta = (action) =>
     accountApi.get('/posting/assetDta', {
         params: {
             parentsCode: action.params.parentsCode
         }
-    })
+    });
 
-export const searchDept = (action) =>
-    accountApi.get('/operate/deptlist', {
-
-    })
+export const searchDept = (action) => accountApi.get('/operate/deptlist', {});

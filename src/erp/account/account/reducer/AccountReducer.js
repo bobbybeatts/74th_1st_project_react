@@ -1,4 +1,5 @@
 import { AcUnitTwoTone } from '@material-ui/icons';
+import { accordionActionsClasses } from '@mui/material';
 import { createAction } from 'redux-actions';
 
 //========================================= 2020-09-04 일반전표  조진주 시작 ==============================================
@@ -70,8 +71,6 @@ export const updateSlipFailure = createAction(UPDATE_SLIP_FAILURE);
 export const selectJournalStart = createAction(SELECT_JOURNAL_START); //분개조회
 export const selectJournalSuccess = createAction(SELECT_JOURNAL_SUCCESS);
 export const selectJournalFailure = createAction(SELECT_JOURNAL_FAILURE);
-
-// export const insertJournal = createAction(INSERT_JOURNAL);
 
 export const deleteJournalStart = createAction(DELETE_JOURNAL_START); //분개삭제
 export const deleteJournalFailure = createAction(DELETE_JOURAL_FAILURE);
@@ -232,9 +231,9 @@ const initialJournalList = {
     id: '',
     journalDetailList: null,
     journalNo: '',
-    leftDebtorPrice: '0',
+    leftDebtorPrice: '',
     price: null,
-    rightCreditsPrice: '0',
+    rightCreditsPrice: '',
     slipNo: '',
     status: ''
 };
@@ -252,18 +251,21 @@ const AccountReducer = (state = initialState, action) => {
                     {
                         ...initialslipFormList,
                         accountPeriodNo: action.params.accountPeriodNo,
-                        reportingDate: action.params.reportingDate,
-                        id: action.params.id
+                        reportingDate: action.params.reportingDate
                     }
                 ].concat(state.slipFormList),
                 journalList: [
                     {
                         ...initialJournalList,
-                        id: action.params.id
+                        journalNo: 'new 차변',
+                        balanceDivision: '차변',
+                        leftDebtorPrice: '0'
                     },
                     {
                         ...initialJournalList,
-                        id: action.params.id + 1
+                        journalNo: 'new 대변',
+                        balanceDivision: '대변',
+                        rightCreditsPrice: '0'
                     }
                 ]
             };
@@ -291,6 +293,7 @@ const AccountReducer = (state = initialState, action) => {
                 error: action.payload
             };
         case DELETE_SLIP_SUCCESS: //전표삭제 성공
+            console.log('delete slip');
             return {
                 ...state,
                 slipFormList: [],
@@ -328,19 +331,32 @@ const AccountReducer = (state = initialState, action) => {
         case INSERT_JOURNAL: // 분개 추가
             return {
                 ...state,
-                journalList: [action.params].concat(state.journalList)
+                journalList: [
+                    {
+                        ...initialJournalList,
+                        journalNo: action.params.journalNo
+                    }
+                ].concat(state.journalList)
             };
         case INSERT_ACCOUNT: //분개 계정 추가
-            console.log(action.params.journalList); //  넘어오는 데이터
+            console.log(state.journalList);
+            console.log(action.params.selecJour); //  넘어오는 데이터 -- object타입
             return {
                 ...state,
                 journalList: [
                     {
-                        ...action.params.journalList,
+                        ...action.params.selecJour,
                         accountCode: action.params.accountCode,
                         accountName: action.params.accountName
                     }
-                ]
+                ].concat(action.params.journalData)
+            };
+        case DELETE_JOURNAL_START:
+            console.log('delete journal');
+            return {
+                ...state,
+                journalList: [],
+                journalDetailList: []
             };
         case DELETE_JOURAL_FAILURE: //분개삭제실패
             return {
