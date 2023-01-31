@@ -21,7 +21,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as types from '../../reducer/AccountReducer';
 import moment from 'moment/moment';
 
-import { Dialog, DialogTitle, DialogContent, DialogActions, DialogContentText } from '@material-ui/core';
 import Swal from 'sweetalert2';
 
 //Columns
@@ -45,9 +44,9 @@ const slipColumns = [
 //분개칼럼
 const indignationColumns = [
     { width: '30', headerCheckboxSelection: true, checkboxSelection: true, field: ' ' }, //체크박스
-    { width: '250', headerName: '분개일련번호', field: 'journalNo', editable: true },
-    { headerName: '계정코드', field: 'accountCode', editable: true },
-    { headerName: '계정명', field: 'accountName', editable: true },
+    { width: '250', headerName: '분개일련번호', field: 'journalNo' },
+    { headerName: '계정코드', field: 'accountCode' },
+    { headerName: '계정명', field: 'accountName' },
     {
         headerName: '대차구분',
         field: 'balanceDivision',
@@ -355,13 +354,6 @@ const SlipForm = () => {
                                     삭제
                                 </Button>
                             </Grid>
-                            {/* <Dialog open={openDialog} onClose={handleClose}>
-                                <DialogContent>정말 삭제 하시겠습니까?</DialogContent>
-                                <DialogActions>
-                                    <Button onClick={handleClose}>취소</Button>
-                                    <Button onClick={deleteSlip}>삭제</Button>
-                                </DialogActions>
-                            </Dialog> */}
                             <Grid item>
                                 <Button variant="contained" color="secondary" startIcon={<SaveIcon />} onClick={updateSlip}>
                                     저장
@@ -407,11 +399,11 @@ const SlipForm = () => {
                     title="분개"
                     secondary={
                         <Grid container spacing={1}>
-                            <Grid item>
+                            {/* <Grid item>
                                 <Button variant="contained" color="secondary">
                                     발주/납품 마감신청
                                 </Button>
-                            </Grid>
+                            </Grid> */}
                             <Grid item>
                                 <Button variant="contained" color="secondary" onClick={addJour}>
                                     분개추가
@@ -422,11 +414,11 @@ const SlipForm = () => {
                                     분개삭제
                                 </Button>
                             </Grid>
-                            <Grid item>
+                            {/* <Grid item>
                                 <Button variant="contained" color="secondary">
                                     분개저장
                                 </Button>
-                            </Grid>
+                            </Grid> */}
                         </Grid>
                     }
                 >
@@ -472,10 +464,17 @@ const SlipForm = () => {
                     content={false}
                     title="분개상세"
                     secondary={
-                        <Grid item>
-                            <Button variant="contained" color="secondary">
-                                분개상세 저장
-                            </Button>
+                        <Grid container spacing={1}>
+                            <Grid item>
+                                <Button variant="contained" color="secondary">
+                                    분개상세 추가
+                                </Button>
+                            </Grid>
+                            <Grid item>
+                                <Button variant="contained" color="secondary">
+                                    분개상세 삭제
+                                </Button>
+                            </Grid>
                         </Grid>
                     }
                 >
