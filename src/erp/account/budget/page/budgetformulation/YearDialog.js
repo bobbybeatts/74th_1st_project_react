@@ -30,7 +30,7 @@ const YearDialog = ({ open, onClose, setYear }) => {
 
     const onRowClicked = (e) => {
         console.log(e);
-        setYear(e.row.periodStartDate);
+        setYear(e.row.fiscalYear);
         onClose(false);
     };
     return (

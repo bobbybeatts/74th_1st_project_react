@@ -11,13 +11,12 @@ import { gridSpacing } from '../../../../../template/store/constant';
 import { dispatch } from 'template/store';
 
 import * as types from '../../../base/reducer/BaseReducer';
-import { workplace } from 'erp/logistic/base/saga/BasicInfoSaga';
 
 // DEPARTMENT 테이블관련으로 만들 수 있을듯.
 
 const WorkPlaceColumns = [
-    { headerName: '사업장코드', field: 'workplaceCode' },
-    { headerName: '사업장명', field: 'workplaceName'}
+    { headerName: '사업장코드', field: 'workplaceCode',  align: 'center' },
+    { headerName: '사업장명', field: 'workplaceName', width: 150,  align: 'center' }
 ];
 
 const DeptColumns = [
@@ -25,12 +24,14 @@ const DeptColumns = [
     { headerName: '부서명', field: 'deptName' }
 ];
 
-const DeptDialog = ({ open2, onClose2, setWorkplace }) => {
+const DeptDialog = ({ open2, onClose2, setWorkplace, setDname }) => {
     const dispatch = useDispatch();
     const theme = useTheme();
-    const workplacedata = useSelector((state) => state.RootReducers.AccReducer.BaseReducer.deptList);
 
-    const uniqueWorkplace = _.uniqBy(workplacedata, "workplaceCode");
+    const workplacedata = useSelector((state) => state.RootReducers.AccReducer.BaseReducer.deptList);
+    const deptDetailData = useSelector((state) => state.RootReducers.AccReducer.BaseReducer.detailDeptList);
+
+    const uniqueWorkplace = _.uniqBy(workplacedata, 'workplaceCode');
 
     useEffect(() => {
         dispatch({
@@ -39,15 +40,29 @@ const DeptDialog = ({ open2, onClose2, setWorkplace }) => {
     }, []);
 
     const onRowClicked2 = (e) => {
-        console.log(uniqueWorkplace);
-        console.log(e.row);
-        setWorkplace(e.row);
+        setWorkplace(e.row.workplaceName);
+        dispatch({
+            type: types.SEARCH_DEPT_REQUEST,
+            params: {
+                workplaceCode: e.row.workplaceCode
+            }
+        });
     };
+
+    const onDeptSet = (e) => {
+        setDname(e.row.deptName);
+        onClose2(false);
+        dispatch({
+            type: types.SEARCH_ACCOUNT_REQUEST,
+        });
+    };
+
+
 
     return (
         <Dialog open={open2} fullWidth={true} maxWidth={'xs'}>
             <Grid container spacing={gridSpacing}>
-                <Grid item sm={12}>
+                <Grid item sm={6}>
                     <MainCard content={false} title="사업장">
                         {/* table data grid */}
                         <Box
@@ -72,13 +87,13 @@ const DeptDialog = ({ open2, onClose2, setWorkplace }) => {
                             <DataGrid
                                 rows={uniqueWorkplace}
                                 columns={WorkPlaceColumns}
-                                getRowId={(row) => row.deptCode}
+                                getRowId={(row) => row.workplaceCode}
                                 onRowClick={onRowClicked2}
                             />
                         </Box>
                     </MainCard>
                 </Grid>
-                <Grid item sm={12}>
+                <Grid item sm={6}>
                     <MainCard content={false} title="부서">
                         {/* table data grid */}
                         <Box
@@ -100,12 +115,7 @@ const DeptDialog = ({ open2, onClose2, setWorkplace }) => {
                                 }
                             }}
                         >
-                            {/* <DataGrid
-                                rows={workhere}
-                                columns={DeptColumns}
-                                getRowId={(row) => row.accountPeriodNo}
-                                onRowClick={onRowClicked}
-                            /> */}
+                            <DataGrid rows={deptDetailData} columns={DeptColumns} getRowId={(row) => row.deptCode} onRowClick={onDeptSet} />
                         </Box>
                     </MainCard>
                 </Grid>
