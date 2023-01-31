@@ -17,12 +17,16 @@ export const UPDATE_SLIP_START = 'src/erp/account/Saga/Saga/UPDATE_SLIP'; //전�
 export const UPDATE_SLIP_SUCCESS = 'src/erp/account/Saga/Saga/UPDATE_SLIP_SUCCESS';
 export const UPDATE_SLIP_FAILURE = 'src/erp/account/Saga/Saga/UPDATE_SLIP_FAILURE';
 
+export const INSERT_SLIP_START = 'src/erp/account/Saga/Saga/INSERT_SLIP'; // 전표 insert
+export const INSERT_SLIP_SUCCESS = 'src/erp/account/Saga/Saga/INSERT_SLIP_SUCCESS';
+export const INSERT_SLIP_FAILURE = 'src/erp/account/Saga/Saga/INSERT_SLIP_FAILURE';
+
 export const SELECT_JOURNAL_START = 'src/erp/account/Saga/Saga/SELECT_JOURNAL'; //분개 조회
 export const SELECT_JOURNAL_SUCCESS = 'src/erp/account/Saga/Saga/SELECT_JOURNAL_SUCCESS';
 export const SELECT_JOURNAL_FAILURE = 'src/erp/account/Saga/Saga/SELECT_JOURNAL_FAILURE';
 
 export const INSERT_JOURNAL = 'src/erp/account/Saga/Saga/INSERT_JOURNAL'; //분개 추가
-export const INSERT_ACCOUNT = 'src/erp/account/Saga/Saga/INSERT_ACCOUNT';
+export const INSERT_ACCOUNT = 'src/erp/account/Saga/Saga/INSERT_ACCOUNT'; //계정 추가
 
 export const DELETE_JOURNAL_START = 'src/erp/account/Saga/Saga/DELETE_JOURNAL'; //분개삭제
 export const DELETE_JOURAL_FAILURE = 'src/erp/account/Saga/Saga/DELETE_JOURAL_FAILURE';
@@ -63,10 +67,13 @@ export const deleteSlipStart = createAction(DELETE_SLIP_START); //전표삭제
 export const deleteSlipSuccess = createAction(DELETE_SLIP_SUCCESS); //전표삭제성공
 export const deleteSlipFailure = createAction(DELETE_SLIP_FAILURE);
 
-export const updateSlipStart = createAction(UPDATE_SLIP_START); //전표 update
+export const updateSlipStart = createAction(UPDATE_SLIP_START); //전표 UPDATE
 export const updateSlipSuccess = createAction(UPDATE_SLIP_SUCCESS);
-UPDATE_SLIP_SUCCESS;
 export const updateSlipFailure = createAction(UPDATE_SLIP_FAILURE);
+
+export const insertSlipStart = createAction(INSERT_SLIP_START); //전표 INSERT
+export const insertSlipSuccess = createAction(INSERT_SLIP_SUCCESS);
+export const insertSlipFailure = createAction(INSERT_SLIP_FAILURE);
 
 export const selectJournalStart = createAction(SELECT_JOURNAL_START); //분개조회
 export const selectJournalSuccess = createAction(SELECT_JOURNAL_SUCCESS);
@@ -311,6 +318,19 @@ const AccountReducer = (state = initialState, action) => {
                 slipFormList: action.payload
             };
         case UPDATE_SLIP_FAILURE: //전표 UPdate
+            return {
+                ...state,
+                error: action.payload
+            };
+        case INSERT_SLIP_SUCCESS:
+            console.log(action.params.slipObj);
+            return {
+                ...state,
+                slipFormList: [],
+                journalList: [], //분개 그리드 초기화
+                journalDetailList: [] //분개상세 그리드 초기화
+            };
+        case INSERT_SLIP_FAILURE:
             return {
                 ...state,
                 error: action.payload

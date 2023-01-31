@@ -194,6 +194,21 @@ const SlipForm = () => {
             }
         });
     };
+
+    const insertSlip = () => {
+        console.log('insertSlip');
+        console.log(slipData);
+        console.log(journalData);
+        console.log(slipStatus);
+        dispatch({
+            type: types.INSERT_SLIP_START,
+            params: {
+                slipObj: slipData,
+                journalObj: journalData,
+                slipStatus: slipStatus
+            }
+        });
+    };
     //==========================분개=================================
     const searchJour = (e) => {
         if (e.row.slipNo != 'new') {
@@ -355,7 +370,7 @@ const SlipForm = () => {
                                 </Button>
                             </Grid>
                             <Grid item>
-                                <Button variant="contained" color="secondary" startIcon={<SaveIcon />} onClick={updateSlip}>
+                                <Button variant="contained" color="secondary" startIcon={<SaveIcon />} onClick={insertSlip}>
                                     저장
                                 </Button>
                             </Grid>
