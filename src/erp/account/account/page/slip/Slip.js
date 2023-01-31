@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 // material-ui
 import { Box, Button, Grid, TextField, Typography } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
@@ -16,6 +16,7 @@ import AccountDialog from '../../../base/page/accountform/AccountDialog';
 // project imports
 import MainCard from '../../../../../template/ui-component/cards/MainCard';
 import { gridSpacing } from '../../../../../template/store/constant';
+import * as type from '../../../base/reducer/BaseReducer';
 // assets
 import { useDispatch, useSelector } from 'react-redux';
 import * as types from '../../reducer/AccountReducer';
@@ -55,11 +56,6 @@ const indignationColumns = [
         editable: true,
         type: 'singleSelect',
         valueOptions: ['대변', '차변']
-        // cellEditor: 'agSelectCellEditor', //콤보 생성
-        // //콤보List
-        // cellEditorParams: {
-        //     values: ['대변', '차변']
-        // }
     },
     { headerName: '거래처코드', field: 'customerCode' },
     { headerName: '거래처명', field: 'customerName', hide: true },
@@ -67,13 +63,11 @@ const indignationColumns = [
         headerName: '차변',
         field: 'leftDebtorPrice',
         editable: true
-        //valueFormatter:' Math.floor(value).toString().replace(/(\\d)(?=(\\d{3})+(?!\\d))/g, "$1,")+"원"',
     },
     {
         headerName: '대변',
         field: 'rightCreditsPrice',
         editable: true
-        //valueFormatter:' Math.floor(value).toString().replace(/(\\d)(?=(\\d{3})+(?!\\d))/g, "$1,")+"원"',
     }
 ];
 
@@ -112,7 +106,16 @@ const SlipForm = () => {
     const [startDate, setStartDate] = useState(monthFirstDay); //시작 날짜
     const [endDate, setEndDate] = useState(toDay);
 
-    const [periodNo, setPeriodNo] = useState('4');
+    const yearData = useSelector((state) => state.RootReducers.AccReducer.BaseReducer.periodNoList);
+    useEffect(() => {
+        dispatch({
+            type: type.SEARCH_PERIOD_NO_REQUEST
+        });
+        setPeriodNo(yearData.periodNo);
+        console.log(periodNo);
+    }, []);
+    const [periodNo, setPeriodNo] = useState('');
+
     const [slipNo, setSlipNo] = useState('');
     const [slipCount, setSlipCount] = useState('0001');
     const [expenseReport, setExpenseReport] = useState('내용을 입력해주세요');
@@ -131,26 +134,6 @@ const SlipForm = () => {
         setOpenDialog(true);
     };
     const [accountSelectDialog, setAccountSelectDialog] = useState(false); //계정선택 dialog
-    // const [newAccount, setNewAccount] = useState({
-    //     accountInnerCode: "",
-    //     parentAccountInnercode: "",
-    //     accountCode: "",
-    //     accountCharacter: "",
-    //     accountName: "",
-    //     accountUseCheck: "",
-    //     accountDivision: "",
-    //     accountDescription: "",
-    //     groupCode: "",
-    //     editable: "",
-    //     accountInnerName: ""
-    // })
-    // const accountInnerCodeChange = e => {
-    //     setNewAccount({
-    //         ...newAccount,
-    //         accountInnerCode: e.target.value,
-    //         accountCode: e.target.value
-    //     })
-    // }
 
     //==========================전표=================================
     const accountSelect = (e) => {

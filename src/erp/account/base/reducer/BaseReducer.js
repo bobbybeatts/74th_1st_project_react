@@ -16,7 +16,6 @@ export const SEARCH_DETAIL_ACCOUNT_FAILURE = 'src/erp/account/Saga/Saga/SEARCH_D
 export const BATCH_ACCOUNT_LIST_REQUEST = 'src/erp/account/Saga/Saga/BATCH_ACCOUNT_LIST_REQUEST';
 export const BATCH_ACCOUNT_LIST_FAILURE = 'src/erp/account/Saga/Saga/BATCH_ACCOUNT_LIST_FAILURE';
 
-
 export const BATCH_ACCOUNT_REQUEST = 'src/erp/account/Saga/Saga/BATCH_ACCOUNT_REQUEST';
 export const BATCH_ACCOUNT_FAILURE = 'src/erp/account/Saga/Saga/BATCH_ACCOUNT_FAILURE';
 
@@ -80,7 +79,7 @@ const initialState = {
     currentBudgetList: [],
     preBudgetList: [],
     accountCodeList: [],
-    accountDetailList : []
+    accountDetailList: []
 };
 
 const BaseReducer = (state = initialState, action) => {
@@ -108,7 +107,6 @@ const BaseReducer = (state = initialState, action) => {
                 ...state,
                 error: action.error
             };
-
 
         //사업장조회
         case SEARCH_WORKPLACE_SUCCESS:
@@ -194,33 +192,33 @@ const BaseReducer = (state = initialState, action) => {
         case SEARCH_DETAIL_ACCOUNT_SUCCESS:
             return {
                 ...state,
-                accountDetailList : action.payload
-            }
+                accountDetailList: action.payload
+            };
         case SEARCH_DETAIL_ACCOUNT_FAILURE:
             return {
                 ...state,
-                error : action.error
-            }
+                error: action.error
+            };
         case SEARCH_CUSTOMERS_SUCCESS:
             return {
                 ...state,
-                accountCustomerList : action.payload.accountCustomerList
-            }
+                accountCustomerList: action.payload.accountCustomerList
+            };
         case SEARCH_CUSTOMERS_FAILURE:
             return {
                 ...state,
-                error : action.error
-            }
+                error: action.error
+            };
         case SEARCH_CREDITCARD_SUCCESS:
             return {
                 ...state,
-                creditCardList : action.payload.creditCardList
-            }
+                creditCardList: action.payload.creditCardList
+            };
         case SEARCH_CREDITCARD_FAILURE:
             return {
                 ...state,
-                error : action.error
-            }
+                error: action.error
+            };
         default:
             return { ...state };
     }
