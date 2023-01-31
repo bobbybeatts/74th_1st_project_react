@@ -51,8 +51,6 @@ const AccountDialog = ({ open, onClose, setAccountCode, setAccountName }) => {
 
     const onSelectAccount = (e) => {
         //선택한 계정을 세팅
-        console.log(e);
-        console.log(e);
         setAccountCode(e.row.accountInnerCode);
         setAccountName(e.row.accountName);
     };

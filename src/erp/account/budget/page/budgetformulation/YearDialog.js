@@ -36,9 +36,9 @@ const YearDialog = ({ open, onClose, setYear }) => {
         onClose(false);
     };
     return (
-        <Dialog open={open} fullWidth={true} maxWidth={'xl'}>
+        <Dialog open={open} fullWidth={true} maxWidth={'sm'}>
             <Grid container spacing={gridSpacing}>
-                <Grid item sm={5}>
+                <Grid item sm={12}>
                     <MainCard content={false} title="년도">
                         {/* table data grid */}
                         <Box
