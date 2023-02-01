@@ -1,6 +1,8 @@
 // material-ui
 import React, { useState } from 'react';
-import { Box, Button, Grid, Modal, TextField, Typography } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
+import { Box, Button, Grid, TextField, Typography } from '@mui/material';
+import * as types from '../../../base/reducer/BaseReducer';
 
 import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
@@ -13,6 +15,7 @@ import SearchIcon from '@mui/icons-material/Search';
 
 import { DataGrid } from '@mui/x-data-grid';
 import { useTheme } from '@mui/material/styles';
+import Swal from 'sweetalert2';
 
 import YearDialog from '../dialog/YearDialog';
 import DeptDialog from '../dialog/DeptDialog';
@@ -36,12 +39,41 @@ import TotalGrowthBarChart from 'template/ui-component/cards/Skeleton/TotalGrowt
 // 예산신청 계정관련 : https://mui.com/material-ui/react-text-field/
 
 const BudgetRequest = () => {
+    const dispatch = useDispatch();
+    const theme = useTheme();
     const [openDialog, setOpenDialog] = useState(false);
     const [openDialog2, setOpenDialog2] = useState(false);
-    const [Workplace, setWorkplace] = useState('');
-
-    const theme = useTheme();
+    const [workplace, setWorkplace] = useState('');
+    const [dName, setDname] = useState('');
     const [year, setYear] = useState('');
+
+    const [AccountCode, setAccountCode] = useState('');
+    const [AccountName, setAccountName] = useState('');
+
+    const accountList = useSelector((state) => state.RootReducers.AccReducer.BaseReducer.accountCodeList);
+    const accountDetailData = useSelector((state) => state.RootReducers.AccReducer.BaseReducer.accountDetailList);
+
+    const accountColumns = [
+        { headerName: '계정과목코드', field: 'accountInnerCode', align: 'center', width: 120 },
+        { headerName: '계정과목', field: 'accountName', align: 'center', width: 480 }
+    ];
+    const accountDetailcolums = [
+        { field: 'accountInnerCode', headerName: '계정과목코드', width: 120, align: 'center' },
+        { field: 'accountName', headerName: '계정과목명', width: 305, align: 'center' }
+    ];
+
+    const onSelectAccount = (e) => {
+        console.log(e.row);
+        dispatch({
+            type: types.SEARCH_DETAIL_ACCOUNT_REQUEST,
+            params: {
+                code: e.row.accountInnerCode
+            }
+        });
+        setAccountCode(e.row.accountInnerCode);
+        setAccountName(e.row.accountName);
+    };
+
     const onClose = () => {
         setOpenDialog(false);
     };
@@ -60,11 +92,10 @@ const BudgetRequest = () => {
 
     return (
         <Grid container spacing={gridSpacing}>
-            <Grid item xs={12}>
-                <div align="center"></div>
+            <Grid item sm={7}>
                 <MainCard
                     content={false}
-                    title="연도,부서선택"
+                    title="계정과목선택"
                     sx={{
                         '&MuiCard-root': { color: theme.palette.text.primary }
                     }}
@@ -74,11 +105,11 @@ const BudgetRequest = () => {
                                 <Paper
                                     id="startDate"
                                     component="form"
-                                    sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 200 }}
+                                    sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 150 }}
                                 >
                                     <InputBase
                                         sx={{ ml: 1, flex: 1 }}
-                                        placeholder="회계연도 2023"
+                                        placeholder="회계연도"
                                         inputProps={{ 'aria-label': 'search google maps' }}
                                         value={year}
                                     />
@@ -93,30 +124,36 @@ const BudgetRequest = () => {
                                 <Paper
                                     id="startDate"
                                     component="form"
-                                    sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 200 }}
+                                    sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 150 }}
                                 >
                                     <InputBase
                                         sx={{ ml: 1, flex: 1 }}
-                                        placeholder="Search Google Maps"
+                                        placeholder="사업장명"
                                         inputProps={{ 'aria-label': 'search google maps' }}
+                                        value={workplace}
                                     />
                                     <IconButton type="button" sx={{ p: '10px' }} aria-label="search" onClick={onOpen2}>
                                         <SearchIcon />
                                     </IconButton>
                                     <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
                                 </Paper>
+<<<<<<< HEAD
+                                <DeptDialog open2={openDialog2} onClose2={onClose2} setWorkplace={setWorkplace} setDname={setDname} />
+=======
                                 <DeptDialog open2={openDialog2} onClose2={onClose2} setWorkplace={setWorkplace} />
+>>>>>>> 4f745edf873bd1363dc001f2bdb828cfc1ff3be9
                             </Grid>
                             <Grid item>
                                 <Paper
                                     id="startDate"
                                     component="form"
-                                    sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 200 }}
+                                    sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 100 }}
                                 >
                                     <InputBase
                                         sx={{ ml: 1, flex: 1 }}
-                                        placeholder="Search Google Maps"
+                                        placeholder="부서명"
                                         inputProps={{ 'aria-label': 'search google maps' }}
+                                        value={dName}
                                     />
                                     <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
                                 </Paper>
@@ -142,7 +179,77 @@ const BudgetRequest = () => {
                                 }
                             }
                         }}
-                    ></Box>
+                    >
+                        <DataGrid
+                            rows={accountList}
+                            columns={accountColumns}
+                            getRowId={(row) => row.accountInnerCode}
+                            onRowClick={onSelectAccount}
+                        />
+                    </Box>
+                </MainCard>
+            </Grid>
+            <Grid item sm={5}>
+                <MainCard content={false} title="계정상세선택">
+                    {/* table data grid */}
+                    <Box
+                        sx={{
+                            height: 315,
+                            width: '100%',
+                            '& .MuiDataGrid-root': {
+                                border: 'none',
+                                '& .MuiDataGrid-cell': {
+                                    borderColor: theme.palette.mode === 'dark' ? theme.palette.text.primary + 15 : 'grey.200'
+                                },
+                                '& .MuiDataGrid-columnsContainer': {
+                                    color: theme.palette.mode === 'dark' ? 'grey.600' : 'grey.900',
+                                    borderColor: theme.palette.mode === 'dark' ? theme.palette.text.primary + 15 : 'grey.200'
+                                },
+                                '& .MuiDataGrid-columnSeparator': {
+                                    color: theme.palette.mode === 'dark' ? theme.palette.text.primary + 15 : 'grey.200'
+                                }
+                            }
+                        }}
+                    >
+                        <DataGrid rows={accountDetailData} columns={accountDetailcolums} getRowId={(row) => row.accountInnerCode} />
+                    </Box>
+                </MainCard>
+            </Grid>
+            <Grid item sm={6}>
+                <MainCard content={false} title="전기예산신청">
+                    {/* table data grid */}
+                    <Box
+                        sx={{
+                            height: 300,
+                            width: '100%',
+                            '& .MuiDataGrid-root': {
+                                border: 'none',
+                                '& .MuiDataGrid-cell': {
+                                    borderColor: theme.palette.mode === 'dark' ? theme.palette.text.primary + 15 : 'grey.200'
+                                },
+                                '& .MuiDataGrid-columnsContainer': {
+                                    color: theme.palette.mode === 'dark' ? 'grey.600' : 'grey.900',
+                                    borderColor: theme.palette.mode === 'dark' ? theme.palette.text.primary + 15 : 'grey.200'
+                                },
+                                '& .MuiDataGrid-columnSeparator': {
+                                    color: theme.palette.mode === 'dark' ? theme.palette.text.primary + 15 : 'grey.200'
+                                }
+                            }
+                        }}
+                    >
+                        <TextField id="1month" label="1월" type="password" autoComplete="current-password" />
+                        <TextField id="2month" label="2월" type="password" autoComplete="current-password" />
+                        <TextField id="3month" label="3월" type="password" autoComplete="current-password" />
+                        <TextField id="4month" label="4월" type="password" autoComplete="current-password" />
+                        <TextField id="5month" label="5월" type="password" autoComplete="current-password" />
+                        <TextField id="6month" label="6월" type="password" autoComplete="current-password" />
+                        <TextField id="7month" label="7월" type="password" autoComplete="current-password" />
+                        <TextField id="8month" label="8월" type="password" autoComplete="current-password" />
+                        <TextField id="9month" label="9월" type="password" autoComplete="current-password" />
+                        <TextField id="10month" label="10월" type="password" autoComplete="current-password" />
+                        <TextField id="11month" label="11월" type="password" autoComplete="current-password" />
+                        <TextField id="12month" label="12월" type="password" autoComplete="current-password" />
+                    </Box>
                 </MainCard>
             </Grid>
         </Grid>

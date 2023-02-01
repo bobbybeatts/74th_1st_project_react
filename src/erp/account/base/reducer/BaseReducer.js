@@ -80,7 +80,8 @@ const initialState = {
     currentBudgetList: [],
     preBudgetList: [],
     accountCodeList: [],
-    accountDetailList : []
+    accountDetailList : [],
+    detailDeptList:[]
 };
 
 const BaseReducer = (state = initialState, action) => {
@@ -112,6 +113,7 @@ const BaseReducer = (state = initialState, action) => {
 
         //사업장조회
         case SEARCH_WORKPLACE_SUCCESS:
+            console.log(action.payload)
             return {
                 ...state,
                 deptList: action.payload
@@ -135,6 +137,7 @@ const BaseReducer = (state = initialState, action) => {
                 error: action.error
             };
         case SEARCH_DEPT_SUCCESS:
+            console.log(action.payload.detailDeptList)
             return {
                 ...state,
                 detailDeptList: action.payload.detailDeptList
