@@ -197,14 +197,18 @@ const SlipForm = () => {
 
     const insertSlip = () => {
         console.log('insertSlip');
-        console.log(slipData);
-        console.log(journalData);
-        console.log(slipStatus);
+        console.log('slipData 타입' + typeof slipData);
+        console.log(JSON.stringify(slipData));
+        console.log(typeof JSON.stringify(slipData));
+        console.log('journalData 타입' + typeof journalData);
+        console.log(JSON.stringify(journalData));
+        console.log(typeof JSON.stringify(journalData));
+        console.log(typeof slipStatus);
         dispatch({
             type: types.INSERT_SLIP_START,
             params: {
-                slipObj: slipData,
-                journalObj: journalData,
+                slipObj: JSON.stringify(slipData),
+                journalObj: JSON.stringify(journalData),
                 slipStatus: slipStatus
             }
         });
