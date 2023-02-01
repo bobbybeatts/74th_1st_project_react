@@ -1,3 +1,5 @@
+import { AcUnitTwoTone } from '@material-ui/icons';
+import { accordionActionsClasses } from '@mui/material';
 import { createAction } from 'redux-actions';
 
 //========================================= 2020-09-04 일반전표  조진주 시작 ==============================================
@@ -15,12 +17,16 @@ export const UPDATE_SLIP_START = 'src/erp/account/Saga/Saga/UPDATE_SLIP'; //전�
 export const UPDATE_SLIP_SUCCESS = 'src/erp/account/Saga/Saga/UPDATE_SLIP_SUCCESS';
 export const UPDATE_SLIP_FAILURE = 'src/erp/account/Saga/Saga/UPDATE_SLIP_FAILURE';
 
+export const INSERT_SLIP_START = 'src/erp/account/Saga/Saga/INSERT_SLIP'; // 전표 insert
+export const INSERT_SLIP_SUCCESS = 'src/erp/account/Saga/Saga/INSERT_SLIP_SUCCESS';
+export const INSERT_SLIP_FAILURE = 'src/erp/account/Saga/Saga/INSERT_SLIP_FAILURE';
+
 export const SELECT_JOURNAL_START = 'src/erp/account/Saga/Saga/SELECT_JOURNAL'; //분개 조회
 export const SELECT_JOURNAL_SUCCESS = 'src/erp/account/Saga/Saga/SELECT_JOURNAL_SUCCESS';
 export const SELECT_JOURNAL_FAILURE = 'src/erp/account/Saga/Saga/SELECT_JOURNAL_FAILURE';
 
 export const INSERT_JOURNAL = 'src/erp/account/Saga/Saga/INSERT_JOURNAL'; //분개 추가
-export const INSERT_ACCOUNT = 'src/erp/account/Saga/Saga/INSERT_ACCOUNT';
+export const INSERT_ACCOUNT = 'src/erp/account/Saga/Saga/INSERT_ACCOUNT'; //계정 추가
 
 export const DELETE_JOURNAL_START = 'src/erp/account/Saga/Saga/DELETE_JOURNAL'; //분개삭제
 export const DELETE_JOURAL_FAILURE = 'src/erp/account/Saga/Saga/DELETE_JOURAL_FAILURE';
@@ -61,16 +67,17 @@ export const deleteSlipStart = createAction(DELETE_SLIP_START); //전표삭제
 export const deleteSlipSuccess = createAction(DELETE_SLIP_SUCCESS); //전표삭제성공
 export const deleteSlipFailure = createAction(DELETE_SLIP_FAILURE);
 
-export const updateSlipStart = createAction(UPDATE_SLIP_START); //전표 update
+export const updateSlipStart = createAction(UPDATE_SLIP_START); //전표 UPDATE
 export const updateSlipSuccess = createAction(UPDATE_SLIP_SUCCESS);
-UPDATE_SLIP_SUCCESS;
 export const updateSlipFailure = createAction(UPDATE_SLIP_FAILURE);
+
+export const insertSlipStart = createAction(INSERT_SLIP_START); //전표 INSERT
+export const insertSlipSuccess = createAction(INSERT_SLIP_SUCCESS);
+export const insertSlipFailure = createAction(INSERT_SLIP_FAILURE);
 
 export const selectJournalStart = createAction(SELECT_JOURNAL_START); //분개조회
 export const selectJournalSuccess = createAction(SELECT_JOURNAL_SUCCESS);
 export const selectJournalFailure = createAction(SELECT_JOURNAL_FAILURE);
-
-// export const insertJournal = createAction(INSERT_JOURNAL);
 
 export const deleteJournalStart = createAction(DELETE_JOURNAL_START); //분개삭제
 export const deleteJournalFailure = createAction(DELETE_JOURAL_FAILURE);
@@ -200,6 +207,43 @@ const initialState = {
     assetDta: [],
     deptList: []
 };
+const initialslipFormList = {
+    accountPeriodNo: '',
+    approvalDate: '',
+    approvalEmpCode: 'admin',
+    authorizationStatus: null,
+    balanceDivision: null,
+    deptCode: '',
+    deptName: null,
+    expenseReport: '',
+    id: '',
+    positionCode: null,
+    reportingDate: '',
+    reportingEmpCode: 'admin',
+    reportingEmpName: '',
+    slipNo: 'new',
+    slipStatus: '',
+    slipType: '',
+    status: '작성중'
+};
+
+const initialJournalList = {
+    accountCode: '',
+    accountName: '',
+    accountPeriodNo: '',
+    balanceDivision: '대변',
+    customerCode: '',
+    customerName: null,
+    deptCode: null,
+    id: '',
+    journalDetailList: null,
+    journalNo: '',
+    leftDebtorPrice: '',
+    price: null,
+    rightCreditsPrice: '',
+    slipNo: '',
+    status: ''
+};
 
 const AccountReducer = (state = initialState, action) => {
     // 위에서 만든 액션을 넣어 준다.
@@ -210,7 +254,27 @@ const AccountReducer = (state = initialState, action) => {
             console.log(action.params);
             return {
                 ...state,
-                slipFormList: [action.params].concat(state.slipFormList)
+                slipFormList: [
+                    {
+                        ...initialslipFormList,
+                        accountPeriodNo: action.params.accountPeriodNo,
+                        reportingDate: action.params.reportingDate
+                    }
+                ].concat(state.slipFormList),
+                journalList: [
+                    {
+                        ...initialJournalList,
+                        journalNo: 'new 차변',
+                        balanceDivision: '차변',
+                        leftDebtorPrice: '0'
+                    },
+                    {
+                        ...initialJournalList,
+                        journalNo: 'new 대변',
+                        balanceDivision: '대변',
+                        rightCreditsPrice: '0'
+                    }
+                ]
             };
         case SELECT_SLIP_START:
             console.log('날짜 조회 성공', action);
@@ -236,6 +300,7 @@ const AccountReducer = (state = initialState, action) => {
                 error: action.payload
             };
         case DELETE_SLIP_SUCCESS: //전표삭제 성공
+            console.log('delete slip');
             return {
                 ...state,
                 slipFormList: [],
@@ -257,6 +322,19 @@ const AccountReducer = (state = initialState, action) => {
                 ...state,
                 error: action.payload
             };
+        case INSERT_SLIP_SUCCESS:
+            console.log(action.params.slipObj);
+            return {
+                ...state,
+                slipFormList: [],
+                journalList: [], //분개 그리드 초기화
+                journalDetailList: [] //분개상세 그리드 초기화
+            };
+        case INSERT_SLIP_FAILURE:
+            return {
+                ...state,
+                error: action.payload
+            };
         //==================분개====================
         case SELECT_JOURNAL_SUCCESS: //분개조회 성공
             return {
@@ -273,19 +351,32 @@ const AccountReducer = (state = initialState, action) => {
         case INSERT_JOURNAL: // 분개 추가
             return {
                 ...state,
-                journalList: [action.params].concat(state.journalList)
+                journalList: [
+                    {
+                        ...initialJournalList,
+                        journalNo: action.params.journalNo
+                    }
+                ].concat(state.journalList)
             };
         case INSERT_ACCOUNT: //분개 계정 추가
-            console.log(action.params.journalList); //  넘어오는 데이터
+            console.log(state.journalList);
+            console.log(action.params.selecJour); //  넘어오는 데이터 -- object타입
             return {
                 ...state,
                 journalList: [
                     {
-                        ...action.params.journalList,
+                        ...action.params.selecJour,
                         accountCode: action.params.accountCode,
                         accountName: action.params.accountName
                     }
-                ]
+                ].concat(action.params.journalData)
+            };
+        case DELETE_JOURNAL_START:
+            console.log('delete journal');
+            return {
+                ...state,
+                journalList: [],
+                journalDetailList: []
             };
         case DELETE_JOURAL_FAILURE: //분개삭제실패
             return {

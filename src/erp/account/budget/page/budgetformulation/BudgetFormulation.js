@@ -10,8 +10,8 @@ import SearchIcon from '@mui/icons-material/Search';
 
 // project imports
 import MainCard from 'template/ui-component/cards/MainCard';
-import YearDialog from './YearDialog';
-
+import YearDialog from '../dialog/YearDialog';
+import DeptDialog from '../dialog/DeptDialog';
 
 // ==============================|| SAMPLE PAGE ||============================== //
 

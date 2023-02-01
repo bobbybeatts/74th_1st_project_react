@@ -17,8 +17,8 @@ import { DataGrid } from '@mui/x-data-grid';
 import { useTheme } from '@mui/material/styles';
 import Swal from 'sweetalert2';
 
-import YearDialog from '../budgetformulation/YearDialog';
-import DeptDialog from './DeptDialog';
+import YearDialog from '../dialog/YearDialog';
+import DeptDialog from '../dialog/DeptDialog';
 
 import TotalGrowthBarChart from 'template/ui-component/cards/Skeleton/TotalGrowthBarChart';
 
@@ -137,7 +137,11 @@ const BudgetRequest = () => {
                                     </IconButton>
                                     <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
                                 </Paper>
+<<<<<<< HEAD
                                 <DeptDialog open2={openDialog2} onClose2={onClose2} setWorkplace={setWorkplace} setDname={setDname} />
+=======
+                                <DeptDialog open2={openDialog2} onClose2={onClose2} setWorkplace={setWorkplace} />
+>>>>>>> 4f745edf873bd1363dc001f2bdb828cfc1ff3be9
                             </Grid>
                             <Grid item>
                                 <Paper

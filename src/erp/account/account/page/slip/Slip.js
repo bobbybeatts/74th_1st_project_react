@@ -21,9 +21,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as types from '../../reducer/AccountReducer';
 import moment from 'moment/moment';
 
-import { Dialog, DialogTitle, DialogContent, DialogActions, DialogContentText } from '@material-ui/core';
 import Swal from 'sweetalert2';
-import { id } from 'date-fns/locale';
 
 //Columns
 //전표칼럼
@@ -46,20 +44,15 @@ const slipColumns = [
 //분개칼럼
 const indignationColumns = [
     { width: '30', headerCheckboxSelection: true, checkboxSelection: true, field: ' ' }, //체크박스
-    { width: '250', headerName: '분개일련번호', field: 'journalNo', editable: true },
-    { headerName: '계정코드', field: 'accountCode', editable: true },
-    { headerName: '계정명', field: 'accountName', editable: true },
+    { width: '250', headerName: '분개일련번호', field: 'journalNo' },
+    { headerName: '계정코드', field: 'accountCode' },
+    { headerName: '계정명', field: 'accountName' },
     {
         headerName: '대차구분',
         field: 'balanceDivision',
         editable: true,
         type: 'singleSelect',
         valueOptions: ['대변', '차변']
-        // cellEditor: 'agSelectCellEditor', //콤보 생성
-        // //콤보List
-        // cellEditorParams: {
-        //     values: ['대변', '차변']
-        // }
     },
     { headerName: '거래처코드', field: 'customerCode' },
     { headerName: '거래처명', field: 'customerName', hide: true },
@@ -111,14 +104,15 @@ const SlipForm = () => {
     const [slipStatus, setSlipStatus] = useState('전체');
     const [startDate, setStartDate] = useState(monthFirstDay); //시작 날짜
     const [endDate, setEndDate] = useState(toDay);
+    const [delButton, setDelButton] = useState('');
 
     const [periodNo, setPeriodNo] = useState('4');
     const [slipNo, setSlipNo] = useState('');
-    const [slipCount, setSlipCount] = useState('0001');
+    const [status, setStatus] = useState('');
     const [expenseReport, setExpenseReport] = useState('내용을 입력해주세요');
 
-    const [jourNo, setJourNo] = useState('');
     const [jourCount, setJourCount] = useState('1');
+    const [jourNo, setJourNo] = useState('');
     const [accountCode, setAccountCode] = useState(''); //계정선택 useState();
     const [accountName, setAccountName] = useState('');
     const [selecJour, setSelecJour] = useState('');
@@ -127,57 +121,16 @@ const SlipForm = () => {
     const handleClose = () => {
         setOpenDialog(false);
     };
-    const deleteCheck = () => {
+    const deleteCheck = (e) => {
+        console.log(e.target.id);
         setOpenDialog(true);
+        setDelButton(e.target.id);
     };
     const [accountSelectDialog, setAccountSelectDialog] = useState(false); //계정선택 dialog
-    // const [newAccount, setNewAccount] = useState({
-    //     accountInnerCode: "",
-    //     parentAccountInnercode: "",
-    //     accountCode: "",
-    //     accountCharacter: "",
-    //     accountName: "",
-    //     accountUseCheck: "",
-    //     accountDivision: "",
-    //     accountDescription: "",
-    //     groupCode: "",
-    //     editable: "",
-    //     accountInnerName: ""
-    // })
-    // const accountInnerCodeChange = e => {
-    //     setNewAccount({
-    //         ...newAccount,
-    //         accountInnerCode: e.target.value,
-    //         accountCode: e.target.value
-    //     })
-    // }
 
     //==========================전표=================================
-    const accountSelect = (e) => {
-        //분개 - 계정과목명 더블 클릭 --> 계정 선택 다이알로그
-        if (e.field == 'accountName') {
-            setAccountSelectDialog(true);
-            setSelecJour(e.row);
-        }
-    };
-
-    const setAccountDetail = () => {
-        //분개 계정 선택
-        setAccountSelectDialog(false);
-        console.log(selecJour);
-        dispatch({
-            type: types.INSERT_ACCOUNT,
-            params: {
-                accountCode: accountCode,
-                accountName: accountName,
-                journalList: selecJour
-            }
-        });
-    };
-
     const searchSlip = () => {
         dispatch({
-            //const dispatch = useDispatch();
             type: types.SELECT_SLIP_START,
             params: {
                 startDate: startDate,
@@ -189,42 +142,40 @@ const SlipForm = () => {
     };
     const addSlip = () => {
         console.log('전표 추가');
-        dispatch({
-            type: types.ADD_SLIP,
-            params: {
-                accountPeriodNo: periodNo,
-                approvalDate: '',
-                approvalEmpCode: 'admin',
-                authorizationStatus: null,
-                balanceDivision: null,
-                deptCode: '',
-                deptName: null,
-                expenseReport: expenseReport,
-                id: slipCount,
-                positionCode: null,
-                reportingDate: endDate,
-                reportingEmpCode: 'admin',
-                reportingEmpName: '',
-                slipNo: endDate.split('-').join('') + 'SLIP' + slipCount,
-                slipStatus: '',
-                slipType: '',
-                status: '작성중'
-            }
-        });
-        if (slipCount == '00009') setSlipCount('000' + (parseInt(slipCount) + 1));
-        else setSlipCount('0000' + (parseInt(slipCount) + 1));
-        console.log(slipCount);
+        if (status == '작성중') {
+            return Swal.fire({
+                icon: 'warning',
+                title: '작성을 마무리 해 주십시오',
+                showConfirmButton: '확인'
+            });
+        } else {
+            dispatch({
+                type: types.ADD_SLIP,
+                params: {
+                    accountPeriodNo: periodNo,
+                    reportingDate: endDate
+                }
+            });
+            setStatus('작성중');
+        }
     };
 
-    const deleteSlip = () => {
-        //e는 버튼임 버튼을 주면 안됨
-        console.log(slipNo + '삭제 좀 되라');
-        dispatch({
-            type: types.DELETE_SLIP_START,
-            params: {
-                slipNo: slipNo
-            }
-        });
+    const deleteData = () => {
+        if (delButton == 'slipDelete') {
+            dispatch({
+                type: types.DELETE_SLIP_START,
+                params: {
+                    slipNo: slipNo
+                }
+            });
+        } else {
+            dispatch({
+                type: types.DELETE_JOURNAL_START,
+                params: {
+                    journalNo: jourNo
+                }
+            });
+        }
         handleClose();
         return Swal.fire({
             icon: 'error',
@@ -243,14 +194,31 @@ const SlipForm = () => {
             }
         });
     };
-    //==========================분개=================================
-    const searchJour = (e) => {
+
+    const insertSlip = () => {
+        console.log('insertSlip');
+        console.log(slipData);
+        console.log(journalData);
+        console.log(slipStatus);
         dispatch({
-            type: types.SELECT_JOURNAL_START,
+            type: types.INSERT_SLIP_START,
             params: {
-                slipNo: e.row.slipNo
+                slipObj: slipData,
+                journalObj: journalData,
+                slipStatus: slipStatus
             }
         });
+    };
+    //==========================분개=================================
+    const searchJour = (e) => {
+        if (e.row.slipNo != 'new') {
+            dispatch({
+                type: types.SELECT_JOURNAL_START,
+                params: {
+                    slipNo: e.row.slipNo
+                }
+            });
+        }
         setSlipNo(e.id);
         // setExpenseReport(e.row.expenseReport);
     };
@@ -266,21 +234,7 @@ const SlipForm = () => {
             dispatch({
                 type: types.INSERT_JOURNAL,
                 params: {
-                    accountCode: accountCode,
-                    accountName: accountName,
-                    accountPeriodNo: periodNo,
-                    balanceDivision: '대변',
-                    customerCode: '',
-                    customerName: null,
-                    deptCode: null,
-                    id: slipNo + 'JOURNAL' + jourCount,
-                    journalDetailList: null,
-                    journalNo: slipNo + 'JOURNAL' + jourCount,
-                    leftDebtorPrice: '0',
-                    price: null,
-                    rightCreditsPrice: '0',
-                    slipNo: slipNo,
-                    status: ''
+                    journalNo: 'JOURNAL' + jourCount
                 }
             });
             console.log(slipNo);
@@ -288,9 +242,35 @@ const SlipForm = () => {
             console.log(jourCount);
         }
     };
+
+    const accountSelect = (e) => {
+        //분개 - 계정과목명 더블 클릭 --> 계정 선택 다이알로그
+        if (e.field == 'accountName') {
+            setAccountSelectDialog(true);
+            setSelecJour(e.row);
+            setJourNo(e.row.journalNo);
+        }
+    };
+
+    const setAccountDetail = () => {
+        //분개 계정 선택
+        setAccountSelectDialog(false);
+        console.log(selecJour);
+        console.log(journalData.filter((data) => data.journalNo !== jourNo));
+        dispatch({
+            type: types.INSERT_ACCOUNT,
+            params: {
+                accountCode: accountCode,
+                accountName: accountName,
+                selecJour: selecJour,
+                journalData: journalData.filter((data) => data.journalNo !== jourNo)
+            }
+        });
+    };
     //==========================분개상세=================================
     const searchDetail = (e) => {
-        // console.log(e);
+        setSelecJour(e.row);
+        setJourNo(e.row.journalNo);
         dispatch({
             type: types.SELECT_JOURNAL_DETAIL_START,
             params: {
@@ -379,22 +359,18 @@ const SlipForm = () => {
                                 </Button>
                             </Grid>
                             <Grid item>
-                                <Button variant="contained" color="secondary" startIcon={<DeleteIcon />} onClick={deleteCheck}>
+                                <Button
+                                    variant="contained"
+                                    color="secondary"
+                                    startIcon={<DeleteIcon />}
+                                    onClick={deleteCheck}
+                                    id="slipDelete"
+                                >
                                     삭제
                                 </Button>
                             </Grid>
-                            <Dialog open={openDialog} onClose={handleClose}>
-                                <DialogContent>정말 삭제 하시겠습니까?</DialogContent>
-                                <DialogActions>
-                                    <Button onClick={handleClose}>취소</Button>
-                                    <Button onClick={deleteSlip}>삭제</Button>
-                                </DialogActions>
-                            </Dialog>
-                            {/*<DeleteCheckDialog open={openDialog} onClose={handleClose} onClick={deleteSlip} />
-                            다이알로그 모듈화하면 원본 화면 이상하게 보임
-                            */}
                             <Grid item>
-                                <Button variant="contained" color="secondary" startIcon={<SaveIcon />} onClick={updateSlip}>
+                                <Button variant="contained" color="secondary" startIcon={<SaveIcon />} onClick={insertSlip}>
                                     저장
                                 </Button>
                             </Grid>
@@ -429,6 +405,7 @@ const SlipForm = () => {
                             getRowId={(row) => row.slipNo}
                             onRowClick={searchJour}
                         />
+                        <DeleteCheckDialog open={openDialog} onClose={handleClose} deleteData={deleteData} />
                     </Box>
                 </MainCard>
                 {/* =================================분개데이터그리드================================= */}
@@ -437,26 +414,26 @@ const SlipForm = () => {
                     title="분개"
                     secondary={
                         <Grid container spacing={1}>
-                            <Grid item>
+                            {/* <Grid item>
                                 <Button variant="contained" color="secondary">
                                     발주/납품 마감신청
                                 </Button>
-                            </Grid>
+                            </Grid> */}
                             <Grid item>
                                 <Button variant="contained" color="secondary" onClick={addJour}>
                                     분개추가
                                 </Button>
                             </Grid>
                             <Grid item>
-                                <Button variant="contained" color="secondary">
+                                <Button variant="contained" color="secondary" onClick={deleteCheck} id="jourDelete">
                                     분개삭제
                                 </Button>
                             </Grid>
-                            <Grid item>
+                            {/* <Grid item>
                                 <Button variant="contained" color="secondary">
                                     분개저장
                                 </Button>
-                            </Grid>
+                            </Grid> */}
                         </Grid>
                     }
                 >
@@ -487,15 +464,8 @@ const SlipForm = () => {
                             hideFooter
                             getRowId={(row) => row.journalNo}
                             onCellClick={searchDetail}
-                            onCellDoubleClick={accountSelect} // 어카운트를 등록 하는 게 안됨
+                            onCellDoubleClick={accountSelect}
                         />
-                        {/* <Dialog open={openDialog} onClose={handleClose}>
-                            <DialogContent>정말 삭제 하시겠습니까?</DialogContent>
-                            <DialogActions>
-                                <Button onClick={handleClose}>취소</Button>
-                                <Button onClick={deleteSlip}>삭제</Button>
-                            </DialogActions>
-                        </Dialog> */}
                         <AccountDialog
                             open={accountSelectDialog}
                             onClose={setAccountDetail}
@@ -509,10 +479,17 @@ const SlipForm = () => {
                     content={false}
                     title="분개상세"
                     secondary={
-                        <Grid item>
-                            <Button variant="contained" color="secondary">
-                                분개상세 저장
-                            </Button>
+                        <Grid container spacing={1}>
+                            <Grid item>
+                                <Button variant="contained" color="secondary">
+                                    분개상세 추가
+                                </Button>
+                            </Grid>
+                            <Grid item>
+                                <Button variant="contained" color="secondary">
+                                    분개상세 삭제
+                                </Button>
+                            </Grid>
                         </Grid>
                     }
                 >

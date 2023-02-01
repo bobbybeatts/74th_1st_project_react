@@ -4,14 +4,15 @@ import * as types from '../reducer/AccountReducer';
 import createRequestSaga from 'util/createRequestSaga';
 import * as api from '../api';
 
-
 //------------일반전표------------------
 //------------전표------------------
-const selectSlipSaga = createRequestSaga(types.SELECT_SLIP_START, api.selectSlip);//리듀서가 실행되기 전에 먼저 실행됨
+const selectSlipSaga = createRequestSaga(types.SELECT_SLIP_START, api.selectSlip); //리듀서가 실행되기 전에 먼저 실행됨
 
 const deleteSlipSaga = createRequestSaga(types.DELETE_SLIP_START, api.deleteSlip);
 
 const updateSlipSaga = createRequestSaga(types.UPDATE_SLIP_START, api.updateSlip);
+
+const insertSlipSaga = createRequestSaga(types.INSERT_SLIP_START, api.registerslip);
 
 //------------분개------------------
 const searchJournalSaga = createRequestSaga(types.SELECT_JOURNAL_START, api.searchJournal);
@@ -65,20 +66,21 @@ const saveNonCurrentSaga = createRequestSaga(types.SAVE_NON_CURRENT_START, api.s
 
 const deleteNonCurrentSaga = createRequestSaga(types.DELETE_NON_CURRENT_START, api.deleteNonCurrent);
 //====================자산리스트 조회 수정 삭제 박민호====================================
-const searchCurrentSaga = createRequestSaga(types.SEARCH_CURRENT_REQUEST, api.searchCurrent)
+const searchCurrentSaga = createRequestSaga(types.SEARCH_CURRENT_REQUEST, api.searchCurrent);
 
 //==================== 세부자산리스트 =================================================
-const searchAssetListSaga = createRequestSaga(types.SEARCH_ASSET_LIST_REQUEST, api.searchAssetList)
+const searchAssetListSaga = createRequestSaga(types.SEARCH_ASSET_LIST_REQUEST, api.searchAssetList);
 
-const searchAssetDtaSaga = createRequestSaga(types.SEARCH_ASSET_DTA_REQUEST , api.searchAssetDta)
+const searchAssetDtaSaga = createRequestSaga(types.SEARCH_ASSET_DTA_REQUEST, api.searchAssetDta);
 
-const searchDeptSaga = createRequestSaga(types.SEARCH_DEPT_LIST_REQUEST, api.searchDept )
+const searchDeptSaga = createRequestSaga(types.SEARCH_DEPT_LIST_REQUEST, api.searchDept);
 
 export default function* AccountSaga() {
     // <===============  2020-09-10 일반전표 시작 조편백  ================
     yield takeEvery(types.SELECT_SLIP_START, selectSlipSaga); //전표조회
     yield takeEvery(types.DELETE_SLIP_START, deleteSlipSaga); //전표삭제
     yield takeEvery(types.UPDATE_SLIP_START, updateSlipSaga); //전표 업데이트
+    yield takeEvery(types.INSERT_SLIP_START, insertSlipSaga); //전표저장 insert
     yield takeEvery(types.SELECT_JOURNAL_START, searchJournalSaga); //분개조회
     yield takeEvery(types.DELETE_JOURNAL_START, deleteJournalSaga); //분개삭제
     yield takeEvery(types.SAVE_JOURNAL_START, saveJournalSaga); //분개저장 insert
@@ -107,11 +109,11 @@ export default function* AccountSaga() {
     // 자산리스트 세부자산리스트
     yield takeEvery(types.SEARCH_CURRENT_REQUEST, searchCurrentSaga);
 
-    yield takeEvery(types.SEARCH_ASSET_LIST_REQUEST, searchAssetListSaga)
+    yield takeEvery(types.SEARCH_ASSET_LIST_REQUEST, searchAssetListSaga);
 
-    yield takeEvery(types.SEARCH_ASSET_DTA_REQUEST , searchAssetDtaSaga)
+    yield takeEvery(types.SEARCH_ASSET_DTA_REQUEST, searchAssetDtaSaga);
 
-    yield takeEvery(types.SEARCH_DEPT_LIST_REQUEST , searchDeptSaga)
+    yield takeEvery(types.SEARCH_DEPT_LIST_REQUEST, searchDeptSaga);
 }
 
 //********************************** 2021-02-24 이은기 **********************************
