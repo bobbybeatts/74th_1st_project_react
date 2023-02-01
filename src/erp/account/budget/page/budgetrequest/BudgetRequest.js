@@ -211,7 +211,7 @@ const BudgetRequest = () => {
                     </Box>
                 </MainCard>
             </Grid>
-            <Grid item sm={12}>
+            <Grid item sm={6}>
                 <MainCard content={false} title="전기예산신청">
                     {/* table data grid */}
                     <Box
@@ -233,7 +233,18 @@ const BudgetRequest = () => {
                             }
                         }}
                     >
-                    
+                        <TextField id="1month" label="1월" type="password" autoComplete="current-password" />
+                        <TextField id="2month" label="2월" type="password" autoComplete="current-password" />
+                        <TextField id="3month" label="3월" type="password" autoComplete="current-password" />
+                        <TextField id="4month" label="4월" type="password" autoComplete="current-password" />
+                        <TextField id="5month" label="5월" type="password" autoComplete="current-password" />
+                        <TextField id="6month" label="6월" type="password" autoComplete="current-password" />
+                        <TextField id="7month" label="7월" type="password" autoComplete="current-password" />
+                        <TextField id="8month" label="8월" type="password" autoComplete="current-password" />
+                        <TextField id="9month" label="9월" type="password" autoComplete="current-password" />
+                        <TextField id="10month" label="10월" type="password" autoComplete="current-password" />
+                        <TextField id="11month" label="11월" type="password" autoComplete="current-password" />
+                        <TextField id="12month" label="12월" type="password" autoComplete="current-password" />
                     </Box>
                 </MainCard>
             </Grid>
