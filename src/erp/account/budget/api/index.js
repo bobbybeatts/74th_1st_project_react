@@ -3,8 +3,8 @@ import accountApi from 'api/accountApi';
 export const selectBudgetStatus = (action) =>
     accountApi.get('/budget/budgetstatus', {
         params: {
-            accountPeriodNo: action.params.accountPeriodNo,
-            deptCode: action.params.deptCode,
-            workplaceCode: action.params.workplaceCode
+            accountPeriodNo: action.payload.accountPeriodNo,
+            deptCode: action.payload.deptCode,
+            workplaceCode: action.payload.workplaceCode
         }
     });

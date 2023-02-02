@@ -3,7 +3,6 @@ import * as types from '../reducer/BudgetReducer';
 import Axios from 'axios';
 import createRequestSaga from 'util/createRequestSaga';
 import * as api from '../api';
-import { SELECT_BUDGET_STATUS_REQUEST } from '../reducer/BudgetReducer';
 
 //======================2023-01-27 김상현 시작======================
 const selectBudgetStatusSaga = createRequestSaga(types.SELECT_BUDGET_STATUS_REQUEST, api.selectBudgetStatus);

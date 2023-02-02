@@ -224,7 +224,7 @@ const initialslipFormList = {
     slipNo: 'new',
     slipStatus: '',
     slipType: '',
-    status: '작성중'
+    status: ''
 };
 
 const initialJournalList = {
@@ -322,8 +322,11 @@ const AccountReducer = (state = initialState, action) => {
                 ...state,
                 error: action.payload
             };
-        case INSERT_SLIP_SUCCESS:
+        case INSERT_SLIP_START:
             console.log(action.params.slipObj);
+            console.log(action.params.journalObj);
+            console.log(action.params.slipStatus);
+        case INSERT_SLIP_SUCCESS:
             return {
                 ...state,
                 slipFormList: [],

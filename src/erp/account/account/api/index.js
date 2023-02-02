@@ -28,9 +28,9 @@ export const updateSlip = (action) =>
 export const registerslip = (action) =>
     accountApi.get('/posting/registerslip', {
         params: {
-            slipObj: action.params.slipData,
-            journalObj: action.params.journalData,
-            slipStatus: action.params.slipStatus
+            slipObj: action.payload.slipData,
+            journalObj: action.payload.journalData,
+            slipStatus: action.payload.slipStatus
         }
     });
 export const searchJournal = (action) =>

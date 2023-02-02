@@ -11,11 +11,11 @@ import SearchIcon from '@mui/icons-material/Search';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import DeleteCheckDialog from './DeleteCheckDialog';
-import AccountDialog from '../../../base/page/accountform/AccountDialog';
 // project imports
 import MainCard from '../../../../../template/ui-component/cards/MainCard';
 import { gridSpacing } from '../../../../../template/store/constant';
+import DeleteCheckDialog from './Dialog/DeleteCheckDialog';
+import AccountDialog from '../../../base/page/accountform/AccountDialog';
 // assets
 import { useDispatch, useSelector } from 'react-redux';
 import * as types from '../../reducer/AccountReducer';
@@ -41,7 +41,7 @@ const slipColumns = [
     { headerName: '승인자', field: 'reportingEmpName', key: 'reportingEmpName' },
     { headerName: '승인상태', field: 'slipStatus', key: 'slipStatus' }
 ];
-//분개칼럼
+//분개칼럼 test
 const indignationColumns = [
     { width: '30', headerCheckboxSelection: true, checkboxSelection: true, field: ' ' }, //체크박스
     { width: '250', headerName: '분개일련번호', field: 'journalNo' },
@@ -196,14 +196,8 @@ const SlipForm = () => {
     };
 
     const insertSlip = () => {
-        console.log('insertSlip');
-        console.log('slipData 타입' + typeof slipData);
         console.log(JSON.stringify(slipData));
-        console.log(typeof JSON.stringify(slipData));
-        console.log('journalData 타입' + typeof journalData);
         console.log(JSON.stringify(journalData));
-        console.log(typeof JSON.stringify(journalData));
-        console.log(typeof slipStatus);
         dispatch({
             type: types.INSERT_SLIP_START,
             params: {
@@ -212,6 +206,7 @@ const SlipForm = () => {
                 slipStatus: slipStatus
             }
         });
+        setSlipStatus('');
     };
     //==========================분개=================================
     const searchJour = (e) => {

@@ -15,8 +15,8 @@ import * as types from '../../../base/reducer/BaseReducer';
 // DEPARTMENT 테이블관련으로 만들 수 있을듯.
 
 const WorkPlaceColumns = [
-    { headerName: '사업장코드', field: 'workplaceCode', align: 'center' },
-    { headerName: '사업장명', field: 'workplaceName', width: 150, align: 'center' }
+    { headerName: '사업장코드', field: 'workplaceCode',  align: 'center' },
+    { headerName: '사업장명', field: 'workplaceName', width: 150,  align: 'center' }
 ];
 
 const DeptColumns = [
@@ -24,7 +24,7 @@ const DeptColumns = [
     { headerName: '부서명', field: 'deptName' }
 ];
 
-const DeptDialog = ({ open2, onClose2, setWorkplace, setDname }) => {
+const SearchDeptDialog = ({ open2, onClose2, setWorkplace, setDname }) => {
     const dispatch = useDispatch();
     const theme = useTheme();
 
@@ -53,9 +53,11 @@ const DeptDialog = ({ open2, onClose2, setWorkplace, setDname }) => {
         setDname(e.row.deptName);
         onClose2(false);
         dispatch({
-            type: types.SEARCH_ACCOUNT_REQUEST
+            type: types.SEARCH_ACCOUNT_REQUEST,
         });
     };
+
+
 
     return (
         <Dialog open={open2} fullWidth={true} maxWidth={'xs'}>
@@ -122,4 +124,4 @@ const DeptDialog = ({ open2, onClose2, setWorkplace, setDname }) => {
     );
 };
 
-export default DeptDialog;
+export default SearchDeptDialog;

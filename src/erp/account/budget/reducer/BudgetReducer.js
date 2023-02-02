@@ -23,6 +23,9 @@ const BudgetReducer = (state = initialState, action) => {
     switch (action.type) {
         case SELECT_BUDGET_STATUS_REQUEST:
             console.log('예산실적현황');
+            console.log(action.params.year);
+            console.log(action.params.workplace);
+            console.log(action.params.dName);
             return {
                 ...state,
                 budgetList: []

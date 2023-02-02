@@ -103,7 +103,7 @@ const BudgetRequest = () => {
                         <Grid container spacing={1}>
                             <Grid item>
                                 <Paper
-                                    id="startDate"
+                                    id="fisicalYear"
                                     component="form"
                                     sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 150 }}
                                 >
@@ -122,7 +122,7 @@ const BudgetRequest = () => {
                             </Grid>
                             <Grid item>
                                 <Paper
-                                    id="startDate"
+                                    id="workplaceName"
                                     component="form"
                                     sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 150 }}
                                 >
@@ -141,7 +141,7 @@ const BudgetRequest = () => {
                             </Grid>
                             <Grid item>
                                 <Paper
-                                    id="startDate"
+                                    id="deptName"
                                     component="form"
                                     sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 100 }}
                                 >
