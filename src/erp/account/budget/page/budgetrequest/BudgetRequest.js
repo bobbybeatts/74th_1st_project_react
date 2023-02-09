@@ -8,6 +8,7 @@ import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
 import InputBase from '@mui/material/InputBase';
 import Divider from '@mui/material/Divider';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 import { gridSpacing } from '../../../../../template/store/constant';
 import MainCard from 'template/ui-component/cards/MainCard';
@@ -44,8 +45,23 @@ const BudgetRequest = () => {
     const [openDialog, setOpenDialog] = useState(false);
     const [openDialog2, setOpenDialog2] = useState(false);
     const [workplace, setWorkplace] = useState('');
+    const [workplaceCode, setWorkplaceCode] = useState('');
     const [dName, setDname] = useState('');
+    const [deptCode, setDeptCdoe] = useState('');
     const [year, setYear] = useState('');
+
+    const [onemonth, setOneMonth] = useState('');
+    const [twomonth, setTwoMonth] = useState('');
+    const [threemonth, setThreeMonth] = useState('');
+    const [fourmonth, setFourMonth] = useState('');
+    const [fivemonth, setFiveMonth] = useState('');
+    const [sixmonth, setSixMonth] = useState('');
+    const [sevenmonth, setSevenMonth] = useState('');
+    const [eightmonth, setEightMonth] = useState('');
+    const [ninemonth, setNineMonth] = useState('');
+    const [tenmonth, setTenMonth] = useState('');
+    const [elevenmonth, setElevenMonth] = useState('');
+    const [twelvemonth, setTwelveMonth] = useState('');
 
     const [AccountCode, setAccountCode] = useState('');
     const [AccountName, setAccountName] = useState('');
@@ -90,6 +106,46 @@ const BudgetRequest = () => {
         setOpenDialog2(true);
     };
 
+    const insertMonthBudget = () => {
+        setOneMonth(month1.value);
+        setTwoMonth(month2.value);
+        setThreeMonth(month3.value);
+        setFourMonth(month4.value);
+        setFiveMonth(month5.value);
+        setSixMonth(month6.value);
+        setSevenMonth(month7.value);
+        setEightMonth(month8.value);
+        setNineMonth(month9.value);
+        setTenMonth(month10.value);
+        setElevenMonth(month11.value);
+        setTwelveMonth(month12.value);
+    };
+
+    const insertMonthBudget2 = () => {
+        dispatch({
+            type: types.INSERT_BUDGET_REQUEST,
+            params: {
+                deptCode: deptCode,
+                workplaceCode: workplaceCode,
+                accountPeriodNo: '2',
+                accountInnerCode: AccountCode,
+                budgetingCode: '1',
+                m1Budget: onemonth,
+                m2Budget: twomonth,
+                m3Budget: threemonth,
+                m4Budget: fourmonth,
+                m5Budget: fivemonth,
+                m6Budget: sixmonth,
+                m7Budget: sevenmonth,
+                m8Budget: eightmonth,
+                m9Budget: ninemonth,
+                m10Budget: tenmonth,
+                m11Budget: elevenmonth,
+                m12Budget: twelvemonth
+            }
+        });
+    };
+
     return (
         <Grid container spacing={gridSpacing}>
             <Grid item sm={7}>
@@ -103,7 +159,7 @@ const BudgetRequest = () => {
                         <Grid container spacing={1}>
                             <Grid item>
                                 <Paper
-                                    id="fisicalYear"
+                                    id="startDate"
                                     component="form"
                                     sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 150 }}
                                 >
@@ -122,7 +178,7 @@ const BudgetRequest = () => {
                             </Grid>
                             <Grid item>
                                 <Paper
-                                    id="workplaceName"
+                                    id="startDate"
                                     component="form"
                                     sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 150 }}
                                 >
@@ -137,11 +193,18 @@ const BudgetRequest = () => {
                                     </IconButton>
                                     <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
                                 </Paper>
-                                <DeptDialog open2={openDialog2} onClose2={onClose2} setWorkplace={setWorkplace} setDname={setDname} />
+                                <DeptDialog
+                                    open2={openDialog2}
+                                    onClose2={onClose2}
+                                    setWorkplace={setWorkplace}
+                                    setDname={setDname}
+                                    setDeptCdoe={setDeptCdoe}
+                                    setWorkplaceCode={setWorkplaceCode}
+                                />
                             </Grid>
                             <Grid item>
                                 <Paper
-                                    id="deptName"
+                                    id="startDate"
                                     component="form"
                                     sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 100 }}
                                 >
@@ -233,18 +296,21 @@ const BudgetRequest = () => {
                             }
                         }}
                     >
-                        <TextField id="1month" label="1월" type="password" autoComplete="current-password" />
-                        <TextField id="2month" label="2월" type="password" autoComplete="current-password" />
-                        <TextField id="3month" label="3월" type="password" autoComplete="current-password" />
-                        <TextField id="4month" label="4월" type="password" autoComplete="current-password" />
-                        <TextField id="5month" label="5월" type="password" autoComplete="current-password" />
-                        <TextField id="6month" label="6월" type="password" autoComplete="current-password" />
-                        <TextField id="7month" label="7월" type="password" autoComplete="current-password" />
-                        <TextField id="8month" label="8월" type="password" autoComplete="current-password" />
-                        <TextField id="9month" label="9월" type="password" autoComplete="current-password" />
-                        <TextField id="10month" label="10월" type="password" autoComplete="current-password" />
-                        <TextField id="11month" label="11월" type="password" autoComplete="current-password" />
-                        <TextField id="12month" label="12월" type="password" autoComplete="current-password" />
+                        <TextField id="month1" label="1월" autoComplete="current-password" onChange={insertMonthBudget} />
+                        <TextField id="month2" label="2월" autoComplete="current-password" onChange={insertMonthBudget} />
+                        <TextField id="month3" label="3월" autoComplete="current-password" onChange={insertMonthBudget} />
+                        <TextField id="month4" label="4월" autoComplete="current-password" onChange={insertMonthBudget} />
+                        <TextField id="month5" label="5월" autoComplete="current-password" onChange={insertMonthBudget} />
+                        <TextField id="month6" label="6월" autoComplete="current-password" onChange={insertMonthBudget} />
+                        <TextField id="month7" label="7월" autoComplete="current-password" onChange={insertMonthBudget} />
+                        <TextField id="month8" label="8월" autoComplete="current-password" onChange={insertMonthBudget} />
+                        <TextField id="month9" label="9월" autoComplete="current-password" onChange={insertMonthBudget} />
+                        <TextField id="month10" label="10월" autoComplete="current-password" onChange={insertMonthBudget} />
+                        <TextField id="month11" label="11월" autoComplete="current-password" onChange={insertMonthBudget} />
+                        <TextField id="month12" label="12월" autoComplete="current-password" onChange={insertMonthBudget} />
+                        <Button variant="contained" color="secondary" startIcon={<AddCircleIcon />} onClick={insertMonthBudget2}>
+                            등록
+                        </Button>
                     </Box>
                 </MainCard>
             </Grid>

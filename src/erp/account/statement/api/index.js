@@ -20,7 +20,8 @@ export const searchIncomeList = (action) =>
 export const searchMonthIncomeList = (action) =>
     accountApi.get('/settlement/monthIncomeStatements', {
         params: {
-            searchDate: action.params.searchDate
+            searchDate: action.params.searchDate,
+            callResult: action.params.callResult
         }
     });
 //합계잔액시산표 조회
@@ -107,9 +108,8 @@ export const selectCashFlow = (action) =>
 //회계기수번호 조회(날짜)
 export const searchPeriodNo = () => accountApi.get('/settlement/periodNoList', {});
 
-
 // 월별 조회 데이터 가져오기
-export const searchMonth = (action) => accountApi.get('/settlement/monthData',{});
+export const searchMonth = (action) => accountApi.get('/settlement/monthData', {});
 
 //계정전체 조회
-export const searchAccount = (action) => accountApi.get ('/posting/CurrentAssetCode', {})
+export const searchAccount = (action) => accountApi.get('/posting/CurrentAssetCode', {});

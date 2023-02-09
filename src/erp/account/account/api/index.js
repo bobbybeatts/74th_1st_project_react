@@ -25,14 +25,18 @@ export const updateSlip = (action) =>
             slipNo: action.params.slipNo
         }
     });
+// get으로 보내야 slipStatus가 찍힘
 export const registerslip = (action) =>
-    accountApi.get('/posting/registerslip', {
-        params: {
-            slipObj: action.payload.slipData,
-            journalObj: action.payload.journalData,
-            slipStatus: action.payload.slipStatus
+    accountApi.post(
+        '/posting/registerslip',
+        {
+            insertSlipData: action.params.insertSlipData
         }
-    });
+        // { slipData: action.payload.slipData },
+        // { journalData: action.payload.journalData },
+        // { slipStatus: action.params.slipStatus },
+        // { headers: { 'Content-Type': 'application/json' } }
+    );
 export const searchJournal = (action) =>
     accountApi.get('/posting/singlejournallist', {
         params: { slipNo: action.params.slipNo }
@@ -46,8 +50,8 @@ export const deleteJournal = (action) =>
     });
 
 export const saveJournal = (action) =>
-    accountApi.post('/posting/registerslip', {
-        slipData: action.payload.slipData
+    accountApi.post('/posting/modifyJournal', {
+        jourData: action.params.jourData
     });
 
 export const updateJournal = (action) =>

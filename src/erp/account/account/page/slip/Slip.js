@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useRef, useState } from 'react';
 // material-ui
 import { Box, Button, Grid, TextField, Typography } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
@@ -11,17 +11,18 @@ import SearchIcon from '@mui/icons-material/Search';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import DeleteCheckDialog from './DeleteCheckDialog';
+import AccountDialog from '../../../base/page/accountform/AccountDialog';
 // project imports
 import MainCard from '../../../../../template/ui-component/cards/MainCard';
 import { gridSpacing } from '../../../../../template/store/constant';
-import DeleteCheckDialog from './Dialog/DeleteCheckDialog';
-import AccountDialog from '../../../base/page/accountform/AccountDialog';
 // assets
 import { useDispatch, useSelector } from 'react-redux';
 import * as types from '../../reducer/AccountReducer';
 import moment from 'moment/moment';
 
 import Swal from 'sweetalert2';
+import { useFetcher } from 'react-router-dom';
 
 //Columns
 //전표칼럼
@@ -41,7 +42,7 @@ const slipColumns = [
     { headerName: '승인자', field: 'reportingEmpName', key: 'reportingEmpName' },
     { headerName: '승인상태', field: 'slipStatus', key: 'slipStatus' }
 ];
-//분개칼럼 test
+//분개칼럼
 const indignationColumns = [
     { width: '30', headerCheckboxSelection: true, checkboxSelection: true, field: ' ' }, //체크박스
     { width: '250', headerName: '분개일련번호', field: 'journalNo' },
@@ -107,15 +108,18 @@ const SlipForm = () => {
     const [delButton, setDelButton] = useState('');
 
     const [periodNo, setPeriodNo] = useState('4');
+    const [selecSlip, setSelecSlip] = useState('');
     const [slipNo, setSlipNo] = useState('');
     const [status, setStatus] = useState('');
-    const [expenseReport, setExpenseReport] = useState('내용을 입력해주세요');
+    const [expenseReport, setExpenseReport] = useState('');
 
     const [jourCount, setJourCount] = useState('1');
     const [jourNo, setJourNo] = useState('');
     const [accountCode, setAccountCode] = useState(''); //계정선택 useState();
     const [accountName, setAccountName] = useState('');
     const [selecJour, setSelecJour] = useState('');
+    const [leftDebtorPrice, setLeftDebtorPrice] = useState('');
+    const [rightCreditsPrice, setRightCreditsPrice] = useState('');
 
     const [openDialog, setOpenDialog] = useState(false);
     const handleClose = () => {
@@ -129,6 +133,54 @@ const SlipForm = () => {
     const [accountSelectDialog, setAccountSelectDialog] = useState(false); //계정선택 dialog
 
     //==========================전표=================================
+    const cellRender = (e) => {
+        if (e.field === 'expenseReport') {
+            console.log(selecSlip);
+            console.log(slipNo);
+            dispatch({
+                type: types.ADD_EXPENSEREPORT,
+                params: {
+                    slipData: slipData.filter((data) => data.slipNo !== slipNo),
+                    expenseReport: expenseReport,
+                    selecSlip: selecSlip
+                }
+            });
+        } else if (e.field === 'leftDebtorPrice') {
+            dispatch({
+                type: types.ADD_LEFTDEBTORPRICE,
+                params: {
+                    selecJour: selecJour,
+                    leftDebtorPrice: leftDebtorPrice,
+                    journalData: journalData.filter((data) => data.journalNo !== jourNo)
+                }
+            });
+        } else if (e.field === 'rightCreditsPrice') {
+            dispatch({
+                type: types.ADD_RIGHTCREDITSPRICE,
+                params: {
+                    selecJour: selecJour,
+                    rightCreditsPrice: rightCreditsPrice,
+                    journalData: journalData.filter((data) => data.journalNo !== jourNo)
+                }
+            });
+        }
+    };
+    //>>>>>>>>>적을 때 마다 찍힘 // 렌더링이 계속 되는건 아니라서 상관 없긴 할듯?
+    const inputValue = (e) => {
+        if (e.field === 'expenseReport') {
+            console.log(e);
+            console.log(e.props.value);
+            setExpenseReport(e.props.value);
+        } else if (e.field === 'leftDebtorPrice') {
+            console.log(e);
+            console.log(e.props.value);
+            setLeftDebtorPrice(e.props.value);
+        } else if (e.field === 'rightCreditsPrice') {
+            console.log(e);
+            console.log(e.props.value);
+            setRightCreditsPrice(e.props.value);
+        }
+    };
     const searchSlip = () => {
         dispatch({
             type: types.SELECT_SLIP_START,
@@ -176,6 +228,7 @@ const SlipForm = () => {
                 }
             });
         }
+        setStatus('작성완료');
         handleClose();
         return Swal.fire({
             icon: 'error',
@@ -196,20 +249,21 @@ const SlipForm = () => {
     };
 
     const insertSlip = () => {
-        console.log(JSON.stringify(slipData));
-        console.log(JSON.stringify(journalData));
+        console.log(JSON.stringify(slipData).slice(1, -1));
+        console.log(JSON.stringify(journalData).slice(1, -1));
+        const insertSlipData = { slipObj: slipData, journalObj: journalData, slipStatus: slipStatus };
         dispatch({
             type: types.INSERT_SLIP_START,
             params: {
-                slipObj: JSON.stringify(slipData),
-                journalObj: JSON.stringify(journalData),
-                slipStatus: slipStatus
+                insertSlipData: insertSlipData
             }
         });
-        setSlipStatus('');
+        setSlipStatus('전체');
+        setStatus('작성완료');
     };
     //==========================분개=================================
     const searchJour = (e) => {
+        setSelecSlip(e.row);
         if (e.row.slipNo != 'new') {
             dispatch({
                 type: types.SELECT_JOURNAL_START,
@@ -219,7 +273,6 @@ const SlipForm = () => {
             });
         }
         setSlipNo(e.id);
-        // setExpenseReport(e.row.expenseReport);
     };
     const addJour = () => {
         if (slipNo == '') {
@@ -266,6 +319,19 @@ const SlipForm = () => {
             }
         });
     };
+
+    const insertJour = () => {
+        let jourData = { slipNo: slipNo, journalObj: selecJour };
+        dispatch({
+            type: types.SAVE_JOURNAL_START,
+            params: {
+                // slipNo: JSON.stringify(slipNo),
+                // journalObj: JSON.stringify(selecJour)
+                jourData: jourData //Object 형태로 값이 전달됨
+            }
+        });
+    };
+
     //==========================분개상세=================================
     const searchDetail = (e) => {
         setSelecJour(e.row);
@@ -403,6 +469,8 @@ const SlipForm = () => {
                             hideFooter
                             getRowId={(row) => row.slipNo}
                             onRowClick={searchJour}
+                            onEditCellPropsChange={inputValue}
+                            onCellEditStop={cellRender}
                         />
                         <DeleteCheckDialog open={openDialog} onClose={handleClose} deleteData={deleteData} />
                     </Box>
@@ -428,11 +496,11 @@ const SlipForm = () => {
                                     분개삭제
                                 </Button>
                             </Grid>
-                            {/* <Grid item>
-                                <Button variant="contained" color="secondary">
+                            <Grid item>
+                                <Button variant="contained" color="secondary" onClick={insertJour}>
                                     분개저장
                                 </Button>
-                            </Grid> */}
+                            </Grid>
                         </Grid>
                     }
                 >
@@ -464,6 +532,8 @@ const SlipForm = () => {
                             getRowId={(row) => row.journalNo}
                             onCellClick={searchDetail}
                             onCellDoubleClick={accountSelect}
+                            onEditCellPropsChange={inputValue}
+                            onCellEditStop={cellRender}
                         />
                         <AccountDialog
                             open={accountSelectDialog}

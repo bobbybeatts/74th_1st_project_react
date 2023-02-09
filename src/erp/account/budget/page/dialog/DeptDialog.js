@@ -24,7 +24,7 @@ const DeptColumns = [
     { headerName: '부서명', field: 'deptName' }
 ];
 
-const DeptDialog = ({ open2, onClose2, setWorkplace, setDname }) => {
+const DeptDialog = ({ open2, onClose2, setWorkplace, setDname, setDeptCdoe, setWorkplaceCode }) => {
     const dispatch = useDispatch();
     const theme = useTheme();
 
@@ -41,6 +41,7 @@ const DeptDialog = ({ open2, onClose2, setWorkplace, setDname }) => {
 
     const onRowClicked2 = (e) => {
         setWorkplace(e.row.workplaceName);
+        setWorkplaceCode(e.row.workplaceCode);
         dispatch({
             type: types.SEARCH_DEPT_REQUEST,
             params: {
@@ -51,6 +52,7 @@ const DeptDialog = ({ open2, onClose2, setWorkplace, setDname }) => {
 
     const onDeptSet = (e) => {
         setDname(e.row.deptName);
+        setDeptCdoe(e.row.deptCode);
         onClose2(false);
         dispatch({
             type: types.SEARCH_ACCOUNT_REQUEST

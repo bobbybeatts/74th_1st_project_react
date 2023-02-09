@@ -3,7 +3,7 @@ import * as types from '../reducer/BaseReducer';
 import Axios from 'axios';
 import createRequestSaga from 'util/createRequestSaga';
 import * as api from '../api';
-import {SEARCH_CUSTOMER_REQUEST} from "../reducer/BaseReducer";
+import { SEARCH_CUSTOMER_REQUEST } from '../reducer/BaseReducer';
 
 //================================== 2020-11-28 계정과목관리 유길현  시작  =====================================
 function* batchAccountList(action) {
@@ -81,13 +81,13 @@ export default function* BaseSaga() {
     yield takeEvery(types.INSERT_BUDGET_REQUEST, insertBudgetSaga);
 
     //계정세부과목 관리
-    yield takeEvery(types.SEARCH_DETAIL_ACCOUNT_REQUEST , searchDetailAccountSaga)
+    yield takeEvery(types.SEARCH_DETAIL_ACCOUNT_REQUEST, searchDetailAccountSaga);
 
     //거래처관리
-    yield takeEvery(types.SEARCH_CUSTOMERS_REQUEST , searchCustomerSaga)
+    yield takeEvery(types.SEARCH_CUSTOMERS_REQUEST, searchCustomerSaga);
 
     //신용카드조회
-    yield takeEvery(types.SEARCH_CREDITCARD_REQUEST , searchCreditCardSaga)
+    yield takeEvery(types.SEARCH_CREDITCARD_REQUEST, searchCreditCardSaga);
 }
 const searchWorkPlaceSaga = createRequestSaga(types.SEARCH_WORKPLACE_REQUEST, api.searchWorkPlace);
 const searchPeriodNoSaga = createRequestSaga(types.SEARCH_PERIOD_NO_REQUEST, api.searchPeriodNo);
@@ -98,6 +98,6 @@ const searchDetailSaga = createRequestSaga(types.SEARCH_DETAIL_BUDGETLIST_REQUES
 const searchCurrentBudgetSaga = createRequestSaga(types.SEARCH_CURRENT_BUDGET_REQUEST, api.searchCurrentBudget);
 const searchPreBudgetSaga = createRequestSaga(types.SEARCH_BUDGET_REQUEST, api.searchPreBudget);
 const insertBudgetSaga = createRequestSaga(types.INSERT_BUDGET_REQUEST, api.insertBudget);
-const searchDetailAccountSaga = createRequestSaga(types.SEARCH_DETAIL_ACCOUNT_REQUEST , api.searchDetailAccount)
-const searchCustomerSaga = createRequestSaga(types.SEARCH_CUSTOMERS_REQUEST, api.searchCustomer)
-const searchCreditCardSaga = createRequestSaga(types.SEARCH_CREDITCARD_REQUEST, api.searchCreditCard)
+const searchDetailAccountSaga = createRequestSaga(types.SEARCH_DETAIL_ACCOUNT_REQUEST, api.searchDetailAccount);
+const searchCustomerSaga = createRequestSaga(types.SEARCH_CUSTOMERS_REQUEST, api.searchCustomer);
+const searchCreditCardSaga = createRequestSaga(types.SEARCH_CREDITCARD_REQUEST, api.searchCreditCard);

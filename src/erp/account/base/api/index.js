@@ -2,16 +2,16 @@ import accountApi from 'api/accountApi';
 
 //******************************* 2021-03-16 송화준 **************************************
 
-
 //계정과목조회
 export const searchAccountList = (action) => accountApi.get('/operate/parentaccountlist', {});
 
 //계정세부과목조회
-export const searchDetailAccount = (action) => accountApi.get('/operate/detailaccountlist',{
-    params : {
-        code : action.params.code
-    }
-});
+export const searchDetailAccount = (action) =>
+    accountApi.get('/operate/detailaccountlist', {
+        params: {
+            code: action.params.code
+        }
+    });
 
 //사업장조회
 export const searchWorkPlace = (action) => accountApi.get('/operate/deptlist', {});
@@ -60,11 +60,12 @@ export const searchPreBudget = (action) =>
 
 export const insertBudget = (action) =>
     accountApi.post('/budget/budgetlist', {
-        params: {
+        budgetlist: {
             deptCode: action.params.deptCode,
             workplaceCode: action.params.workplaceCode,
             accountPeriodNo: action.params.accountPeriodNo,
             accountInnerCode: action.params.accountInnerCode,
+            budgetingCode: '1',
             m1Budget: action.params.m1Budget,
             m2Budget: action.params.m2Budget,
             m3Budget: action.params.m3Budget,
@@ -80,8 +81,6 @@ export const insertBudget = (action) =>
         }
     });
 
-export const searchCustomer = (action) =>
-    accountApi.get('/operate/customers',{})
+export const searchCustomer = (action) => accountApi.get('/operate/customers', {});
 
-export const searchCreditCard = (action) =>
-    accountApi.get('/operate/creditCard',{})
+export const searchCreditCard = (action) => accountApi.get('/operate/creditCard', {});

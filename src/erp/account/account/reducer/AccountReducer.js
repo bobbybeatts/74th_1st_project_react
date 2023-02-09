@@ -4,6 +4,7 @@ import { createAction } from 'redux-actions';
 
 //========================================= 2020-09-04 일반전표  조진주 시작 ==============================================
 export const ADD_SLIP = 'src/erp/account/Saga/Saga/ADD_SLIP'; // 전표 추가
+export const ADD_EXPENSEREPORT = 'src/erp/account/Saga/Saga/ADD_EXPENSEREPORT'; //전표 적요 기입
 
 export const SELECT_SLIP_START = 'src/erp/account/Saga/Saga/SELECT_SLIP'; //전표 조회
 export const SELECT_SLIP_SUCCESS = 'src/erp/account/Saga/Saga/SELECT_SLIP_SUCCESS';
@@ -27,6 +28,8 @@ export const SELECT_JOURNAL_FAILURE = 'src/erp/account/Saga/Saga/SELECT_JOURNAL_
 
 export const INSERT_JOURNAL = 'src/erp/account/Saga/Saga/INSERT_JOURNAL'; //분개 추가
 export const INSERT_ACCOUNT = 'src/erp/account/Saga/Saga/INSERT_ACCOUNT'; //계정 추가
+export const ADD_LEFTDEBTORPRICE = 'src/erp/account/Saga/Saga/ADD_LEFTDEBTORPRICE'; //차변 값 추가
+export const ADD_RIGHTCREDITSPRICE = 'src/erp/account/Saga/Saga/ADD_RIGHTCREDITSPRICE'; //대변 값 추가
 
 export const DELETE_JOURNAL_START = 'src/erp/account/Saga/Saga/DELETE_JOURNAL'; //분개삭제
 export const DELETE_JOURAL_FAILURE = 'src/erp/account/Saga/Saga/DELETE_JOURAL_FAILURE';
@@ -224,7 +227,7 @@ const initialslipFormList = {
     slipNo: 'new',
     slipStatus: '',
     slipType: '',
-    status: ''
+    status: '작성중'
 };
 
 const initialJournalList = {
@@ -241,7 +244,7 @@ const initialJournalList = {
     leftDebtorPrice: '',
     price: null,
     rightCreditsPrice: '',
-    slipNo: '',
+    slipNo: '1',
     status: ''
 };
 
@@ -275,6 +278,25 @@ const AccountReducer = (state = initialState, action) => {
                         rightCreditsPrice: '0'
                     }
                 ]
+            };
+        // journalList: [
+        //     {
+        //         ...action.params.selecJour,
+        //         accountCode: action.params.accountCode,
+        //         accountName: action.params.accountName
+        //     }
+        // ].concat(action.params.journalData)
+        case ADD_EXPENSEREPORT:
+            console.log(action.params.selecSlip);
+            console.log(action.params.expenseReport);
+            return {
+                ...state,
+                slipFormList: [
+                    {
+                        ...action.params.selecSlip,
+                        expenseReport: action.params.expenseReport
+                    }
+                ].concat(action.params.slipData)
             };
         case SELECT_SLIP_START:
             console.log('날짜 조회 성공', action);
@@ -322,11 +344,12 @@ const AccountReducer = (state = initialState, action) => {
                 ...state,
                 error: action.payload
             };
+
         case INSERT_SLIP_START:
-            console.log(action.params.slipObj);
-            console.log(action.params.journalObj);
-            console.log(action.params.slipStatus);
+            console.log(action.params.insertSlipData);
+            console.log(typeof action.params.insertSlipData);
         case INSERT_SLIP_SUCCESS:
+            console.log(action.params.insertSlipData);
             return {
                 ...state,
                 slipFormList: [],
@@ -374,6 +397,28 @@ const AccountReducer = (state = initialState, action) => {
                     }
                 ].concat(action.params.journalData)
             };
+        case ADD_LEFTDEBTORPRICE: //차변 값 추가
+            console.log(action.params.leftDebtorPrice);
+            return {
+                ...state,
+                journalList: [
+                    {
+                        ...action.params.selecJour,
+                        leftDebtorPrice: action.params.leftDebtorPrice
+                    }
+                ].concat(action.params.journalData)
+            };
+        case ADD_RIGHTCREDITSPRICE: //차변 값 추가
+            console.log(action.params.rightCreditsPrice);
+            return {
+                ...state,
+                journalList: [
+                    {
+                        ...action.params.selecJour,
+                        rightCreditsPrice: action.params.rightCreditsPrice
+                    }
+                ].concat(action.params.journalData)
+            };
         case DELETE_JOURNAL_START:
             console.log('delete journal');
             return {
@@ -399,6 +444,8 @@ const AccountReducer = (state = initialState, action) => {
                 slipFormList: [], //전표그리드 초기화
                 journalDetailList: [] //분개상세 초기화
             };
+        case SAVE_JOURNAL_START:
+            console.log(action.params.jourData);
         case SAVE_JOURNAL_FAILURE: //분개저장 INSERT 실패
             return {
                 ...state,

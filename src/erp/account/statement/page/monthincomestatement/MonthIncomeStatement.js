@@ -1,7 +1,6 @@
-import React from "react";
-import MonthIncomeStatementGrid from "./MonthIncomeStatementGrid";
-import MonthIncomeStatementMenu from "./MonthIncomeStatementMenu";
-import { Typography } from "@material-ui/core";
+import React from 'react';
+import MonthIncomeStatementGrid from './MonthIncomeStatementGrid';
+import MonthIncomeStatementMenu from './MonthIncomeStatementMenu';
 
 const MonthIncomeStatement = () => {
     return (
