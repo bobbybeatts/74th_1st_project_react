@@ -15,13 +15,13 @@ import * as types from '../../../base/reducer/BaseReducer';
 // DEPARTMENT 테이블관련으로 만들 수 있을듯.
 
 const WorkPlaceColumns = [
-    { headerName: '사업장코드', field: 'workplaceCode', align: 'center' },
-    { headerName: '사업장명', field: 'workplaceName', width: 150, align: 'center' }
+    { headerName: '사업장코드', field: 'workplaceCode', align: 'center', headerAlign: 'center' },
+    { headerName: '사업장명', field: 'workplaceName', width: 185, align: 'center', headerAlign: 'center' }
 ];
 
 const DeptColumns = [
-    { headerName: '부서코드', field: 'deptCode' },
-    { headerName: '부서명', field: 'deptName' }
+    { headerName: '부서코드', field: 'deptCode', align: 'center', headerAlign: 'center'},
+    { headerName: '부서명', field: 'deptName', align: 'center', headerAlign: 'center', width: 180 }
 ];
 
 const DeptDialog = ({ open2, onClose2, setWorkplace, setDname, setDeptCdoe, setWorkplaceCode }) => {
@@ -60,7 +60,7 @@ const DeptDialog = ({ open2, onClose2, setWorkplace, setDname, setDeptCdoe, setW
     };
 
     return (
-        <Dialog open={open2} fullWidth={true} maxWidth={'xs'}>
+        <Dialog open={open2} fullWidth={true} maxWidth={'sm'}>
             <Grid container spacing={gridSpacing}>
                 <Grid item sm={6}>
                     <MainCard content={false} title="사업장">

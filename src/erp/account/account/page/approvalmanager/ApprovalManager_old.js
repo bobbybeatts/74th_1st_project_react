@@ -1,4 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import moment from 'moment';
+import SearchIcon from '@material-ui/icons/Search';
+import { useDispatch, useSelector } from 'react-redux';
+import * as types from '../../reducer/AccountReducer';
+
 // material-ui
 import { Box, Button, Grid, TextField, Typography } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
@@ -7,20 +12,12 @@ import ApprovalIcon from '@mui/icons-material/Approval';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import CallMissedIcon from '@mui/icons-material/CallMissed';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import SearchIcon from '@mui/icons-material/Search';
 
 // project imports
 import MainCard from '../../../../../template/ui-component/cards/MainCard';
 import { gridSpacing } from '../../../../../template/store/constant';
-// assets
-import { useDispatch, useSelector } from 'react-redux';
-import * as types from '../../reducer/AccountReducer';
-import moment from 'moment/moment';
 
-import Swal from 'sweetalert2';
-
-//Columns
-//전표칼럼
+//전표 그리드 세팅
 const slipColumns = [
     { width: '30', headerCheckboxSelection: true, checkboxSelection: true, key: 'slipCheck', field: ' ' }, //체크박스
     { width: '90', headerName: '기수일련번호', field: 'accountPeriodNo', key: 'accountPeriodNo', align: 'center' },
@@ -31,12 +28,14 @@ const slipColumns = [
         width: '200',
         headerName: '품의내역',
         field: 'expenseReport',
+        editable: true,
         key: 'expenseReport'
     }, // editable : 편집가능
     { headerName: '승인자', field: 'reportingEmpName', key: 'reportingEmpName' },
     { headerName: '승인상태', field: 'slipStatus', key: 'slipStatus' }
 ];
-//분개칼럼
+
+//분개 그리드 세팅
 const indignationColumns = [
     { width: '30', headerCheckboxSelection: true, checkboxSelection: true, field: ' ' }, //체크박스
     { width: '250', headerName: '분개일련번호', field: 'journalNo' },
@@ -47,58 +46,46 @@ const indignationColumns = [
     {
         headerName: '대차구분',
         field: 'balanceDivision',
+        editable: true,
         type: 'singleSelect',
         valueOptions: ['대변', '차변']
     },
     {
         headerName: '차변',
-        field: 'leftDebtorPrice'
+        field: 'leftDebtorPrice',
+        editable: true
         //valueFormatter:' Math.floor(value).toString().replace(/(\\d)(?=(\\d{3})+(?!\\d))/g, "$1,")+"원"',
     },
     {
         headerName: '대변',
-        field: 'rightCreditsPrice'
+        field: 'rightCreditsPrice',
+        editable: true
         //valueFormatter:' Math.floor(value).toString().replace(/(\\d)(?=(\\d{3})+(?!\\d))/g, "$1,")+"원"',
     }
 ];
-
-//분개상세칼럼
-const indignationDetailColumns = [
-    { width: '30', headerCheckboxSelection: true, checkboxSelection: true, field: ' ' }, //체크박스
-    { headerName: '분개번호', field: 'journalDetailNo', width: 250 },
-    { headerName: '계정명', field: 'accountControlName', width: 250 },
-    { headerName: '계정내용', field: 'accountControlType', width: 250 },
-    {
-        headerName: '상세내용',
-        field: 'journalDescription',
-        editable: true,
-        width: 250
-    }
-];
-
-// ==============================|| 일반전표 ||============================== //
-
 const ApprovalManager = () => {
+    //데이터 뽑아오기
     const slipData = useSelector((state) => state.RootReducers.AccReducer.AccountReducer.approvalSlipList);
-    const journalData = useSelector((state) => state.RootReducers.AccReducer.AccountReducer.approvalJournalList);
+    const journalData = useSelector((state) => state.RootReducers.AccReducer.AccountReducer.JournalList);
 
+    //날짜 세팅
+    const theme = useTheme();
     let year = moment(new Date()).format('yyyy');
     let month = moment(new Date()).format('MM');
     //let date = moment(new Date()).format("DD");
-    let toDay = moment(new Date()).format('yyyy-MM-DD');
-    let monthFirstDay = year + '-' + month + '-01';
+    const today = year + '-' + month + '-' + new Date().getDate();
+    const monthFirst = year + '-' + month + '-01';
     const yearFirst = year + '-01-01';
     const yearLast = year + '-12-31';
 
-    const theme = useTheme();
-    const dispatch = useDispatch(); // useDispatch()는 리덕스 내장 함순데 밖에서 사용하기 위해서 dispatch변수 적어준다.
+    //useState
+    const dispatch = useDispatch();
+    const [startDate, setStartDate] = useState(monthFirst);
+    const [endDate, setEndDate] = useState(today);
     const [slipStatus] = useState('승인요청');
-    const [startDate, setStartDate] = useState(monthFirstDay); //시작 날짜
-    const [endDate, setEndDate] = useState(toDay);
-    const [selecSlip, setSelecSlip] = useState('');
+    const [positionGridApi, setPositionGridApi] = useState();
+    const [slipNo, setSlipNo] = useState('');
 
-    //==========================전표CRUD=================================
-    //조회
     const approvalSearchData = () => {
         dispatch({
             type: types.SEARCH_AM_SLIP_REQUEST,
@@ -108,31 +95,86 @@ const ApprovalManager = () => {
                 slipStatus: slipStatus
             }
         });
-        console.log(slipData);
     };
-    //전표 승인
-    const approvalBtn = () => {
-        const approvalData = { slipNo: selecSlip.slipNo, slipStatus: '승인완료', approvalDate: toDay };
-        console.log(approvalData);
-        dispatch({
-            type: types.UPDATE_AM_SLIP_REQUEST,
-            params: { approvalData: approvalData }
-        });
+
+    const thisYear = () => {
+        setStartDate(yearFirst);
+        setEndDate(yearLast);
     };
-    //==========================분개=================================
-    // 분개 조회
+
+    // //========================== 분개조회 ==========================
+    // useEffect(() => {
+    //     if (slipNo === '' || slipNo === 'new') return;
+    //     dispatch({
+    //         type: types.SEARCH_AM_JOURNAL_REQUEST,
+    //         params: { slipNo: slipData.slipNo }
+    //     });
+    // }, [slipNo]); // SlipGrid 컴포넌트에서 보낸 slipNo 가 바뀔 때마다, slipNo 를 파라미터로 분개 List를 가져와라. setData 해라.
+
     const searchJour = (e) => {
-        setSelecSlip(e.row);
-        console.log(e.row);
+        //setSelecSlip(e.row);
+        console.log(e);
         if (e.row.slipNo != 'new') {
             dispatch({
-                type: types.SEARCH_AM_JOURNAL_REQUEST,
+                type: types.SELECT_JOURNAL_START,
                 params: {
                     slipNo: e.row.slipNo
                 }
             });
         }
+        //setSlipNo(e.id);
     };
+    //========================== 그리드초기화 ==========================
+    const initalBtn = () => {
+        positionGridApi.selectAll(); // 그리드에 뿌려진 모든 데이터를 선택해라.
+        const allData = positionGridApi.getSelectedRows(); // 선택된 데이터를 담아라.
+        positionGridApi.updateRowData({ remove: allData }); // 그리드에서 제거해라
+    };
+
+    //========================== 전표승인 ===============================
+    const approvalBtn = async () => {
+        let selectedData = positionGridApi.getSelectedRows(); //선택한 모든 로우
+        let approvalData = selectedData.map((cv) => {
+            cv.slipStatus = '승인'; // 뒷단에서 반려도 추가를 할경우  전표 등록할때 사용하는 FormControl 을 사용 하여 승인이면 true 반려면 false 를 하고 넘겨 주길 바랍니다 ㅎㅎ
+            cv.approvalDate = moment(new Date()).format('yyyy-MM-DD'); //승인 날짜
+            cv.approvalEmpCode = sessionStorage.getItem('empCodeInfo_token');
+            cv.approvalEmpName = sessionStorage.getItem('empNameInfo_token');
+            return cv;
+        });
+        dispatch({
+            type: types.UPDATE_AM_SLIP_REQUEST,
+            params: { approvalData: approvalData }
+        });
+        alert(` ${approvalData.length} 건 의 전표가 승인이 되었습니다. `);
+        positionGridApi.updateRowData({ remove: selectedData });
+    };
+    //========================== 전표반려 ===============================
+    const companionBtn = async () => {
+        let selectedData = positionGridApi.getSelectedRows();
+        let companionData = selectedData.map((cv) => {
+            cv.slipStatus = '반려'; // 뒷단에서 반려도 추가를 할경우  전표 등록할때 사용하는 FormControl 을 사용 하여 승인이면 true 반려면 false 를 하고 넘겨 주길 바랍니다 ㅎㅎ
+            cv.companionDate = moment(new Date()).format('yyyy-MM-DD');
+            cv.companionEmpCode = sessionStorage.getItem('empCodeInfo_token');
+            cv.companionEmpName = sessionStorage.getItem('empNameInfo_token');
+            return cv;
+        });
+        dispatch({
+            type: types.UPDATE_AM_SLIP_REQUEST,
+            params: { approvalData: companionData }
+        });
+        alert(` ${companionData.length} 건 의 전표가 승인이 되었습니다. `);
+        positionGridApi.updateRowData({ remove: selectedData });
+    };
+    //========================== 전표그리드 row를 눌렀을 때, 이벤트 ==========================
+    const slipChange = () => {
+        const rowData = positionGridApi.getSelectedRows(); // 선택된 row 정보
+        setSlipNo(rowData[0].slipNo); // row 정보의 slipNo를 세팅해라. JournalGrid 컴포넌트로 보내기 위함.
+    };
+
+    const onGridReady = (params) => {
+        setPositionGridApi(params.api);
+        params.api.sizeColumnsToFit(); // 그리드 초기화 시 칼럼 사이즈 자동조절.
+    }; // 여긴 그냥 ag Grid의 api를 사용하기 위해 선언. 그리고 이곳은 ag Grid 초기화 시 실행된다.
 
     return (
         <Grid container spacing={gridSpacing}>
@@ -146,9 +188,10 @@ const ApprovalManager = () => {
                             variant={'standard'}
                             sx={{ mx: 1 }}
                             value={startDate}
-                            defaultValue={monthFirstDay}
+                            defaultValue={monthFirst}
                             onChange={(e) => {
                                 setStartDate(e.target.value);
+                                3;
                             }}
                         />
                         <TextField
@@ -157,7 +200,7 @@ const ApprovalManager = () => {
                             variant={'standard'}
                             sx={{ mx: 1 }}
                             value={endDate}
-                            defaultValue={toDay}
+                            defaultValue={today}
                             onChange={(e) => {
                                 setEndDate(e.target.value);
                             }}
@@ -185,7 +228,7 @@ const ApprovalManager = () => {
                         </Button>
                     </div>
                 </div>
-                {/* =================================전표데이터그리드================================= */}
+                {/* =================================전표승인요청데이터그리드================================= */}
                 <MainCard
                     content={false}
                     title="전표"
@@ -200,22 +243,12 @@ const ApprovalManager = () => {
                                 </Button>
                             </Grid>
                             <Grid item>
-                                <Button
-                                    variant="contained"
-                                    color="secondary"
-                                    //onClick={companionBtn}
-                                    startIcon={<CallMissedIcon />}
-                                >
+                                <Button variant="contained" color="secondary" onClick={companionBtn} startIcon={<CallMissedIcon />}>
                                     반려
                                 </Button>
                             </Grid>
                             <Grid item>
-                                <Button
-                                    variant="contained"
-                                    color="secondary"
-                                    //onClick={initalBtn}
-                                    startIcon={<RefreshIcon />}
-                                >
+                                <Button variant="contained" color="secondary" onClick={initalBtn} startIcon={<RefreshIcon />}>
                                     초기화
                                 </Button>
                             </Grid>
@@ -242,7 +275,16 @@ const ApprovalManager = () => {
                             }
                         }}
                     >
-                        <DataGrid rows={slipData} columns={slipColumns} hideFooter getRowId={(row) => row.slipNo} onRowClick={searchJour} />
+                        <DataGrid
+                            hideFooter
+                            rows={slipData}
+                            columns={slipColumns}
+                            //onCellClicked={slipChange}
+                            rowSelection="multiple" // 그리드 여러개 선택가능
+                            onGridReady={onGridReady}
+                            onRowClick={searchJour}
+                            getRowId={(row) => row.slipNo}
+                        />
                     </Box>
                 </MainCard>
                 {/* =================================분개데이터그리드================================= */}

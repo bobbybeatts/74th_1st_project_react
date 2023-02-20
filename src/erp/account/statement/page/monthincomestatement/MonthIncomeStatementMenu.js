@@ -8,7 +8,6 @@ import { DataGrid } from '@mui/x-data-grid';
 
 const MonthIncomeStatementMenu = () => {
     const list = useSelector((state) => state.RootReducers.AccReducer.StatementReducer.periodNoList);
-
     const theme = useTheme();
     const dispatch = useDispatch();
     const [open, setOpen] = useState(false);
@@ -23,7 +22,7 @@ const MonthIncomeStatementMenu = () => {
 
     const searchData = (e) => {
         setOpen(false);
-        console.log(e);
+        console.log(e.row.periodEndDate);
         dispatch({
             type: types.SEARCH_MONTH_INCOME_REQUEST, //이부분 바꿔야됨
             params: {
@@ -33,20 +32,19 @@ const MonthIncomeStatementMenu = () => {
         });
     };
 
-    const columns = [
-        {
-            headerName: '회계 기수',
-            field: 'accountPeriodNo',
-            width: 250
-        },
-        {
-            headerName: '회계 시작일',
-            field: 'periodStartDate',
-            width: 250
-        },
-        { headerName: '회계 종료일', field: 'periodEndDate', width: 250 }
-    ];
-
+  const columns = [
+    {
+      headerName: '회계 기수',
+      field: 'accountPeriodNo',
+      width: 250
+    },
+    {
+      headerName: '회계 시작일',
+      field: 'periodStartDate',
+      width: 250
+    },
+    { headerName: '회계 종료일', field: 'periodEndDate', width: 250 }
+  ]
     return (
         <Grid container spacing={gridSpacing}>
             <Grid item xs={12}>

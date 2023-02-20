@@ -13,11 +13,11 @@ import * as types from '../../../base/reducer/BaseReducer';
 import { dispatch } from 'template/store';
 
 const YearColumns = [
-    { headerName: '시작날짜', field: 'periodStartDate' },
+    { headerName: '시작날짜', field: 'periodStartDate', textAlign: 'center'},
     { headerName: '끝난날짜', field: 'periodEndDate' }
 ];
 
-const YearDialog = ({ open, onClose, setYear }) => {
+const YearDialog = ({ open, onClose, setYear, setPeriodno }) => {
     const dispatch = useDispatch();
     const theme = useTheme();
     const yearData = useSelector((state) => state.RootReducers.AccReducer.BaseReducer.periodNoList);
@@ -31,10 +31,11 @@ const YearDialog = ({ open, onClose, setYear }) => {
     const onRowClicked = (e) => {
         console.log(e);
         setYear(e.row.fiscalYear);
+        setPeriodno(e.row.accountPeriodNo);
         onClose(false);
     };
     return (
-        <Dialog open={open} fullWidth={true} maxWidth={'sm'}>
+        <Dialog open={open} fullWidth={true} maxWidth={'xs'}>
             <Grid container spacing={gridSpacing}>
                 <Grid item sm={12}>
                     <MainCard content={false} title="년도">

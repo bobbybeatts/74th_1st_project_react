@@ -10,7 +10,6 @@ const MonthIncomeStatementGrid = () => {
     const data = useSelector((state) => state.RootReducers.AccReducer.StatementReducer.monthIncomeList);
 
     const theme = useTheme();
-
     const currencyFormatter = new Intl.NumberFormat('ko-KR', {
         style: 'currency',
         currency: 'KRW'
@@ -115,20 +114,20 @@ const MonthIncomeStatementGrid = () => {
                     }}
                 >
                     <AgGridReact
-                        columns={MonthIncomeStatementGrid}
-                        rows={data}
+                        columnDefs={MonthIncomeStatementGrid}
+                        rowData={data}
                         rowSelection="single"
                         getRowStyle={function (param) {
                             //가운데
                             if (param.node.rowPinned) {
-                                return { 'font-weight': 'bold', background: '#dddddd' };
+                                return { fontweight: 'bold', background: '#dddddd' };
                             }
-                            return { 'text-align': 'center' };
+                            return { textalign: 'center' };
                         }}
                         onGridReady={(event) => {
                             event.api.sizeColumnsToFit();
                         }}
-                        getRowId={(row) => row.month}
+                        // getRowId={(row) => row.month}
                     />
                 </div>
             </MainCard>

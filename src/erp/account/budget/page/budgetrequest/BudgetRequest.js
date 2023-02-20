@@ -13,6 +13,7 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { gridSpacing } from '../../../../../template/store/constant';
 import MainCard from 'template/ui-component/cards/MainCard';
 import SearchIcon from '@mui/icons-material/Search';
+import RestartAltIcon from '@mui/icons-material/RestartAlt';
 
 import { DataGrid } from '@mui/x-data-grid';
 import { useTheme } from '@mui/material/styles';
@@ -49,6 +50,7 @@ const BudgetRequest = () => {
     const [dName, setDname] = useState('');
     const [deptCode, setDeptCdoe] = useState('');
     const [year, setYear] = useState('');
+    const [periodno, setPeriodno] = useState('');
 
     const [onemonth, setOneMonth] = useState('');
     const [twomonth, setTwoMonth] = useState('');
@@ -86,8 +88,12 @@ const BudgetRequest = () => {
                 code: e.row.accountInnerCode
             }
         });
-        setAccountCode(e.row.accountInnerCode);
         setAccountName(e.row.accountName);
+    };
+
+    const onAccountDetail = (e) => {
+        console.log(e.row);
+        setAccountCode(e.row.accountInnerCode);
     };
 
     const onClose = () => {
@@ -127,7 +133,7 @@ const BudgetRequest = () => {
             params: {
                 deptCode: deptCode,
                 workplaceCode: workplaceCode,
-                accountPeriodNo: '2',
+                accountPeriodNo: periodno,
                 accountInnerCode: AccountCode,
                 budgetingCode: '1',
                 m1Budget: onemonth,
@@ -144,11 +150,31 @@ const BudgetRequest = () => {
                 m12Budget: twelvemonth
             }
         });
+        month1.value = '';
+        month2.value = '';
+        month3.value = '';
+        month4.value = '';
+        month5.value = '';
+        month6.value = '';
+        month7.value = '';
+        month8.value = '';
+        month9.value = '';
+        month10.value = '';
+        month11.value = '';
+        month12.value = '';
+        onReset();
+    };
+
+    const onReset = () => {
+        setYear('');
+        setWorkplace('');
+        setDname('');
+        //월별예산state는 onChange함수를 사용하였기에 따로 초기화 선언을 하지않음.
     };
 
     return (
         <Grid container spacing={gridSpacing}>
-            <Grid item sm={7}>
+            <Grid item sm={6}>
                 <MainCard
                     content={false}
                     title="계정과목선택"
@@ -161,7 +187,7 @@ const BudgetRequest = () => {
                                 <Paper
                                     id="startDate"
                                     component="form"
-                                    sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 150 }}
+                                    sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 130 }}
                                 >
                                     <InputBase
                                         sx={{ ml: 1, flex: 1 }}
@@ -174,13 +200,13 @@ const BudgetRequest = () => {
                                     </IconButton>
                                     <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
                                 </Paper>
-                                <YearDialog open={openDialog} onClose={onClose} setYear={setYear} />
+                                <YearDialog open={openDialog} onClose={onClose} setYear={setYear} setPeriodno={setPeriodno} />
                             </Grid>
                             <Grid item>
                                 <Paper
                                     id="startDate"
                                     component="form"
-                                    sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 150 }}
+                                    sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 170 }}
                                 >
                                     <InputBase
                                         sx={{ ml: 1, flex: 1 }}
@@ -248,7 +274,7 @@ const BudgetRequest = () => {
                     </Box>
                 </MainCard>
             </Grid>
-            <Grid item sm={5}>
+            <Grid item sm={6}>
                 <MainCard content={false} title="계정상세선택">
                     {/* table data grid */}
                     <Box
@@ -270,15 +296,31 @@ const BudgetRequest = () => {
                             }
                         }}
                     >
-                        <DataGrid rows={accountDetailData} columns={accountDetailcolums} getRowId={(row) => row.accountInnerCode} />
+                        <DataGrid
+                            rows={accountDetailData}
+                            columns={accountDetailcolums}
+                            getRowId={(row) => row.accountInnerCode}
+                            onRowClick={onAccountDetail}
+                        />
                     </Box>
                 </MainCard>
             </Grid>
-            <Grid item sm={6}>
-                <MainCard content={false} title="전기예산신청">
-                    {/* table data grid */}
+            <Grid item sm={7}>
+                <MainCard
+                    content={false}
+                    title="예산신청"
+                    secondary={
+                        <Button variant="contained" color="secondary" startIcon={<AddCircleIcon />} onClick={insertMonthBudget2}>
+                            등록
+                        </Button>
+                    }
+                >
                     <Box
                         sx={{
+                            display: 'grid',
+                            padding: 1,
+                            gap: 1,
+                            gridTemplateColumns: 'repeat(3, 4fr)',
                             height: 300,
                             width: '100%',
                             '& .MuiDataGrid-root': {
@@ -308,9 +350,6 @@ const BudgetRequest = () => {
                         <TextField id="month10" label="10월" autoComplete="current-password" onChange={insertMonthBudget} />
                         <TextField id="month11" label="11월" autoComplete="current-password" onChange={insertMonthBudget} />
                         <TextField id="month12" label="12월" autoComplete="current-password" onChange={insertMonthBudget} />
-                        <Button variant="contained" color="secondary" startIcon={<AddCircleIcon />} onClick={insertMonthBudget2}>
-                            등록
-                        </Button>
                     </Box>
                 </MainCard>
             </Grid>

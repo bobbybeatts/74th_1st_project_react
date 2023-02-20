@@ -18,6 +18,13 @@ export const searchWorkPlace = (action) => accountApi.get('/operate/deptlist', {
 
 //회계기수번호 조회(날짜)
 export const searchPeriodNo = () => accountApi.get('/settlement/periodNoList', {});
+export const searchTPeriodNo = (action) =>
+    accountApi.get('/settlement/tPeriodNoList', {
+        params: {
+            yearFirst: action.params.yearFirst,
+            yearLast: action.params.yearLast
+        }
+    });
 
 //부서조회
 export const searchDeptList = (action) =>
@@ -60,6 +67,29 @@ export const searchPreBudget = (action) =>
 
 export const insertBudget = (action) =>
     accountApi.post('/budget/budgetlist', {
+        budgetlist: {
+            deptCode: action.params.deptCode,
+            workplaceCode: action.params.workplaceCode,
+            accountPeriodNo: action.params.accountPeriodNo,
+            accountInnerCode: action.params.accountInnerCode,
+            budgetingCode: '1',
+            m1Budget: action.params.m1Budget,
+            m2Budget: action.params.m2Budget,
+            m3Budget: action.params.m3Budget,
+            m4Budget: action.params.m4Budget,
+            m5Budget: action.params.m5Budget,
+            m6Budget: action.params.m6Budget,
+            m7Budget: action.params.m7Budget,
+            m8Budget: action.params.m8Budget,
+            m9Budget: action.params.m9Budget,
+            m10Budget: action.params.m10Budget,
+            m11Budget: action.params.m11Budget,
+            m12Budget: action.params.m12Budget
+        }
+    });
+
+    export const serachBudgetList = (action) =>
+    accountApi.get('/budget/budgetlist', {
         budgetlist: {
             deptCode: action.params.deptCode,
             workplaceCode: action.params.workplaceCode,

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 // material-ui
 import { Box, Button, Grid, TextField, Typography } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
@@ -9,16 +9,20 @@ import SaveIcon from '@mui/icons-material/Save';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import SearchIcon from '@mui/icons-material/Search';
 import MenuItem from '@mui/material/MenuItem';
+import TaskIcon from '@mui/icons-material/Task';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+//Dialog
 import DeleteCheckDialog from './DeleteCheckDialog';
 import AccountDialog from '../../../base/page/accountform/AccountDialog';
+import CustomerDialog from '../../../base/page/workplacemanagement/CustomerDialog';
 // project imports
 import MainCard from '../../../../../template/ui-component/cards/MainCard';
 import { gridSpacing } from '../../../../../template/store/constant';
 // assets
 import { useDispatch, useSelector } from 'react-redux';
 import * as types from '../../reducer/AccountReducer';
+import * as type from '../../../base/reducer/BaseReducer';
 import moment from 'moment/moment';
 
 import Swal from 'sweetalert2';
@@ -48,6 +52,8 @@ const indignationColumns = [
     { width: '250', headerName: '분개일련번호', field: 'journalNo' },
     { headerName: '계정코드', field: 'accountCode' },
     { headerName: '계정명', field: 'accountName' },
+    { headerName: '거래처코드', field: 'customerCode' },
+    { headerName: '거래처명', field: 'customerName', hide: true },
     {
         headerName: '대차구분',
         field: 'balanceDivision',
@@ -55,8 +61,6 @@ const indignationColumns = [
         type: 'singleSelect',
         valueOptions: ['대변', '차변']
     },
-    { headerName: '거래처코드', field: 'customerCode' },
-    { headerName: '거래처명', field: 'customerName', hide: true },
     {
         headerName: '차변',
         field: 'leftDebtorPrice',
@@ -99,6 +103,17 @@ const SlipForm = () => {
     let monthFirstDay = year + '-' + month + '-01';
     const yearFirst = year + '-01-01';
     const yearLast = year + '-12-31';
+    const yearData = useSelector((state) => state.RootReducers.AccReducer.BaseReducer.periodNoList);
+    const periodNo = useSelector((state) => state.RootReducers.AccReducer.BaseReducer.periodNo);
+    useEffect(() => {
+        dispatch({
+            type: type.SEARCH_T_PERIOD_NO_REQUEST,
+            params: {
+                yearFirst: yearFirst,
+                yearLast: yearLast
+            }
+        });
+    }, []);
 
     const theme = useTheme();
     const dispatch = useDispatch(); // useDispatch()는 리덕스 내장 함순데 밖에서 사용하기 위해서 dispatch변수 적어준다.
@@ -107,7 +122,6 @@ const SlipForm = () => {
     const [endDate, setEndDate] = useState(toDay);
     const [delButton, setDelButton] = useState('');
 
-    const [periodNo, setPeriodNo] = useState('4');
     const [selecSlip, setSelecSlip] = useState('');
     const [slipNo, setSlipNo] = useState('');
     const [status, setStatus] = useState('');
@@ -130,13 +144,18 @@ const SlipForm = () => {
         setOpenDialog(true);
         setDelButton(e.target.id);
     };
-    const [accountSelectDialog, setAccountSelectDialog] = useState(false); //계정선택 dialog
+    //계정선택 dialog
+    const [accountSelectDialog, setAccountSelectDialog] = useState(false);
+    //거래처코드 선택 dialog
+    const [customerCodeDialog, setCustomerCodeDialog] = useState(false);
+    const [customerCode, setCustomerCode] = useState('');
+    const [customerName, setCustomerName] = useState('');
 
-    //==========================전표=================================
     const cellRender = (e) => {
         if (e.field === 'expenseReport') {
             console.log(selecSlip);
             console.log(slipNo);
+            console.log(expenseReport);
             dispatch({
                 type: types.ADD_EXPENSEREPORT,
                 params: {
@@ -181,6 +200,8 @@ const SlipForm = () => {
             setRightCreditsPrice(e.props.value);
         }
     };
+    //==========================전표CRUD=================================
+    //조회
     const searchSlip = () => {
         dispatch({
             type: types.SELECT_SLIP_START,
@@ -192,26 +213,29 @@ const SlipForm = () => {
         });
         console.log(slipData);
     };
+    //전표 추가
     const addSlip = () => {
         console.log('전표 추가');
+        console.log(yearData);
         if (status == '작성중') {
             return Swal.fire({
                 icon: 'warning',
-                title: '작성을 마무리 해 주십시오',
+                title: '작성을 마무리해 주십시오',
                 showConfirmButton: '확인'
             });
         } else {
             dispatch({
                 type: types.ADD_SLIP,
                 params: {
-                    accountPeriodNo: periodNo,
+                    accountPeriodNo: periodNo.accountPeriodNo,
                     reportingDate: endDate
                 }
             });
             setStatus('작성중');
+            setExpenseReport('');
         }
     };
-
+    //전표 삭제
     const deleteData = () => {
         if (delButton == 'slipDelete') {
             dispatch({
@@ -236,7 +260,7 @@ const SlipForm = () => {
             showConfirmButton: '확인'
         });
     };
-
+    //전표 업데이트
     const updateSlip = () => {
         console.log('updateSlip');
         dispatch({
@@ -247,21 +271,82 @@ const SlipForm = () => {
             }
         });
     };
-
+    //전표 저장 및 업데이트
     const insertSlip = () => {
-        console.log(JSON.stringify(slipData).slice(1, -1));
-        console.log(JSON.stringify(journalData).slice(1, -1));
-        const insertSlipData = { slipObj: slipData, journalObj: journalData, slipStatus: slipStatus };
-        dispatch({
-            type: types.INSERT_SLIP_START,
-            params: {
-                insertSlipData: insertSlipData
-            }
-        });
-        setSlipStatus('전체');
-        setStatus('작성완료');
+        if (selecSlip === '') {
+            return Swal.fire({
+                icon: 'warning',
+                title: '전표를 선택해 주십시오',
+                showConfirmButton: '확인'
+            });
+        } else if (slipNo !== 'new' && selecSlip.slipStatus == '승인완료') {
+            return Swal.fire({
+                icon: 'error',
+                title: '승인된 항목은 수정할 수 없습니다.',
+                showConfirmButton: '확인'
+            });
+        } else if (slipNo !== 'new' && slipStatus !== '승인완료') {
+            console.log('stop');
+            const updateSlipData = { slipObj: selecSlip, journalObj: journalData };
+            dispatch({
+                type: types.UPDATE_SLIP_START,
+                params: {
+                    updateSlipData: updateSlipData
+                }
+            });
+            return Swal.fire({
+                icon: 'info',
+                title: '수정되었습니다',
+                showConfirmButton: '확인'
+            });
+        } else {
+            console.log(slipData);
+            const insertSlipData = { slipObj: slipData, journalObj: journalData, slipStatus: '미결' };
+            dispatch({
+                type: types.INSERT_SLIP_START,
+                params: {
+                    insertSlipData: insertSlipData
+                }
+            });
+            setSlipStatus('전체');
+            setStatus('작성완료');
+            return Swal.fire({
+                icon: 'success',
+                title: '저장되었습니다',
+                showConfirmButton: '확인'
+            });
+        }
+    };
+
+    const approvalRequest = () => {
+        console.log('승인요청');
+        if (selecSlip === '') {
+            return Swal.fire({
+                icon: 'warning',
+                title: '전표를 선택해 주십시오',
+                showConfirmButton: '확인'
+            });
+        } else if (status == '작성중') {
+            return Swal.fire({
+                icon: 'warning',
+                title: '작성을 마무리해 주십시오',
+                showConfirmButton: '확인'
+            });
+        } else {
+            const patchData = { slipNo: selecSlip.slipNo, slipStatus: '승인요청' };
+            dispatch({
+                type: types.APPROVAL_SLIP_REQUEST,
+                patchData: patchData
+            });
+            return Swal.fire({
+                icon: 'success',
+                title: '승인요청 되었습니다',
+                showConfirmButton: '확인'
+            });
+        }
     };
     //==========================분개=================================
+    // 분개 조회
     const searchJour = (e) => {
         setSelecSlip(e.row);
         if (e.row.slipNo != 'new') {
@@ -274,6 +359,7 @@ const SlipForm = () => {
         }
         setSlipNo(e.id);
     };
+    //분개 로우 추가
     const addJour = () => {
         if (slipNo == '') {
             Swal.fire({
@@ -294,18 +380,25 @@ const SlipForm = () => {
             console.log(jourCount);
         }
     };
-
-    const accountSelect = (e) => {
-        //분개 - 계정과목명 더블 클릭 --> 계정 선택 다이알로그
-        if (e.field == 'accountName') {
+    //분개 - 계정과목명 더블 클릭 --> 계정 선택 다이알로그
+    //거래처 선택도 추가
+    const itemSelect = (e) => {
+        setSelecJour(e.row);
+        setJourNo(e.row.journalNo);
+        if (e.field == 'accountCode') {
+            return Swal.fire({
+                icon: 'error',
+                title: '계정명을 눌러 주세요',
+                showConfirmButton: '확인'
+            });
+        } else if (e.field == 'accountName') {
             setAccountSelectDialog(true);
-            setSelecJour(e.row);
-            setJourNo(e.row.journalNo);
+        } else if (e.field == 'customerCode') {
+            setCustomerCodeDialog(true);
         }
     };
-
+    //분개 계정 선택
     const setAccountDetail = () => {
-        //분개 계정 선택
         setAccountSelectDialog(false);
         console.log(selecJour);
         console.log(journalData.filter((data) => data.journalNo !== jourNo));
@@ -319,21 +412,58 @@ const SlipForm = () => {
             }
         });
     };
-
-    const insertJour = () => {
-        let jourData = { slipNo: slipNo, journalObj: selecJour };
+    const setCustomerDetail = () => {
+        setCustomerCodeDialog(false);
         dispatch({
-            type: types.SAVE_JOURNAL_START,
+            type: types.INSERT_CUSTOMER,
             params: {
-                // slipNo: JSON.stringify(slipNo),
-                // journalObj: JSON.stringify(selecJour)
-                jourData: jourData //Object 형태로 값이 전달됨
+                customerCode: customerCode,
+                customerName: customerName,
+                selecJour: selecJour,
+                journalData: journalData.filter((data) => data.journalNo !== jourNo)
             }
         });
     };
+    //분개 저장 - 하나씩 ======> 전표와 분개 한번에 저장으로 구현
+    // 지금은 업데이트 연습용으로 사용
+    const insertJour = () => {
+        console.log(selecJour);
+        let jourData = { slipNo: slipNo, journalObj: selecJour };
+        if (selecJour.slipNo !== 'new') {
+            console.log('분개 수정');
+            dispatch({
+                type: types.UPDATE_JOURNAL_START,
+                params: {
+                    jourData: jourData
+                }
+            });
+            return Swal.fire({
+                icon: 'info',
+                title: '수정되었습니다',
+                showConfirmButton: '확인'
+            });
+        } else {
+            console.log('분개 저장');
+            dispatch({
+                type: types.SAVE_JOURNAL_START,
+                params: {
+                    // slipNo: JSON.stringify(slipNo),
+                    // journalObj: JSON.stringify(selecJour)
+                    jourData: jourData //Object 형태로 값이 전달됨
+                }
+            });
+            return Swal.fire({
+                icon: 'success',
+                title: '저장되었습니다',
+                showConfirmButton: '확인'
+            });
+        }
+    };
 
     //==========================분개상세=================================
+    //분개상세 조회
     const searchDetail = (e) => {
+        console.log(e);
         setSelecJour(e.row);
         setJourNo(e.row.journalNo);
         dispatch({
@@ -344,6 +474,25 @@ const SlipForm = () => {
         });
     };
 
+    //분개 상세 추가
+    const addDetail = () => {
+        console.log('분개 상세 추가');
+        if (selecJour === '') {
+            Swal.fire({
+                icon: 'error',
+                title: '분개부터 선택해 주시기 바랍니다',
+                showConfirmButton: '확인'
+            });
+        } else {
+            dispatch({
+                type: types.ADD_JOURNAL_DETAIL,
+                params: {
+                    journalDetailNo: 'JOURNALDETAIL' + jourCount
+                }
+            });
+            setJourCount(parseInt(jourCount) + 1);
+        }
+    };
     return (
         <Grid container spacing={gridSpacing}>
             <Grid item xs={12}>
@@ -384,6 +533,7 @@ const SlipForm = () => {
                                 <MenuItem value="미결">미결</MenuItem>
                                 <MenuItem value="반려">반려</MenuItem>
                                 <MenuItem value="승인완료">승인</MenuItem>
+                                {/* <MenuItem value="승인요청">요청</MenuItem> */}
                             </Select>
                         </FormControl>
                         <Button
@@ -436,7 +586,12 @@ const SlipForm = () => {
                             </Grid>
                             <Grid item>
                                 <Button variant="contained" color="secondary" startIcon={<SaveIcon />} onClick={insertSlip}>
-                                    저장
+                                    저장/수정
+                                </Button>
+                            </Grid>
+                            <Grid item>
+                                <Button variant="contained" color="secondary" startIcon={<TaskIcon />} onClick={approvalRequest}>
+                                    승인요청
                                 </Button>
                             </Grid>
                         </Grid>
@@ -496,9 +651,10 @@ const SlipForm = () => {
                                     분개삭제
                                 </Button>
                             </Grid>
+                            {/* >>>>>>>>>>>>>>>>>>>>>>>>updateJournal 연습  */}
                             <Grid item>
                                 <Button variant="contained" color="secondary" onClick={insertJour}>
-                                    분개저장
+                                    분개저장/수정
                                 </Button>
                             </Grid>
                         </Grid>
@@ -531,7 +687,7 @@ const SlipForm = () => {
                             hideFooter
                             getRowId={(row) => row.journalNo}
                             onCellClick={searchDetail}
-                            onCellDoubleClick={accountSelect}
+                            onCellDoubleClick={itemSelect}
                             onEditCellPropsChange={inputValue}
                             onCellEditStop={cellRender}
                         />
@@ -540,6 +696,12 @@ const SlipForm = () => {
                             onClose={setAccountDetail}
                             setAccountCode={setAccountCode}
                             setAccountName={setAccountName}
+                        />
+                        <CustomerDialog
+                            open={customerCodeDialog}
+                            onClose={setCustomerDetail}
+                            setCustomerCode={setCustomerCode}
+                            setCustomerName={setCustomerName}
                         />
                     </Box>
                 </MainCard>
@@ -550,7 +712,7 @@ const SlipForm = () => {
                     secondary={
                         <Grid container spacing={1}>
                             <Grid item>
-                                <Button variant="contained" color="secondary">
+                                <Button variant="contained" color="secondary" onClick={addDetail}>
                                     분개상세 추가
                                 </Button>
                             </Grid>

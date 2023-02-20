@@ -27,6 +27,7 @@ const PreviousFinalcialStatementMenu = () => {
     //조회버튼
     const SearchClick = (e) => {
         setOpen(false);
+        console.log(e);
         dispatch({
             type: SELECT_PREVIOUS_STATUS_REQUEST,
             params: {

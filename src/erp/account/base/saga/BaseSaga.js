@@ -57,6 +57,7 @@ export default function* BaseSaga() {
     yield takeEvery(types.SEARCH_WORKPLACE_REQUEST, searchWorkPlaceSaga);
     //전체 기수 조회
     yield takeEvery(types.SEARCH_PERIOD_NO_REQUEST, searchPeriodNoSaga);
+    yield takeEvery(types.SEARCH_T_PERIOD_NO_REQUEST, searchTPeriodNoSaga);
 
     //계정과목 조회
     yield takeLatest(types.SEARCH_ACCOUNT_REQUEST, searchAccountListSaga);
@@ -88,9 +89,12 @@ export default function* BaseSaga() {
 
     //신용카드조회
     yield takeEvery(types.SEARCH_CREDITCARD_REQUEST, searchCreditCardSaga);
+
+   
 }
 const searchWorkPlaceSaga = createRequestSaga(types.SEARCH_WORKPLACE_REQUEST, api.searchWorkPlace);
 const searchPeriodNoSaga = createRequestSaga(types.SEARCH_PERIOD_NO_REQUEST, api.searchPeriodNo);
+const searchTPeriodNoSaga = createRequestSaga(types.SEARCH_T_PERIOD_NO_REQUEST, api.searchTPeriodNo);
 const searchAccountListSaga = createRequestSaga(types.SEARCH_ACCOUNT_REQUEST, api.searchAccountList);
 const searchDeptSaga = createRequestSaga(types.SEARCH_DEPT_REQUEST, api.searchDeptList);
 const searchBudgetSaga = createRequestSaga(types.SEARCH_BUDGETLIST_REQUEST, api.searchBudget);
@@ -101,3 +105,4 @@ const insertBudgetSaga = createRequestSaga(types.INSERT_BUDGET_REQUEST, api.inse
 const searchDetailAccountSaga = createRequestSaga(types.SEARCH_DETAIL_ACCOUNT_REQUEST, api.searchDetailAccount);
 const searchCustomerSaga = createRequestSaga(types.SEARCH_CUSTOMERS_REQUEST, api.searchCustomer);
 const searchCreditCardSaga = createRequestSaga(types.SEARCH_CREDITCARD_REQUEST, api.searchCreditCard);
+

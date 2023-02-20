@@ -7,6 +7,8 @@ import {DataGrid} from "@mui/x-data-grid";
 import MainCard from "../../../../../template/ui-component/cards/MainCard";
 import {useTheme} from "@mui/material/styles";
 import {AgGridReact} from "ag-grid-react";
+import {gridSpacing} from "../../../../../template/store/constant";
+import { Button, Typography, Grid, Modal } from '@mui/material';
 
 
 const TotalTrialBalanceGrid = () => {
@@ -54,6 +56,7 @@ const TotalTrialBalanceGrid = () => {
 
 
   return (
+
       <div>
         <MainCard
             content={false}
@@ -66,7 +69,7 @@ const TotalTrialBalanceGrid = () => {
               className="ag-theme-balham"
               style={{
                 height: 1000,
-                width : "100%"
+                width : "100%",
               }}
           >
             <AgGridReact
@@ -83,6 +86,7 @@ const TotalTrialBalanceGrid = () => {
                 onGridReady={(event) => {
                   event.api.sizeColumnsToFit();
                 }}
+                domLayout={'autoHeight'}
             />
           </div>
         </MainCard>

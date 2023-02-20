@@ -143,17 +143,16 @@ const initialState = {
     detailTrialBalanceList: [],
     journalDetailList: '',
     journalFormList: [],
-    IncomeList: [],
+    incomeList: [],
     CostList: [],
     customerList: [],
     CashFlowList: [],
-    MonthIncomeList: [],
+    monthIncomeList: [],
     periodNoList: [],
-    financialPositionList:[],
-    monthList : [],
-    basicAccountList :[],
-    accountLedgerList:[]
-
+    financialPositionList: [],
+    monthList: [],
+    basicAccountList: [],
+    accountLedgerList: []
 };
 
 const StatementReducer = (state = initialState, action) => {
@@ -282,6 +281,7 @@ const StatementReducer = (state = initialState, action) => {
 
         //월별손익계산서
         case SEARCH_MONTH_INCOME_SUCCESS:
+            console.log(action.payload.monthIncomeList.RESULT);
             return {
                 ...state,
                 isLoading: false,
@@ -360,22 +360,22 @@ const StatementReducer = (state = initialState, action) => {
             return {
                 ...state,
                 monthList: action.payload.monthList
-            }
-        case SEARCH_MONTH_DATA_FAILURE :
+            };
+        case SEARCH_MONTH_DATA_FAILURE:
             return {
                 ...state,
                 error: action.error
-            }
+            };
         case SEARCH_ACCOUNT_DATA_SUCCESS:
             return {
                 ...state,
                 accountList: action.payload
-            }
+            };
         case SEARCH_ACCOUNT_DATA_FAILURE:
             return {
                 ...state,
                 error: action.error
-            }
+            };
         default:
             return state;
     }

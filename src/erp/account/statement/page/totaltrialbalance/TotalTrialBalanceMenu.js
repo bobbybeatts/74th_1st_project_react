@@ -64,13 +64,14 @@ const TotalTrialBalanceMenu = () => {
               회계 기수조회
             </Button>
             <Modal open={open}>
+              <div align="center">
               <div
                 align="center"
                 className="ag-theme-balham"
                 style={{
                   width: "50%",
                   height: 500,
-                  background: "white"
+                  background: "white",
                 }}
               >
                 <DataGrid
@@ -81,6 +82,7 @@ const TotalTrialBalanceMenu = () => {
                   getRowId={(row) => row.accountPeriodNo}
                   onRowClick={searchData}
                 />
+              </div>
               </div>
             </Modal>
           </div>

@@ -28,6 +28,7 @@ export const SELECT_JOURNAL_FAILURE = 'src/erp/account/Saga/Saga/SELECT_JOURNAL_
 
 export const INSERT_JOURNAL = 'src/erp/account/Saga/Saga/INSERT_JOURNAL'; //분개 추가
 export const INSERT_ACCOUNT = 'src/erp/account/Saga/Saga/INSERT_ACCOUNT'; //계정 추가
+export const INSERT_CUSTOMER = 'src/erp/account/Saga/Saga/INSERT_CUSTOMER'; //거래처 추가
 export const ADD_LEFTDEBTORPRICE = 'src/erp/account/Saga/Saga/ADD_LEFTDEBTORPRICE'; //차변 값 추가
 export const ADD_RIGHTCREDITSPRICE = 'src/erp/account/Saga/Saga/ADD_RIGHTCREDITSPRICE'; //대변 값 추가
 
@@ -40,6 +41,8 @@ export const SAVE_JOURNAL_FAILURE = 'src/erp/account/Saga/Saga/SAVE_JOURNAL_FAIL
 export const UPDATE_JOURNAL_START = 'src/erp/account/Saga/Saga/UPDATE_JOURNAL'; //분개저장 UPDATE
 export const UPDATE_JOURNAL_SUCCESS = 'src/erp/account/Saga/Saga/UPDATE_JOURNAL_SUCCESS';
 export const UPDATE_JOURNAL_FAILURE = 'src/erp/account/Saga/Saga/UPDATE_JOURNAL_FAILURE';
+
+export const ADD_JOURNAL_DETAIL = 'src/erp/account/Saga/Saga/ADD_JOURNAL_DETAIL'; //분개상세 추가
 
 export const SELECT_JOURNAL_DETAIL_START = 'src/erp/account/Saga/Saga/SELECT_JOURNAL_DETAIL'; //분개상세 조회
 export const SELECT_JOURNAL_DETAIL_SUCCESS = 'src/erp/account/Saga/Saga/SELECT_JOURNAL_DETAIL_SUCCESS';
@@ -103,6 +106,10 @@ export const saveJournalDetailFailure = createAction(SAVE_JOURNAL_DETAIL_FAILURE
 //========================= 일반전표 2020-09-04 조편백 끝 ======================//
 
 //*****************************전표승인*****************************/
+//전표승인요청
+export const APPROVAL_SLIP_REQUEST = 'src/erp/account/Saga/Saga/APPROVAL_SLIP_REQUEST';
+export const APPROVAL_SLIP_SUCCESS = 'src/erp/account/Saga/Saga/APPROVAL_SLIP_SUCCESS';
+export const APPROVAL_SLIP_FAILURE = 'src/erp/account/Saga/Saga/APPROVAL_SLIP_FAILURE';
 //전표승인조회(전표)
 export const SEARCH_AM_SLIP_REQUEST = 'src/erp/account/Saga/Saga/SEARCH_AM_SLIP';
 export const SEARCH_AM_SLIP_SUCCESS = 'src/erp/account/Saga/Saga/SEARCH_AM_SLIP_SUCCESS';
@@ -112,8 +119,13 @@ export const SEARCH_AM_JOURNAL_REQUEST = 'src/erp/account/Saga/Saga/SEARCH_AM_JO
 export const SEARCH_AM_JOURNAL_SUCCESS = 'src/erp/account/Saga/Saga/SEARCH_AM_JOURNAL_SUCCESS';
 export const SEARCH_AM_JOURNAL_FAILURE = 'src/erp/account/Saga/Saga/SEARCH_AM_JOURNAL_FAILURE';
 //승인저장
-export const UPDATE_AM_SLIP_REQUEST = 'src/erp/account/Saga/Saga/UPDATE_SLIP';
-export const UPDATE_AM_SLIP_FAILURE = 'src/erp/account/Saga/Saga/UPDATE_SLIP_FAILURE';
+export const UPDATE_AM_SLIP_REQUEST = 'src/erp/account/Saga/Saga/UPDATE_AM_SLIP';
+export const UPDATE_AM_SLIP_SUCCESS = 'src/erp/account/Saga/Saga/UPDATE_AM_SLIP_SUCCESS';
+export const UPDATE_AM_SLIP_FAILURE = 'src/erp/account/Saga/Saga/UPDATE_AM_SLIP_FAILURE';
+
+export const approvalSlipRequest = createAction(APPROVAL_SLIP_REQUEST);
+export const approvalSlipSuccess = createAction(APPROVAL_SLIP_SUCCESS);
+export const approvalSlipFailute = createAction(APPROVAL_SLIP_FAILURE);
 
 export const searchAmSlipStart = createAction(SEARCH_AM_SLIP_REQUEST);
 export const searchAmSlipSuccess = createAction(SEARCH_AM_SLIP_SUCCESS);
@@ -124,6 +136,7 @@ export const searchAmJournalSuccess = createAction(SEARCH_AM_JOURNAL_SUCCESS);
 export const searchAmJournalFailure = createAction(SEARCH_AM_JOURNAL_FAILURE);
 
 export const updateAmSlipStart = createAction(UPDATE_AM_SLIP_REQUEST);
+export const updateAmSlipSuccess = createAction(UPDATE_AM_SLIP_SUCCESS);
 export const updateAmSlipFailure = createAction(UPDATE_AM_SLIP_FAILURE);
 
 //***************** 2020-08-28 정대현 추가 *****************
@@ -213,7 +226,7 @@ const initialState = {
 const initialslipFormList = {
     accountPeriodNo: '',
     approvalDate: '',
-    approvalEmpCode: 'admin',
+    approvalEmpCode: '',
     authorizationStatus: null,
     balanceDivision: null,
     deptCode: '',
@@ -234,7 +247,7 @@ const initialJournalList = {
     accountCode: '',
     accountName: '',
     accountPeriodNo: '',
-    balanceDivision: '대변',
+    balanceDivision: '',
     customerCode: '',
     customerName: null,
     deptCode: null,
@@ -244,8 +257,15 @@ const initialJournalList = {
     leftDebtorPrice: '',
     price: null,
     rightCreditsPrice: '',
-    slipNo: '1',
+    slipNo: '',
     status: ''
+};
+
+const initialJournalDetailList = {
+    journalDetailNo: '',
+    accountControlName: '',
+    accountControlType: '',
+    journalDescription: ''
 };
 
 const AccountReducer = (state = initialState, action) => {
@@ -269,13 +289,15 @@ const AccountReducer = (state = initialState, action) => {
                         ...initialJournalList,
                         journalNo: 'new 차변',
                         balanceDivision: '차변',
-                        leftDebtorPrice: '0'
+                        leftDebtorPrice: '0',
+                        slipNo: 'new'
                     },
                     {
                         ...initialJournalList,
                         journalNo: 'new 대변',
                         balanceDivision: '대변',
-                        rightCreditsPrice: '0'
+                        rightCreditsPrice: '0',
+                        slipNo: 'new'
                     }
                 ]
             };
@@ -334,10 +356,15 @@ const AccountReducer = (state = initialState, action) => {
                 ...state,
                 error: action.payload
             };
+        case UPDATE_SLIP_START:
+            console.log(action.params.updateSlipData);
+            return { ...state };
         case UPDATE_SLIP_SUCCESS: //전표 UPdate
             return {
                 ...state,
-                slipFormList: action.payload
+                slipFormList: [],
+                journalList: [],
+                journalDetailList: []
             };
         case UPDATE_SLIP_FAILURE: //전표 UPdate
             return {
@@ -397,6 +424,19 @@ const AccountReducer = (state = initialState, action) => {
                     }
                 ].concat(action.params.journalData)
             };
+        case INSERT_CUSTOMER:
+            console.log(action.params.customerCode);
+            console.log(action.params.customerName);
+            return {
+                ...state,
+                journalList: [
+                    {
+                        ...action.params.selecJour,
+                        customerCode: action.params.customerCode,
+                        customerName: action.params.customerName
+                    }
+                ].concat(action.params.journalData)
+            };
         case ADD_LEFTDEBTORPRICE: //차변 값 추가
             console.log(action.params.leftDebtorPrice);
             return {
@@ -431,27 +471,43 @@ const AccountReducer = (state = initialState, action) => {
                 ...state,
                 error: action.payload
             };
+        case UPDATE_JOURNAL_START:
+            console.log(action.params.jourData);
+            return {
+                ...state
+            };
+        case UPDATE_JOURNAL_SUCCESS: //분개 UPDATE 성공
+            return {
+                ...state,
+                journalList: [], //분개 초기화
+                journalDetailList: [] //분개상세 초기화
+            };
         case UPDATE_JOURNAL_FAILURE: //분개저장 UPDATE 실패
             return {
                 ...state,
                 error: action.payload
             };
-        case UPDATE_JOURNAL_SUCCESS: //분개저장 INSERT 성공
-            console.log('안나오니?분개저장?');
-            return {
-                ...state,
-                journalList: [], //분개 초기화
-                slipFormList: [], //전표그리드 초기화
-                journalDetailList: [] //분개상세 초기화
-            };
         case SAVE_JOURNAL_START:
             console.log(action.params.jourData);
+            return {
+                ...state
+            };
         case SAVE_JOURNAL_FAILURE: //분개저장 INSERT 실패
             return {
                 ...state,
                 error: action.payload
             };
         //==================분개상세====================
+        case ADD_JOURNAL_DETAIL:
+            return {
+                ...state,
+                journalDetailList: [
+                    {
+                        ...initialJournalDetailList,
+                        journalDetailNo: action.params.journalDetailNo
+                    }
+                ].concat(state.journalDetailList)
+            };
         case SELECT_JOURNAL_DETAIL_SUCCESS: //분개상세 조회 성공
             return {
                 ...state,
@@ -480,6 +536,14 @@ const AccountReducer = (state = initialState, action) => {
             };
 
         //==================전표승인====================
+        //전표 승인 요청
+        case APPROVAL_SLIP_REQUEST:
+            return {
+                ...state,
+                slipFormList: [],
+                journalList: [], //분개 그리드 초기화
+                journalDetailList: [] //분개상세 그리드 초기화
+            };
         //전표승인 전표조회
         case SEARCH_AM_SLIP_SUCCESS:
             console.log('리듀서되나');
@@ -496,15 +560,22 @@ const AccountReducer = (state = initialState, action) => {
         //전표승인 분개조회
         case SEARCH_AM_JOURNAL_SUCCESS:
             console.log('또뭐가문젠데');
-            console.log(action);
+            console.log(action.payload);
             return {
                 ...state,
-                approvalJournalList: action.payload.journalList
+                approvalJournalList: action.payload
             };
         case SEARCH_AM_JOURNAL_FAILURE:
             return {
                 ...state,
                 error: action.error
+            };
+        //전표 승인 (성공)
+        case UPDATE_AM_SLIP_SUCCESS:
+            return {
+                ...state,
+                approvalSlipList: [],
+                approvalJournalList: []
             };
         // 전표승인  (실패)
         case UPDATE_SLIP_FAILURE:

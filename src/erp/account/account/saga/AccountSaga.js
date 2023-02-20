@@ -31,27 +31,30 @@ const saveJournalDetailSaga = createRequestSaga(types.SAVE_JOURNAL_DETAIL_START,
 const hrAddSlip = createRequestSaga(types.ADD_SALARY_SLIP_REQUEST, api.hrAddSlip);
 
 //------------전표승인------------------
+const approvalSlipRequest = createRequestSaga(types.APPROVAL_SLIP_REQUEST, api.approvalSlipRequest);
+
 const amSlipRequest = createRequestSaga(types.SEARCH_AM_SLIP_REQUEST, api.amSlipRequest);
 
 const amJournalRequest = createRequestSaga(types.SEARCH_AM_JOURNAL_REQUEST, api.amJournalRequest);
 
-function* updateSlip(action) {
-    try {
-        yield accountApi.put('/account/approveSlip', {
-            approvalData: action.params.approvalData
-        });
-        const { data } = yield accountApi.get('/account/findRangedSlipList', {
-            params: {
-                startDate: action.params.startDate,
-                endDate: action.params.endDate,
-                slipStatus: action.params.slipStatus
-            }
-        });
-        yield put({ type: types.SEARCH_AM_SLIP_SUCCESS, data });
-    } catch (error) {
-        yield put({ type: types.UPDATE_AM_SLIP_FAILURE, error });
-    }
-}
+const updateAmSlip = createRequestSaga(types.UPDATE_AM_SLIP_REQUEST, api.updateAmSlip);
+// function* updateSlip(action) {
+//     try {
+//         yield accountApi.put('/account/approveSlip', {
+//             approvalData: action.params.approvalData
+//         });
+//         const { data } = yield accountApi.get('/account/findRangedSlipList', {
+//             params: {
+//                 startDate: action.params.startDate,
+//                 endDate: action.params.endDate,
+//                 slipStatus: action.params.slipStatus
+//             }
+//         });
+//         yield put({ type: types.SEARCH_AM_SLIP_SUCCESS, data });
+//     } catch (error) {
+//         yield put({ type: types.UPDATE_AM_SLIP_FAILURE, error });
+//     }
+// }
 
 const getJournalNo = createRequestSaga(types.SET_JOURNAL_NO_REQUEST, api.getJournalNo);
 
@@ -77,23 +80,24 @@ const searchDeptSaga = createRequestSaga(types.SEARCH_DEPT_LIST_REQUEST, api.sea
 
 export default function* AccountSaga() {
     // <===============  2020-09-10 일반전표 시작 조편백  ================
-    yield takeEvery(types.SELECT_SLIP_START, selectSlipSaga); //전표조회
-    yield takeEvery(types.DELETE_SLIP_START, deleteSlipSaga); //전표삭제
-    yield takeEvery(types.UPDATE_SLIP_START, updateSlipSaga); //전표 업데이트
+    yield takeEvery(types.SELECT_SLIP_START, selectSlipSaga); //전표조회 select
+    yield takeEvery(types.DELETE_SLIP_START, deleteSlipSaga); //전표삭제 delete
+    yield takeEvery(types.UPDATE_SLIP_START, updateSlipSaga); //전표수정 update
     yield takeEvery(types.INSERT_SLIP_START, insertSlipSaga); //전표저장 insert
-    yield takeEvery(types.SELECT_JOURNAL_START, searchJournalSaga); //분개조회
-    yield takeEvery(types.DELETE_JOURNAL_START, deleteJournalSaga); //분개삭제
+    yield takeEvery(types.SELECT_JOURNAL_START, searchJournalSaga); //분개조회 select
+    yield takeEvery(types.DELETE_JOURNAL_START, deleteJournalSaga); //분개삭제 delect
     yield takeEvery(types.SAVE_JOURNAL_START, saveJournalSaga); //분개저장 insert
-    yield takeEvery(types.UPDATE_JOURNAL_START, updateJournalSaga); //분개저장 update
+    yield takeEvery(types.UPDATE_JOURNAL_START, updateJournalSaga); //분개수정 update
     yield takeEvery(types.SELECT_JOURNAL_DETAIL_START, searchJournalDetailSaga); //분개상세 조회
     yield takeEvery(types.SAVE_JOURNAL_DETAIL_START, saveJournalDetailSaga); //분개상세저장
     yield takeLatest(types.ADD_SALARY_SLIP_REQUEST, hrAddSlip);
     // <===============  2020-09-10 일반전표 끝 조편백  ================
 
     // <===============  전표승인  ================
+    yield takeLatest(types.APPROVAL_SLIP_REQUEST, approvalSlipRequest);
     yield takeLatest(types.SEARCH_AM_SLIP_REQUEST, amSlipRequest);
     yield takeLatest(types.SEARCH_AM_JOURNAL_REQUEST, amJournalRequest);
-    yield takeLatest(types.UPDATE_AM_SLIP_REQUEST, updateSlip);
+    yield takeLatest(types.UPDATE_AM_SLIP_REQUEST, updateAmSlip);
 
     yield takeEvery(types.SET_JOURNAL_NO_REQUEST, getJournalNo); // //*********** 2020-08-28 정대현 추가 **********
     yield takeEvery(types.SELECT_GENERAL_ACCOUNT_LEDGER_START, selectGeneralAccountLedgerSaga);

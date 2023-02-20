@@ -38,6 +38,9 @@ export const SEARCH_WORKPLACE_FAILURE = 'src/erp/account/Saga/Saga/SEARCH_WORKPL
 export const SEARCH_PERIOD_NO_REQUEST = 'src/erp/account/Saga/Saga/SEARCH_PERIOD_NO';
 export const SEARCH_PERIOD_NO_SUCCESS = 'src/erp/account/Saga/Saga/SEARCH_PERIOD_NO_SUCCESS';
 export const SEARCH_PERIOD_NO_FAILURE = 'src/erp/account/Saga/Saga/SEARCH_PERIOD_NO_FAILURE';
+export const SEARCH_T_PERIOD_NO_REQUEST = 'src/erp/account/Saga/Saga/SEARCH_T_PERIOD_NO';
+export const SEARCH_T_PERIOD_NO_SUCCESS = 'src/erp/account/Saga/Saga/SEARCH_T_PERIOD_NO_SUCCESS';
+export const SEARCH_T_PERIOD_NO_FAILURE = 'src/erp/account/Saga/Saga/SEARCH_T_PERIOD_NO_FAILURE';
 
 //*************************부서 조회***********************************
 export const SEARCH_DEPT_REQUEST = 'src/erp/account/Saga/Saga/SEARCH_DEPT';
@@ -65,7 +68,11 @@ export const SEARCH_BUDGET_SUCCESS = 'src/erp/account/Saga/Saga/SEARCH_BUDGET_SU
 export const SEARCH_BUDGET_FAILURE = 'src/erp/account/Saga/Saga/SEARCH_BUDGET_FAILURE';
 
 export const INSERT_BUDGET_REQUEST = 'src/erp/account/Saga/Saga/INSERT_BUDGET';
+export const INSERT_BUDGET_SUCCESS = 'src/erp/account/Saga/Saga/INSERT_BUDGET_SUCCESS';
 export const INSERT_BUDGET_FAILURE = 'src/erp/account/Saga/Saga/INSERT_BUDGET_FAILURE';
+
+//************************* state초기화 */
+// export const RESET_BUDGET_STATE = 'src/erp/account/Saga/Saga/INSERT_BUDGET';
 
 export const setAccountList = createAction(SEARCH_ACCOUNT_REQUEST);
 
@@ -80,12 +87,20 @@ const initialState = {
     preBudgetList: [],
     accountCodeList: [],
     accountDetailList: [],
-    detailDeptList: []
+    detailDeptList: [],
+    periodNo: '',
+    currentBudgetList: ''
 };
 
 const BaseReducer = (state = initialState, action) => {
     switch (action.type) {
-        // 계정과목 조회
+        case INSERT_BUDGET_SUCCESS:
+            return {
+                ...state,
+                accountCodeList: [],
+                accountDetailList: [],
+            };
+        //계정과목 조회
         case SEARCH_ACCOUNT_SUCCESS:
             return {
                 ...state,
@@ -130,6 +145,21 @@ const BaseReducer = (state = initialState, action) => {
                 periodNoList: action.payload.periodNoList
             };
         case SEARCH_PERIOD_NO_FAILURE:
+            return {
+                ...state,
+                error: action.error
+            };
+        case SEARCH_T_PERIOD_NO_REQUEST:
+            console.log('보내지나');
+            console.log(action.params.yearFirst);
+        case SEARCH_T_PERIOD_NO_SUCCESS:
+            console.log(action.payload);
+            return {
+                ...state,
+                periodNo: action.payload
+            };
+        //오늘자 회계기수 조회
+        case SEARCH_T_PERIOD_NO_FAILURE:
             return {
                 ...state,
                 error: action.error
@@ -187,10 +217,16 @@ const BaseReducer = (state = initialState, action) => {
                 ...state,
                 error: action.error
             };
+        case INSERT_BUDGET_SUCCESS:
+            return {
+                ...state,
+
+            };
         case INSERT_BUDGET_FAILURE:
             return {
                 ...state,
-                error: action.error
+                accountCodeList: [],
+                accountDetailList: []
             };
         case SEARCH_DETAIL_ACCOUNT_SUCCESS:
             return {
